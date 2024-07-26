@@ -10,6 +10,24 @@ PhotoViewer::MainForm::MainForm(String^ pathToOpenedPicture)
 	SortFiles(GetFilesCurrentDirectory(pathToOpenedPicture));
 	FindOutIndexOpenedPicture(pathToOpenedPicture);
 	SettingUpPictureBox();
+	SetUpWindowForm();
+}
+
+void PhotoViewer::MainForm::SetUpWindowForm()
+{
+	SetUpLastWindowSize();
+}
+
+void PhotoViewer::MainForm::SetUpLastWindowSize()
+{
+	array<String^>^ LastWindowSize = File::ReadAllLines(PATH_LAST_WINDOW_SIZE);
+
+
+	int LastWidth = Convert::ToInt32(LastWindowSize[0]);
+	int LastHeight = Convert::ToInt32(LastWindowSize[1]);
+
+	this->Size = Drawing::Size(LastWidth, LastHeight);
+
 }
 
 array<String^>^ PhotoViewer::MainForm::GetFilesCurrentDirectory(String^ pathToPicture)
@@ -55,7 +73,6 @@ void PhotoViewer::MainForm::SettingUpPictureBox()
 
 void PhotoViewer::MainForm::SaveSettingsForm()
 {
-	//TODO: Place Holder with Directory
 	if (Directory::Exists(DIRECTORY_SETTINGS))
 	{
 		SaveLastWindowSize();
@@ -69,8 +86,7 @@ void PhotoViewer::MainForm::SaveLastWindowSize()
 
 	String^ Height = this->Size.Height.ToString();
 
-	//TODO: Place Holder with path to windowSize.txt
-	File::WriteAllText("D:\\Settings\\LastWindowSize.txt",Width + Height);
+	File::WriteAllText(PATH_LAST_WINDOW_SIZE,Width + Height);
 }
 
 PhotoViewer::MainForm::~MainForm()

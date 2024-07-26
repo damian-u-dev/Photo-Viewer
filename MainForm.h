@@ -23,13 +23,15 @@ namespace PhotoViewer
 		int IndexLastPicture;
 		
 		MainForm(String^ directoryToFirstPhoto);
+		void SetUpWindowForm();
+		void SetUpLastWindowSize();
 
 		array<String^>^ GetFilesCurrentDirectory(String^ directory);
 		bool IsCorrectExtension(String^ extension);
 		void SortFiles(array<String^>^ AllFiles);
 		void FindOutIndexOpenedPicture(String^ pathToOpenedPicture);
 		void SettingUpPictureBox();
-
+		
 
 
 	protected:
@@ -98,8 +100,8 @@ namespace PhotoViewer
 			   // SplitContainer.Panel2
 			   // 
 			   this->SplitContainer->Panel2->Controls->Add(this->SplitContainer2);
-			   this->SplitContainer->Size = System::Drawing::Size(449, 402);
-			   this->SplitContainer->SplitterDistance = 352;
+			   this->SplitContainer->Size = System::Drawing::Size(324, 365);
+			   this->SplitContainer->SplitterDistance = 319;
 			   this->SplitContainer->TabIndex = 0;
 			   this->SplitContainer->TabStop = false;
 			   // 
@@ -108,7 +110,7 @@ namespace PhotoViewer
 			   this->PictureBox->Dock = System::Windows::Forms::DockStyle::Fill;
 			   this->PictureBox->Location = System::Drawing::Point(0, 24);
 			   this->PictureBox->Name = L"PictureBox";
-			   this->PictureBox->Size = System::Drawing::Size(449, 328);
+			   this->PictureBox->Size = System::Drawing::Size(324, 295);
 			   this->PictureBox->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
 			   this->PictureBox->TabIndex = 0;
 			   this->PictureBox->TabStop = false;
@@ -118,7 +120,7 @@ namespace PhotoViewer
 			   this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->FileToolStripMenuItem });
 			   this->menuStrip1->Location = System::Drawing::Point(0, 0);
 			   this->menuStrip1->Name = L"menuStrip1";
-			   this->menuStrip1->Size = System::Drawing::Size(449, 24);
+			   this->menuStrip1->Size = System::Drawing::Size(324, 24);
 			   this->menuStrip1->TabIndex = 1;
 			   this->menuStrip1->Text = L"menuStrip1";
 			   // 
@@ -150,7 +152,7 @@ namespace PhotoViewer
 			   this->SplitContainer2->Panel1->Controls->Add(this->bNextPicture);
 			   this->SplitContainer2->Panel1->Controls->Add(this->bPreviousPicture);
 			   this->SplitContainer2->Panel2Collapsed = true;
-			   this->SplitContainer2->Size = System::Drawing::Size(449, 46);
+			   this->SplitContainer2->Size = System::Drawing::Size(324, 42);
 			   this->SplitContainer2->SplitterDistance = 28;
 			   this->SplitContainer2->SplitterWidth = 1;
 			   this->SplitContainer2->TabIndex = 0;
@@ -160,7 +162,7 @@ namespace PhotoViewer
 			   // 
 			   this->bNextPicture->Anchor = System::Windows::Forms::AnchorStyles::None;
 			   this->bNextPicture->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
-			   this->bNextPicture->Location = System::Drawing::Point(230, 17);
+			   this->bNextPicture->Location = System::Drawing::Point(168, 15);
 			   this->bNextPicture->Name = L"bNextPicture";
 			   this->bNextPicture->Size = System::Drawing::Size(75, 23);
 			   this->bNextPicture->TabIndex = 1;
@@ -172,7 +174,7 @@ namespace PhotoViewer
 			   // 
 			   this->bPreviousPicture->Anchor = System::Windows::Forms::AnchorStyles::None;
 			   this->bPreviousPicture->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
-			   this->bPreviousPicture->Location = System::Drawing::Point(118, 17);
+			   this->bPreviousPicture->Location = System::Drawing::Point(56, 15);
 			   this->bPreviousPicture->Name = L"bPreviousPicture";
 			   this->bPreviousPicture->Size = System::Drawing::Size(75, 23);
 			   this->bPreviousPicture->TabIndex = 1;
@@ -183,13 +185,13 @@ namespace PhotoViewer
 			   // 
 			   this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			   this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			   this->ClientSize = System::Drawing::Size(449, 402);
+			   this->ClientSize = System::Drawing::Size(324, 365);
 			   this->Controls->Add(this->SplitContainer);
 			   this->KeyPreview = true;
 			   this->MainMenuStrip = this->menuStrip1;
 			   this->MinimumSize = System::Drawing::Size(340, 404);
 			   this->Name = L"MainForm";
-			   this->StartPosition = System::Windows::Forms::FormStartPosition::Manual;
+			   this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			   this->Text = L"Photo-Viewer";
 			   this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MainForm::MainForm_KeyDown);
 			   this->SplitContainer->Panel1->ResumeLayout(false);
