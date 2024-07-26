@@ -19,6 +19,7 @@ namespace PhotoViewer
 		String^ DIRECTORY_SETTINGS = R"(D:\Settings)";
 		String^ PATH_LAST_WINDOW_SIZE = R"(D:\Settings\LastWindowSize.txt)";
 		String^ LAST_WINDOW_LOCATION = R"(D:\Settings\LastWindowLocation.txt)";
+		String^ LAST_WINDOW_STATE = R"(D:\Settings\LastWindowState.txt)";
 		
 		int IndexCurrentPicture = 0;
 		int IndexLastPicture;
@@ -41,6 +42,7 @@ namespace PhotoViewer
 	void SaveSettingsForm();
 	void SaveLastWindowSize();
 	void SaveLastWindowLocation();
+	void SaveLastWindowState();
 
 	private: void CopyCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 	private: void MainForm_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e);

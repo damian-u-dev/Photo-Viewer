@@ -91,6 +91,7 @@ void PhotoViewer::MainForm::SaveSettingsForm()
 	{
 		SaveLastWindowSize();
 		SaveLastWindowLocation();
+		SaveLastWindowState();
 	}
 }
 
@@ -112,6 +113,11 @@ void PhotoViewer::MainForm::SaveLastWindowLocation()
 	String^ LastY = this->Location.Y.ToString();
 
 	File::WriteAllText(LAST_WINDOW_LOCATION, LastX + LastY);
+}
+
+void PhotoViewer::MainForm::SaveLastWindowState()
+{
+	File::WriteAllText(LAST_WINDOW_STATE, WindowState.ToString());
 }
 
 PhotoViewer::MainForm::~MainForm()
