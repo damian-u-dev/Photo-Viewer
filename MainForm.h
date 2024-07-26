@@ -19,17 +19,17 @@ namespace PhotoViewer
 		int IndexCurrentPicture = 0;
 		int IndexLastPicture;
 		
-		MainForm();
+		MainForm(String^ directoryToFirstPhoto);
 
 		array<String^>^ GetFilesCurrentDirectory(String^ directory);
 		bool IsCorrectExtension(String^ extension);
-		void SortFiles();
-		void FindOutIndexCurrentPicture();
+		void SortFiles(array<String^>^ AllFiles);
+		void FindOutIndexOpenedPicture(String^ pathToOpenedPicture);
 		void SettingUpPictureBox();
 
 
 	protected:
-		~MainForm();
+	~MainForm();
 
 	private: void CopyCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 	private: void MainForm_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e);
@@ -127,6 +127,7 @@ namespace PhotoViewer
 			   // 
 			   this->CopyCurrentPictureToolStripMenuItem->Name = L"CopyCurrentPictureToolStripMenuItem";
 			   this->CopyCurrentPictureToolStripMenuItem->ShortcutKeyDisplayString = L"Ctrl + C";
+			   this->CopyCurrentPictureToolStripMenuItem->ShortcutKeys = static_cast<System::Windows::Forms::Keys>((System::Windows::Forms::Keys::Control | System::Windows::Forms::Keys::C));
 			   this->CopyCurrentPictureToolStripMenuItem->Size = System::Drawing::Size(231, 22);
 			   this->CopyCurrentPictureToolStripMenuItem->Text = L"Copy current picture";
 			   this->CopyCurrentPictureToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::CopyCurrentPictureToolStripMenuItem_Click);

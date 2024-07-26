@@ -4,17 +4,18 @@ using namespace System::IO;
 using namespace System::Collections::Generic;
 using namespace System;
 
-PhotoViewer::MainForm::MainForm()
+PhotoViewer::MainForm::MainForm(String^ pathToOpenedPicture)
 {
 	InitializeComponent();
-	SortFiles();
-	FindOutIndexCurrentPicture();
+	SortFiles(GetFilesCurrentDirectory(pathToOpenedPicture));
+	FindOutIndexOpenedPicture(pathToOpenedPicture);
 	SettingUpPictureBox();
 }
 
-array<String^>^ PhotoViewer::MainForm::GetFilesCurrentDirectory(String^ directory)
+array<String^>^ PhotoViewer::MainForm::GetFilesCurrentDirectory(String^ pathToPicture)
 {
-	return Directory::GetFiles(directory);
+	String^ Directory = Path::GetDirectoryName(pathToPicture);
+	return Directory::GetFiles(Directory);
 }
 
 bool PhotoViewer::MainForm::IsCorrectExtension(String^ extension)
@@ -23,10 +24,8 @@ bool PhotoViewer::MainForm::IsCorrectExtension(String^ extension)
 		extension->EndsWith(".jpg") || extension->EndsWith(".gif"));
 }
 
-void PhotoViewer::MainForm::SortFiles()
+void PhotoViewer::MainForm::SortFiles(array<String^>^ AllFiles)
 {
-	array<String^>^ AllFiles = GetFilesCurrentDirectory("D:\\Photos");
-
 	for (int i = 0; i < AllFiles->Length; i++)
 	{
 		if (IsCorrectExtension(AllFiles[i]))
@@ -37,12 +36,11 @@ void PhotoViewer::MainForm::SortFiles()
 	IndexLastPicture = Pictures.Count - 1;
 }
 
-void PhotoViewer::MainForm::FindOutIndexCurrentPicture()
+void PhotoViewer::MainForm::FindOutIndexOpenedPicture(String^ pathToOpenedPicture)
 {
 	for (int i = 0; i < Pictures.Count; i++)
 	{
-		//TODO: Change place holder
-		if (Pictures[i]->Equals("D:\\Photos\\elliesnewbbg_1705251529_7323999466669755694_index_0_12.jpeg"))
+		if (Pictures[i]->Equals(pathToOpenedPicture))
 		{
 			IndexCurrentPicture = i;
 			break;
