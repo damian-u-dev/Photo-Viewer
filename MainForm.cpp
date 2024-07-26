@@ -17,6 +17,7 @@ void PhotoViewer::MainForm::SetUpWindowForm()
 {
 	SetUpLastWindowSize();
 	SetUpLastWindowLocation();
+	SetUpLastWindowState();
 }
 
 void PhotoViewer::MainForm::SetUpLastWindowSize()
@@ -42,6 +43,20 @@ void PhotoViewer::MainForm::SetUpLastWindowLocation()
 
 	Location = LastLocation;
 
+}
+
+void PhotoViewer::MainForm::SetUpLastWindowState()
+{
+	String^ LastWindowModeStr = File::ReadAllText(LAST_WINDOW_STATE);
+
+	if (LastWindowModeStr == "Normal")
+	{
+		WindowState = FormWindowState::Normal;
+	}
+	else
+	{
+		WindowState = FormWindowState::Maximized;
+	}
 }
 
 array<String^>^ PhotoViewer::MainForm::GetFilesCurrentDirectory(String^ pathToPicture)
@@ -89,8 +104,12 @@ void PhotoViewer::MainForm::SaveSettingsForm()
 {
 	if (Directory::Exists(DIRECTORY_SETTINGS))
 	{
-		SaveLastWindowSize();
-		SaveLastWindowLocation();
+		if (WindowState == FormWindowState::Normal)
+		{
+			SaveLastWindowSize();
+			SaveLastWindowLocation();
+		}
+
 		SaveLastWindowState();
 	}
 }
@@ -102,7 +121,7 @@ void PhotoViewer::MainForm::SaveLastWindowSize()
 
 	String^ Height = this->Size.Height.ToString();
 
-	File::WriteAllText(PATH_LAST_WINDOW_SIZE,Width + Height);
+	File::WriteAllText(PATH_LAST_WINDOW_SIZE, Width + Height);
 }
 
 void PhotoViewer::MainForm::SaveLastWindowLocation()
@@ -144,7 +163,7 @@ void PhotoViewer::MainForm::MainForm_KeyDown(System::Object^ sender, System::Win
 	{
 		bPreviousPicture_Click(nullptr, nullptr);
 	}
-	if(e->KeyCode == Keys::D)
+	if (e->KeyCode == Keys::D)
 	{
 		bNextPicture_Click(nullptr, nullptr);
 	}

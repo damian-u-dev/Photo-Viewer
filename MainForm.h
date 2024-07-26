@@ -28,6 +28,7 @@ namespace PhotoViewer
 		void SetUpWindowForm();
 		void SetUpLastWindowSize();
 		void SetUpLastWindowLocation();
+		void SetUpLastWindowState();
 
 		array<String^>^ GetFilesCurrentDirectory(String^ directory);
 		bool IsCorrectExtension(String^ extension);
