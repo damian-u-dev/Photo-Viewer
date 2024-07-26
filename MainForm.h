@@ -18,8 +18,8 @@ namespace PhotoViewer
 		
 		String^ DIRECTORY_SETTINGS = R"(D:\Settings)";
 		String^ PATH_LAST_WINDOW_SIZE = R"(D:\Settings\LastWindowSize.txt)";
-		String^ LAST_WINDOW_LOCATION = R"(D:\Settings\LastWindowLocation.txt)";
-		String^ LAST_WINDOW_STATE = R"(D:\Settings\LastWindowState.txt)";
+		String^ PATH_LAST_WINDOW_LOCATION = R"(D:\Settings\LastWindowLocation.txt)";
+		String^ PATH_LAST_WINDOW_STATE = R"(D:\Settings\LastWindowState.txt)";
 		
 		int IndexCurrentPicture = 0;
 		int IndexLastPicture;

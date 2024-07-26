@@ -34,7 +34,7 @@ void PhotoViewer::MainForm::SetUpLastWindowSize()
 
 void PhotoViewer::MainForm::SetUpLastWindowLocation()
 {
-	array<String^>^ LastWindowLocation = File::ReadAllLines(LAST_WINDOW_LOCATION);
+	array<String^>^ LastWindowLocation = File::ReadAllLines(PATH_LAST_WINDOW_LOCATION);
 
 	int LastX = Convert::ToInt32(LastWindowLocation[0]);
 	int LastY = Convert::ToInt32(LastWindowLocation[1]);
@@ -47,7 +47,7 @@ void PhotoViewer::MainForm::SetUpLastWindowLocation()
 
 void PhotoViewer::MainForm::SetUpLastWindowState()
 {
-	String^ LastWindowModeStr = File::ReadAllText(LAST_WINDOW_STATE);
+	String^ LastWindowModeStr = File::ReadAllText(PATH_LAST_WINDOW_STATE);
 
 	if (LastWindowModeStr == "Normal")
 	{
@@ -131,12 +131,12 @@ void PhotoViewer::MainForm::SaveLastWindowLocation()
 
 	String^ LastY = this->Location.Y.ToString();
 
-	File::WriteAllText(LAST_WINDOW_LOCATION, LastX + LastY);
+	File::WriteAllText(PATH_LAST_WINDOW_LOCATION, LastX + LastY);
 }
 
 void PhotoViewer::MainForm::SaveLastWindowState()
 {
-	File::WriteAllText(LAST_WINDOW_STATE, WindowState.ToString());
+	File::WriteAllText(PATH_LAST_WINDOW_STATE, WindowState.ToString());
 }
 
 PhotoViewer::MainForm::~MainForm()
