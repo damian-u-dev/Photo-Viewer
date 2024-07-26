@@ -8,6 +8,7 @@ PhotoViewer::MainForm::MainForm()
 {
 	InitializeComponent();
 	SortFiles();
+	SettingUpPictureBox();
 }
 
 array<String^>^ PhotoViewer::MainForm::GetFilesCurrentDirectory(String^ directory)
@@ -33,6 +34,11 @@ void PhotoViewer::MainForm::SortFiles()
 		}
 	}
 
+}
+
+void PhotoViewer::MainForm::SettingUpPictureBox()
+{
+	PictureBox->Image = Image::FromFile(Pictures[0]->ToString());
 }
 
 PhotoViewer::MainForm::~MainForm()
