@@ -14,6 +14,12 @@ namespace PhotoViewer
 	public:
 		MainForm();
 
+		array<String^>^ GetFilesCurrentDirectory(String^ directory);
+		bool IsCorrectExtension(String^ extension);
+		void SortFiles();
+
+
+		ArrayList Pictures;
 
 	protected:
 		~MainForm();
