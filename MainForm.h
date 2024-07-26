@@ -16,6 +16,9 @@ namespace PhotoViewer
 		
 		const int INDEX_FIRST_PICTURE = 0;
 		
+		String^ DIRECTORY_SETTINGS = "D:\Settings";
+		String^ PATH_LAST_WINDOW_SIZE = "D:\\Settings\\LastWindowSize.txt";
+		
 		int IndexCurrentPicture = 0;
 		int IndexLastPicture;
 		
@@ -28,8 +31,11 @@ namespace PhotoViewer
 		void SettingUpPictureBox();
 
 
+
 	protected:
 	~MainForm();
+	void SaveSettingsForm();
+	void SaveLastWindowSize();
 
 	private: void CopyCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 	private: void MainForm_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e);

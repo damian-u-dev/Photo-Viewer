@@ -53,8 +53,29 @@ void PhotoViewer::MainForm::SettingUpPictureBox()
 	PictureBox->Image = Image::FromFile(Pictures[IndexCurrentPicture]->ToString());
 }
 
+void PhotoViewer::MainForm::SaveSettingsForm()
+{
+	//TODO: Place Holder with Directory
+	if (Directory::Exists(DIRECTORY_SETTINGS))
+	{
+		SaveLastWindowSize();
+	}
+}
+
+void PhotoViewer::MainForm::SaveLastWindowSize()
+{
+	String^ Width = this->Size.Width.ToString();
+	Width += "\n";
+
+	String^ Height = this->Size.Height.ToString();
+
+	//TODO: Place Holder with path to windowSize.txt
+	File::WriteAllText("D:\\Settings\\LastWindowSize.txt",Width + Height);
+}
+
 PhotoViewer::MainForm::~MainForm()
 {
+	SaveSettingsForm();
 	if (components)
 	{
 		delete components;
