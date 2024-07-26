@@ -76,6 +76,7 @@ void PhotoViewer::MainForm::SaveSettingsForm()
 	if (Directory::Exists(DIRECTORY_SETTINGS))
 	{
 		SaveLastWindowSize();
+		SaveLastWindowLocation();
 	}
 }
 
@@ -87,6 +88,16 @@ void PhotoViewer::MainForm::SaveLastWindowSize()
 	String^ Height = this->Size.Height.ToString();
 
 	File::WriteAllText(PATH_LAST_WINDOW_SIZE,Width + Height);
+}
+
+void PhotoViewer::MainForm::SaveLastWindowLocation()
+{
+	String^ LastX = this->Location.X.ToString();
+	LastX += "\n";
+
+	String^ LastY = this->Location.Y.ToString();
+
+	File::WriteAllText(LAST_WINDOW_LOCATION, LastX + LastY);
 }
 
 PhotoViewer::MainForm::~MainForm()
