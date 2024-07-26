@@ -26,6 +26,7 @@ namespace PhotoViewer
 		~MainForm();
 
 	private: void CopyCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+	private: void MainForm_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e);
 
 
 
@@ -111,7 +112,8 @@ namespace PhotoViewer
 			   // CopyCurrentPictureToolStripMenuItem
 			   // 
 			   this->CopyCurrentPictureToolStripMenuItem->Name = L"CopyCurrentPictureToolStripMenuItem";
-			   this->CopyCurrentPictureToolStripMenuItem->Size = System::Drawing::Size(183, 22);
+			   this->CopyCurrentPictureToolStripMenuItem->ShortcutKeyDisplayString = L"Ctrl + C";
+			   this->CopyCurrentPictureToolStripMenuItem->Size = System::Drawing::Size(231, 22);
 			   this->CopyCurrentPictureToolStripMenuItem->Text = L"Copy current picture";
 			   this->CopyCurrentPictureToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::CopyCurrentPictureToolStripMenuItem_Click);
 			   // 
@@ -161,11 +163,13 @@ namespace PhotoViewer
 			   this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			   this->ClientSize = System::Drawing::Size(449, 402);
 			   this->Controls->Add(this->SplitContainer);
+			   this->KeyPreview = true;
 			   this->MainMenuStrip = this->menuStrip1;
 			   this->MinimumSize = System::Drawing::Size(340, 404);
 			   this->Name = L"MainForm";
 			   this->StartPosition = System::Windows::Forms::FormStartPosition::Manual;
 			   this->Text = L"Photo-Viewer";
+			   this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MainForm::MainForm_KeyDown);
 			   this->SplitContainer->Panel1->ResumeLayout(false);
 			   this->SplitContainer->Panel1->PerformLayout();
 			   this->SplitContainer->Panel2->ResumeLayout(false);

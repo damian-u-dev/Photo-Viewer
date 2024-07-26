@@ -53,3 +53,11 @@ void PhotoViewer::MainForm::CopyCurrentPictureToolStripMenuItem_Click(System::Ob
 {
 	Clipboard::SetImage(PictureBox->Image);
 }
+
+void PhotoViewer::MainForm::MainForm_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e)
+{
+	if (e->Control && e->KeyCode == Keys::C)
+	{
+		CopyCurrentPictureToolStripMenuItem_Click(sender, e);
+	}
+}
