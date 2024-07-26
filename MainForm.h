@@ -44,7 +44,7 @@ namespace PhotoViewer
 
 	void SwitchPicture(const int lastOrFirstPicture, const int initializeValue, const int addValue);
 	private: void bNextPicture_Click(System::Object^ sender, System::EventArgs^ e);
-	private: System::Void bPreviousPicture_Click(System::Object^ sender, System::EventArgs^ e);
+	private: void bPreviousPicture_Click(System::Object^ sender, System::EventArgs^ e);
 
 
 	
@@ -180,6 +180,7 @@ namespace PhotoViewer
 			   this->bPreviousPicture->TabIndex = 1;
 			   this->bPreviousPicture->Text = L"<";
 			   this->bPreviousPicture->UseVisualStyleBackColor = true;
+			   this->bPreviousPicture->Click += gcnew System::EventHandler(this, &MainForm::bPreviousPicture_Click);
 			   // 
 			   // MainForm
 			   // 
