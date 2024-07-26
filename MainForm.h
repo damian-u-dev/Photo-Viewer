@@ -26,6 +26,7 @@ namespace PhotoViewer
 		MainForm(String^ directoryToFirstPhoto);
 		void SetUpWindowForm();
 		void SetUpLastWindowSize();
+		void SetUpLastWindowLocation();
 
 		array<String^>^ GetFilesCurrentDirectory(String^ directory);
 		bool IsCorrectExtension(String^ extension);
@@ -194,7 +195,7 @@ namespace PhotoViewer
 			   this->MainMenuStrip = this->menuStrip1;
 			   this->MinimumSize = System::Drawing::Size(340, 404);
 			   this->Name = L"MainForm";
-			   this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
+			   this->StartPosition = System::Windows::Forms::FormStartPosition::Manual;
 			   this->Text = L"Photo-Viewer";
 			   this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MainForm::MainForm_KeyDown);
 			   this->SplitContainer->Panel1->ResumeLayout(false);

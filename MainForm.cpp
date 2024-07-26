@@ -16,6 +16,7 @@ PhotoViewer::MainForm::MainForm(String^ pathToOpenedPicture)
 void PhotoViewer::MainForm::SetUpWindowForm()
 {
 	SetUpLastWindowSize();
+	SetUpLastWindowLocation();
 }
 
 void PhotoViewer::MainForm::SetUpLastWindowSize()
@@ -27,6 +28,19 @@ void PhotoViewer::MainForm::SetUpLastWindowSize()
 	int LastHeight = Convert::ToInt32(LastWindowSize[1]);
 
 	this->Size = Drawing::Size(LastWidth, LastHeight);
+
+}
+
+void PhotoViewer::MainForm::SetUpLastWindowLocation()
+{
+	array<String^>^ LastWindowLocation = File::ReadAllLines(LAST_WINDOW_LOCATION);
+
+	int LastX = Convert::ToInt32(LastWindowLocation[0]);
+	int LastY = Convert::ToInt32(LastWindowLocation[1]);
+
+	Drawing::Point LastLocation(LastX, LastY);
+
+	Location = LastLocation;
 
 }
 
