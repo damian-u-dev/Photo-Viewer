@@ -171,7 +171,6 @@ namespace PhotoViewer
 			   this->bPreviousPicture->TabIndex = 1;
 			   this->bPreviousPicture->Text = L"<";
 			   this->bPreviousPicture->UseVisualStyleBackColor = true;
-			   this->bPreviousPicture->Click += gcnew System::EventHandler(this, &MainForm::bPreviousPicture_Click);
 			   // 
 			   // MainForm
 			   // 

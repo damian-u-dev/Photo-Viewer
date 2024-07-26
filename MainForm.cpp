@@ -74,6 +74,14 @@ void PhotoViewer::MainForm::MainForm_KeyDown(System::Object^ sender, System::Win
 	{
 		CopyCurrentPictureToolStripMenuItem_Click(sender, e);
 	}
+	if (e->KeyCode == Keys::A)
+	{
+		bPreviousPicture_Click(nullptr, nullptr);
+	}
+	if(e->KeyCode == Keys::D)
+	{
+		bNextPicture_Click(nullptr, nullptr);
+	}
 }
 
 void PhotoViewer::MainForm::SwitchPicture(const int lastOrFirstPicture, const int initializeValue, const int addValue)
