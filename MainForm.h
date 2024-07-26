@@ -12,6 +12,13 @@ namespace PhotoViewer
 	public ref class MainForm : public System::Windows::Forms::Form
 	{
 	public:
+		ArrayList Pictures;
+		
+		const int INDEX_FIRST_PICTURE = 0;
+		
+		int IndexCurrentPicture = 0;
+		int IndexLastPicture;
+		
 		MainForm();
 
 		array<String^>^ GetFilesCurrentDirectory(String^ directory);
@@ -20,9 +27,6 @@ namespace PhotoViewer
 		void FindOutIndexCurrentPicture();
 		void SettingUpPictureBox();
 
-		ArrayList Pictures;
-		int IndexCurrentPicture = 0;
-
 
 	protected:
 		~MainForm();
@@ -30,13 +34,21 @@ namespace PhotoViewer
 	private: void CopyCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 	private: void MainForm_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e);
 
+	void SwitchPicture(const int lastOrFirstPicture, const int initializeValue, const int addValue);
+	private: void bNextPicture_Click(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void bPreviousPicture_Click(System::Object^ sender, System::EventArgs^ e);
 
 
+	
+	
+	
+	
+	
 	private: System::Windows::Forms::PictureBox^ PictureBox;
 	private: System::Windows::Forms::SplitContainer^ SplitContainer;
 	private: System::Windows::Forms::SplitContainer^ SplitContainer2;
-	private: System::Windows::Forms::Button^ bNextPhoto;
-	private: System::Windows::Forms::Button^ bPreviousPhoto;
+	private: System::Windows::Forms::Button^ bNextPicture;
+	private: System::Windows::Forms::Button^ bPreviousPicture;
 	private: System::ComponentModel::IContainer^ components;
 	private: System::Windows::Forms::MenuStrip^ menuStrip1;
 	private: System::Windows::Forms::ToolStripMenuItem^ FileToolStripMenuItem;
@@ -52,8 +64,8 @@ namespace PhotoViewer
 			   this->FileToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->CopyCurrentPictureToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->SplitContainer2 = (gcnew System::Windows::Forms::SplitContainer());
-			   this->bNextPhoto = (gcnew System::Windows::Forms::Button());
-			   this->bPreviousPhoto = (gcnew System::Windows::Forms::Button());
+			   this->bNextPicture = (gcnew System::Windows::Forms::Button());
+			   this->bPreviousPicture = (gcnew System::Windows::Forms::Button());
 			   (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->SplitContainer))->BeginInit();
 			   this->SplitContainer->Panel1->SuspendLayout();
 			   this->SplitContainer->Panel2->SuspendLayout();
@@ -128,8 +140,8 @@ namespace PhotoViewer
 			   // 
 			   // SplitContainer2.Panel1
 			   // 
-			   this->SplitContainer2->Panel1->Controls->Add(this->bNextPhoto);
-			   this->SplitContainer2->Panel1->Controls->Add(this->bPreviousPhoto);
+			   this->SplitContainer2->Panel1->Controls->Add(this->bNextPicture);
+			   this->SplitContainer2->Panel1->Controls->Add(this->bPreviousPicture);
 			   this->SplitContainer2->Panel2Collapsed = true;
 			   this->SplitContainer2->Size = System::Drawing::Size(449, 46);
 			   this->SplitContainer2->SplitterDistance = 28;
@@ -137,29 +149,29 @@ namespace PhotoViewer
 			   this->SplitContainer2->TabIndex = 0;
 			   this->SplitContainer2->TabStop = false;
 			   // 
-			   // bNextPhoto
+			   // bNextPicture
 			   // 
-			   this->bNextPhoto->Anchor = System::Windows::Forms::AnchorStyles::None;
-			   this->bNextPhoto->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
-			   this->bNextPhoto->Location = System::Drawing::Point(230, 17);
-			   this->bNextPhoto->Name = L"bNextPhoto";
-			   this->bNextPhoto->Size = System::Drawing::Size(75, 23);
-			   this->bNextPhoto->TabIndex = 1;
-			   this->bNextPhoto->Text = L">";
-			   this->bNextPhoto->UseVisualStyleBackColor = true;
-			   this->bNextPhoto->Click += gcnew System::EventHandler(this, &MainForm::bNextPhoto_Click);
+			   this->bNextPicture->Anchor = System::Windows::Forms::AnchorStyles::None;
+			   this->bNextPicture->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
+			   this->bNextPicture->Location = System::Drawing::Point(230, 17);
+			   this->bNextPicture->Name = L"bNextPicture";
+			   this->bNextPicture->Size = System::Drawing::Size(75, 23);
+			   this->bNextPicture->TabIndex = 1;
+			   this->bNextPicture->Text = L">";
+			   this->bNextPicture->UseVisualStyleBackColor = true;
+			   this->bNextPicture->Click += gcnew System::EventHandler(this, &MainForm::bNextPicture_Click);
 			   // 
-			   // bPreviousPhoto
+			   // bPreviousPicture
 			   // 
-			   this->bPreviousPhoto->Anchor = System::Windows::Forms::AnchorStyles::None;
-			   this->bPreviousPhoto->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
-			   this->bPreviousPhoto->Location = System::Drawing::Point(118, 17);
-			   this->bPreviousPhoto->Name = L"bPreviousPhoto";
-			   this->bPreviousPhoto->Size = System::Drawing::Size(75, 23);
-			   this->bPreviousPhoto->TabIndex = 1;
-			   this->bPreviousPhoto->Text = L"<";
-			   this->bPreviousPhoto->UseVisualStyleBackColor = true;
-			   this->bPreviousPhoto->Click += gcnew System::EventHandler(this, &MainForm::bPreviousPhoto_Click);
+			   this->bPreviousPicture->Anchor = System::Windows::Forms::AnchorStyles::None;
+			   this->bPreviousPicture->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
+			   this->bPreviousPicture->Location = System::Drawing::Point(118, 17);
+			   this->bPreviousPicture->Name = L"bPreviousPicture";
+			   this->bPreviousPicture->Size = System::Drawing::Size(75, 23);
+			   this->bPreviousPicture->TabIndex = 1;
+			   this->bPreviousPicture->Text = L"<";
+			   this->bPreviousPicture->UseVisualStyleBackColor = true;
+			   this->bPreviousPicture->Click += gcnew System::EventHandler(this, &MainForm::bPreviousPicture_Click);
 			   // 
 			   // MainForm
 			   // 

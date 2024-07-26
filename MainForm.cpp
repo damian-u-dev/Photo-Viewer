@@ -34,7 +34,7 @@ void PhotoViewer::MainForm::SortFiles()
 			Pictures.Add(AllFiles[i]);
 		}
 	}
-
+	IndexLastPicture = Pictures.Count - 1;
 }
 
 void PhotoViewer::MainForm::FindOutIndexCurrentPicture()
@@ -74,4 +74,28 @@ void PhotoViewer::MainForm::MainForm_KeyDown(System::Object^ sender, System::Win
 	{
 		CopyCurrentPictureToolStripMenuItem_Click(sender, e);
 	}
+}
+
+void PhotoViewer::MainForm::SwitchPicture(const int lastOrFirstPicture, const int initializeValue, const int addValue)
+{
+	if (IndexCurrentPicture == lastOrFirstPicture)
+	{
+		IndexCurrentPicture = initializeValue;
+	}
+	else
+	{
+		IndexCurrentPicture = addValue;
+	}
+
+	PictureBox->Image = Image::FromFile(Pictures[IndexCurrentPicture]->ToString());
+}
+
+void PhotoViewer::MainForm::bNextPicture_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	SwitchPicture(IndexLastPicture, INDEX_FIRST_PICTURE, IndexCurrentPicture + 1);
+}
+
+System::Void PhotoViewer::MainForm::bPreviousPicture_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	SwitchPicture(INDEX_FIRST_PICTURE, IndexLastPicture, IndexCurrentPicture - 1);
 }
