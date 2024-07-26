@@ -48,3 +48,8 @@ PhotoViewer::MainForm::~MainForm()
 		delete components;
 	}
 }
+
+void PhotoViewer::MainForm::CopyCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	Clipboard::SetImage(PictureBox->Image);
+}
