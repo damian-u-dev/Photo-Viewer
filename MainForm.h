@@ -17,9 +17,11 @@ namespace PhotoViewer
 		array<String^>^ GetFilesCurrentDirectory(String^ directory);
 		bool IsCorrectExtension(String^ extension);
 		void SortFiles();
+		void FindOutIndexCurrentPicture();
 		void SettingUpPictureBox();
 
 		ArrayList Pictures;
+		int IndexCurrentPicture = 0;
 
 
 	protected:
@@ -145,6 +147,7 @@ namespace PhotoViewer
 			   this->bNextPhoto->TabIndex = 1;
 			   this->bNextPhoto->Text = L">";
 			   this->bNextPhoto->UseVisualStyleBackColor = true;
+			   this->bNextPhoto->Click += gcnew System::EventHandler(this, &MainForm::bNextPhoto_Click);
 			   // 
 			   // bPreviousPhoto
 			   // 
@@ -156,6 +159,7 @@ namespace PhotoViewer
 			   this->bPreviousPhoto->TabIndex = 1;
 			   this->bPreviousPhoto->Text = L"<";
 			   this->bPreviousPhoto->UseVisualStyleBackColor = true;
+			   this->bPreviousPhoto->Click += gcnew System::EventHandler(this, &MainForm::bPreviousPhoto_Click);
 			   // 
 			   // MainForm
 			   // 
@@ -185,6 +189,5 @@ namespace PhotoViewer
 
 		   }
 #pragma endregion
-
 	};
 }

@@ -8,6 +8,7 @@ PhotoViewer::MainForm::MainForm()
 {
 	InitializeComponent();
 	SortFiles();
+	FindOutIndexCurrentPicture();
 	SettingUpPictureBox();
 }
 
@@ -36,9 +37,22 @@ void PhotoViewer::MainForm::SortFiles()
 
 }
 
+void PhotoViewer::MainForm::FindOutIndexCurrentPicture()
+{
+	for (int i = 0; i < Pictures.Count; i++)
+	{
+		//TODO: Change place holder
+		if (Pictures[i]->Equals("D:\\Photos\\elliesnewbbg_1705251529_7323999466669755694_index_0_12.jpeg"))
+		{
+			IndexCurrentPicture = i;
+			break;
+		}
+	}
+}
+
 void PhotoViewer::MainForm::SettingUpPictureBox()
 {
-	PictureBox->Image = Image::FromFile(Pictures[0]->ToString());
+	PictureBox->Image = Image::FromFile(Pictures[IndexCurrentPicture]->ToString());
 }
 
 PhotoViewer::MainForm::~MainForm()
