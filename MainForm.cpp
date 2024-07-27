@@ -157,6 +157,7 @@ void PhotoViewer::MainForm::SaveLastWindowState()
 PhotoViewer::MainForm::~MainForm()
 {
 	SaveSettingsForm();
+	SaveFavoritePicturesPaths();
 	if (components)
 	{
 		delete components;
@@ -235,7 +236,7 @@ void PhotoViewer::MainForm::CopyNameOfCurrentPictureToolStripMenuItem_Click(Syst
 
 bool PhotoViewer::MainForm::IsOnePictureInArray()
 {
-	if (ViewMode == PhotoViewMode::FromDirectory)
+	if (ViewMode == PictureViewMode::FromDirectory)
 	{
 		return Pictures.Count == 1;
 	}
@@ -250,11 +251,22 @@ void PhotoViewer::MainForm::SetUpButtons()
 		bNextPicture->Visible = false;
 		bPreviousPicture->Visible = false;
 	}
+	else
+	{
+		OnePictureInCurrentArray = false;
+		bNextPicture->Visible = true;
+		bPreviousPicture->Visible = true;
+	}
+}
+
+void PhotoViewer::MainForm::SaveFavoritePicturesPaths()
+{
+	//PLACE HOLDER
 }
 
 void PhotoViewer::MainForm::SavePictureLikeFavoriteToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 {
-	if(ViewMode == PhotoViewMode::FromDirectory)
+	if(ViewMode == PictureViewMode::FromDirectory)
 	{
 		if (!IsThisPictureFavorite(Pictures[IndexCurrentPicture]->ToString()))
 		{
@@ -284,8 +296,8 @@ void PhotoViewer::MainForm::SwitchToFavoritePicturesToolStripMenuItem_Click(Syst
 {
 	if(FavoritePictures.Count > 0)
 	{
-		ViewMode = PhotoViewMode::FromFavoritePictures;
-
+		ViewMode = PictureViewMode::FromFavoritePictures;
+		removePictureFromFavoriteToolStripMenuItem->Visible = true;
 
 		SetUpButtons();
 		PictureBox->Image = Image::FromFile(FavoritePictures[IndexFavoritePicture]->ToString());
@@ -293,5 +305,19 @@ void PhotoViewer::MainForm::SwitchToFavoritePicturesToolStripMenuItem_Click(Syst
 	else
 	{
 		MessageBox::Show("You don't have any favorite pictures.", "Favorite Pictures");
+	}
+}
+
+System::Void PhotoViewer::MainForm::RemovePictureFromFavoriteToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	if (IsOnePictureInArray())
+	{
+		SetUpButtons();
+		FavoritePictures.RemoveAt(0);
+
+		ViewMode = PictureViewMode::FromDirectory;
+		
+		PictureBox->Image = Image::FromFile(Pictures[IndexCurrentPicture]->ToString());
+		SetUpButtons();
 	}
 }

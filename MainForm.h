@@ -12,7 +12,7 @@ namespace PhotoViewer
 	public ref class MainForm : public System::Windows::Forms::Form
 	{
 	private:
-		enum class PhotoViewMode
+		enum class PictureViewMode
 		{
 			FromDirectory,
 			FromFavoritePictures
@@ -37,14 +37,12 @@ namespace PhotoViewer
 		String^ PATH_LAST_WINDOW_SIZE = R"(D:\Settings\LastWindowSize.txt)";
 		String^ PATH_LAST_WINDOW_LOCATION = R"(D:\Settings\LastWindowLocation.txt)";
 		String^ PATH_LAST_WINDOW_STATE = R"(D:\Settings\LastWindowState.txt)";
-	private: System::Windows::Forms::ToolStripMenuItem^ favoritePicturesToolStripMenuItem;
-	public:
-	private: System::Windows::Forms::ToolStripMenuItem^ savePictureLikeFavoriteToolStripMenuItem;
+		String^ PATH_FAVORITE_PICTURES = R"(D:\Settings\FavoritePictures.txt)";
 
 
+		PictureViewMode ViewMode = PictureViewMode::FromDirectory;
+	private: System::Windows::Forms::ToolStripMenuItem^ removePictureFromFavoriteToolStripMenuItem;
 	public:
-		PhotoViewMode ViewMode = PhotoViewMode::FromDirectory;
-	private: System::Windows::Forms::ToolStripMenuItem^ switchToFavoritePicturesToolStripMenuItem;
 	public:
 
 	public:
@@ -84,7 +82,7 @@ namespace PhotoViewer
 	private: void CopyNameOfCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 	bool IsOnePictureInArray();
 	void SetUpButtons();
-	
+	void SaveFavoritePicturesPaths();
 	
 	
 	
@@ -100,7 +98,9 @@ namespace PhotoViewer
 	private: System::Windows::Forms::ToolStripMenuItem^ CopyCurrentPictureToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ openDirectoryCurrentPictureToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ copyNameOfCurrentPictureToolStripMenuItem;
-
+	private: System::Windows::Forms::ToolStripMenuItem^ favoritePicturesToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ savePictureLikeFavoriteToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ switchToFavoritePicturesToolStripMenuItem;
 
 #pragma region Windows Form Designer generated code
 		   void InitializeComponent(void)
@@ -115,6 +115,7 @@ namespace PhotoViewer
 			   this->favoritePicturesToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->savePictureLikeFavoriteToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->switchToFavoritePicturesToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			   this->removePictureFromFavoriteToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->SplitContainer2 = (gcnew System::Windows::Forms::SplitContainer());
 			   this->bNextPicture = (gcnew System::Windows::Forms::Button());
 			   this->bPreviousPicture = (gcnew System::Windows::Forms::Button());
@@ -209,9 +210,9 @@ namespace PhotoViewer
 			   // 
 			   // favoritePicturesToolStripMenuItem
 			   // 
-			   this->favoritePicturesToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {
+			   this->favoritePicturesToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(3) {
 				   this->savePictureLikeFavoriteToolStripMenuItem,
-					   this->switchToFavoritePicturesToolStripMenuItem
+					   this->switchToFavoritePicturesToolStripMenuItem, this->removePictureFromFavoriteToolStripMenuItem
 			   });
 			   this->favoritePicturesToolStripMenuItem->Name = L"favoritePicturesToolStripMenuItem";
 			   this->favoritePicturesToolStripMenuItem->Size = System::Drawing::Size(106, 20);
@@ -220,16 +221,24 @@ namespace PhotoViewer
 			   // savePictureLikeFavoriteToolStripMenuItem
 			   // 
 			   this->savePictureLikeFavoriteToolStripMenuItem->Name = L"savePictureLikeFavoriteToolStripMenuItem";
-			   this->savePictureLikeFavoriteToolStripMenuItem->Size = System::Drawing::Size(211, 22);
+			   this->savePictureLikeFavoriteToolStripMenuItem->Size = System::Drawing::Size(229, 22);
 			   this->savePictureLikeFavoriteToolStripMenuItem->Text = L"Save picture like favorite";
 			   this->savePictureLikeFavoriteToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::SavePictureLikeFavoriteToolStripMenuItem_Click);
 			   // 
 			   // switchToFavoritePicturesToolStripMenuItem
 			   // 
 			   this->switchToFavoritePicturesToolStripMenuItem->Name = L"switchToFavoritePicturesToolStripMenuItem";
-			   this->switchToFavoritePicturesToolStripMenuItem->Size = System::Drawing::Size(211, 22);
+			   this->switchToFavoritePicturesToolStripMenuItem->Size = System::Drawing::Size(229, 22);
 			   this->switchToFavoritePicturesToolStripMenuItem->Text = L"Switch to favorite pictures";
 			   this->switchToFavoritePicturesToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::SwitchToFavoritePicturesToolStripMenuItem_Click);
+			   // 
+			   // removePictureFromFavoriteToolStripMenuItem
+			   // 
+			   this->removePictureFromFavoriteToolStripMenuItem->Name = L"removePictureFromFavoriteToolStripMenuItem";
+			   this->removePictureFromFavoriteToolStripMenuItem->Size = System::Drawing::Size(229, 22);
+			   this->removePictureFromFavoriteToolStripMenuItem->Text = L"Remove picture from favorite";
+			   this->removePictureFromFavoriteToolStripMenuItem->Visible = false;
+			   this->removePictureFromFavoriteToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::RemovePictureFromFavoriteToolStripMenuItem_Click);
 			   // 
 			   // SplitContainer2
 			   // 
@@ -304,5 +313,6 @@ namespace PhotoViewer
 private: void SavePictureLikeFavoriteToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 	   bool IsThisPictureFavorite(String^ CurrentPicture);
 	private: void SwitchToFavoritePicturesToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+private: System::Void RemovePictureFromFavoriteToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 };
 }
