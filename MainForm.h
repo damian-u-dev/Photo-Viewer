@@ -22,6 +22,10 @@ namespace PhotoViewer
 		String^ PATH_LAST_WINDOW_STATE = R"(D:\Settings\LastWindowState.txt)";
 		
 		int IndexCurrentPicture = 0;
+	private: System::Windows::Forms::ToolStripMenuItem^ openDirectoryCurrentPictureToolStripMenuItem;
+	public:
+
+	public:
 		int IndexLastPicture;
 		
 		MainForm(String^ directoryToFirstPhoto);
@@ -52,6 +56,7 @@ namespace PhotoViewer
 	private: void bNextPicture_Click(System::Object^ sender, System::EventArgs^ e);
 	private: void bPreviousPicture_Click(System::Object^ sender, System::EventArgs^ e);
 
+	private: void OpenDirectoryCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 
 	
 	
@@ -77,6 +82,7 @@ namespace PhotoViewer
 			   this->menuStrip1 = (gcnew System::Windows::Forms::MenuStrip());
 			   this->FileToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->CopyCurrentPictureToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			   this->openDirectoryCurrentPictureToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->SplitContainer2 = (gcnew System::Windows::Forms::SplitContainer());
 			   this->bNextPicture = (gcnew System::Windows::Forms::Button());
 			   this->bPreviousPicture = (gcnew System::Windows::Forms::Button());
@@ -132,7 +138,10 @@ namespace PhotoViewer
 			   // 
 			   // FileToolStripMenuItem
 			   // 
-			   this->FileToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->CopyCurrentPictureToolStripMenuItem });
+			   this->FileToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {
+				   this->CopyCurrentPictureToolStripMenuItem,
+					   this->openDirectoryCurrentPictureToolStripMenuItem
+			   });
 			   this->FileToolStripMenuItem->Name = L"FileToolStripMenuItem";
 			   this->FileToolStripMenuItem->Size = System::Drawing::Size(37, 20);
 			   this->FileToolStripMenuItem->Text = L"File";
@@ -142,9 +151,16 @@ namespace PhotoViewer
 			   this->CopyCurrentPictureToolStripMenuItem->Name = L"CopyCurrentPictureToolStripMenuItem";
 			   this->CopyCurrentPictureToolStripMenuItem->ShortcutKeyDisplayString = L"Ctrl + C";
 			   this->CopyCurrentPictureToolStripMenuItem->ShortcutKeys = static_cast<System::Windows::Forms::Keys>((System::Windows::Forms::Keys::Control | System::Windows::Forms::Keys::C));
-			   this->CopyCurrentPictureToolStripMenuItem->Size = System::Drawing::Size(231, 22);
+			   this->CopyCurrentPictureToolStripMenuItem->Size = System::Drawing::Size(234, 22);
 			   this->CopyCurrentPictureToolStripMenuItem->Text = L"Copy current picture";
 			   this->CopyCurrentPictureToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::CopyCurrentPictureToolStripMenuItem_Click);
+			   // 
+			   // openDirectoryCurrentPictureToolStripMenuItem
+			   // 
+			   this->openDirectoryCurrentPictureToolStripMenuItem->Name = L"openDirectoryCurrentPictureToolStripMenuItem";
+			   this->openDirectoryCurrentPictureToolStripMenuItem->Size = System::Drawing::Size(234, 22);
+			   this->openDirectoryCurrentPictureToolStripMenuItem->Text = L"Open directory current picture";
+			   this->openDirectoryCurrentPictureToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::OpenDirectoryCurrentPictureToolStripMenuItem_Click);
 			   // 
 			   // SplitContainer2
 			   // 
@@ -216,5 +232,5 @@ namespace PhotoViewer
 
 		   }
 #pragma endregion
-	};
+};
 }

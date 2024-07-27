@@ -1,4 +1,7 @@
 #include "MainForm.h"
+#include <stdlib.h>
+#include <memory>
+
 
 using namespace System::IO;
 using namespace System::Collections::Generic;
@@ -191,4 +194,22 @@ void PhotoViewer::MainForm::bNextPicture_Click(System::Object^ sender, System::E
 void PhotoViewer::MainForm::bPreviousPicture_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	SwitchPicture(INDEX_FIRST_PICTURE, IndexLastPicture, IndexCurrentPicture - 1);
+}
+
+void PhotoViewer::MainForm::OpenDirectoryCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	String^ PathToExplorer = "\"C:\\Windows\\explorer.exe ";
+	String^ CurrentDirectory = Path::GetDirectoryName(Pictures[IndexCurrentPicture]->ToString());
+
+	array<wchar_t>^ FullPath = (PathToExplorer + CurrentDirectory)->ToCharArray();
+
+	std::unique_ptr<char[]> Array(new char[FullPath->Length + 1] {});
+
+	for (int i = 0; i < FullPath->Length; i++)
+	{
+		Array[i] = static_cast<char>(FullPath[i]);
+	}
+	Array[FullPath->Length] = '\0';
+
+	system(Array.get());
 }
