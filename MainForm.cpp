@@ -183,31 +183,55 @@ void PhotoViewer::MainForm::MainForm_KeyDown(System::Object^ sender, System::Win
 
 void PhotoViewer::MainForm::SwitchPicture(const int lastOrFirstPicture, const int initializeValue, const int addValue)
 {
-	if (IndexCurrentPicture == lastOrFirstPicture)
+	if(ViewMode == PictureViewMode::FromDirectory)
 	{
-		IndexCurrentPicture = initializeValue;
+		if (IndexCurrentPicture == lastOrFirstPicture)
+		{
+			IndexCurrentPicture = initializeValue;
+		}
+		else
+		{
+			IndexCurrentPicture = addValue;
+		}
+
+		PictureBox->Image = Image::FromFile(Pictures[IndexCurrentPicture]->ToString());
 	}
 	else
 	{
-		IndexCurrentPicture = addValue;
-	}
+		if (IndexFavoritePicture == lastOrFirstPicture)
+		{
+			IndexFavoritePicture = initializeValue;
+		}
+		else
+		{
+			IndexFavoritePicture = addValue;
+		}
 
-	PictureBox->Image = Image::FromFile(Pictures[IndexCurrentPicture]->ToString());
+		PictureBox->Image = Image::FromFile(FavoritePictures[IndexFavoritePicture]->ToString());
+	}
 }
 
 void PhotoViewer::MainForm::bNextPicture_Click(System::Object^ sender, System::EventArgs^ e)
 {
-	if(!OnePictureInCurrentArray)
+	if(ViewMode == PictureViewMode::FromDirectory)
 	{
 		SwitchPicture(IndexLastPicture, INDEX_FIRST_PICTURE, IndexCurrentPicture + 1);
+	}
+	else
+	{
+		SwitchPicture(FavoritePictures.Count - 1, INDEX_FIRST_PICTURE, IndexFavoritePicture + 1);
 	}
 }
 
 void PhotoViewer::MainForm::bPreviousPicture_Click(System::Object^ sender, System::EventArgs^ e)
 {
-	if (!OnePictureInCurrentArray)
+	if (ViewMode == PictureViewMode::FromDirectory)
 	{
 		SwitchPicture(INDEX_FIRST_PICTURE, IndexLastPicture, IndexCurrentPicture - 1);
+	}
+	else
+	{
+		SwitchPicture(INDEX_FIRST_PICTURE, FavoritePictures.Count - 1, IndexFavoritePicture - 1);
 	}
 }
 
