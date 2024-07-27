@@ -209,3 +209,8 @@ void PhotoViewer::MainForm::OpenDirectoryCurrentPictureToolStripMenuItem_Click(S
 
 	system(Array.get());
 }
+
+void PhotoViewer::MainForm::CopyNameOfCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	Clipboard::SetText(Path::GetFileNameWithoutExtension(Pictures[IndexCurrentPicture]->ToString()));
+}

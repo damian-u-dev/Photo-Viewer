@@ -22,10 +22,6 @@ namespace PhotoViewer
 		String^ PATH_LAST_WINDOW_STATE = R"(D:\Settings\LastWindowState.txt)";
 		
 		int IndexCurrentPicture = 0;
-	private: System::Windows::Forms::ToolStripMenuItem^ openDirectoryCurrentPictureToolStripMenuItem;
-	public:
-
-	public:
 		int IndexLastPicture;
 		
 		MainForm(String^ directoryToFirstPhoto);
@@ -57,6 +53,7 @@ namespace PhotoViewer
 	private: void bPreviousPicture_Click(System::Object^ sender, System::EventArgs^ e);
 
 	private: void OpenDirectoryCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+	private: void CopyNameOfCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 
 	
 	
@@ -72,6 +69,8 @@ namespace PhotoViewer
 	private: System::Windows::Forms::MenuStrip^ menuStrip1;
 	private: System::Windows::Forms::ToolStripMenuItem^ FileToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ CopyCurrentPictureToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ openDirectoryCurrentPictureToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ copyNameOfCurrentPictureToolStripMenuItem;
 
 
 #pragma region Windows Form Designer generated code
@@ -83,6 +82,7 @@ namespace PhotoViewer
 			   this->FileToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->CopyCurrentPictureToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->openDirectoryCurrentPictureToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			   this->copyNameOfCurrentPictureToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->SplitContainer2 = (gcnew System::Windows::Forms::SplitContainer());
 			   this->bNextPicture = (gcnew System::Windows::Forms::Button());
 			   this->bPreviousPicture = (gcnew System::Windows::Forms::Button());
@@ -138,9 +138,9 @@ namespace PhotoViewer
 			   // 
 			   // FileToolStripMenuItem
 			   // 
-			   this->FileToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {
+			   this->FileToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(3) {
 				   this->CopyCurrentPictureToolStripMenuItem,
-					   this->openDirectoryCurrentPictureToolStripMenuItem
+					   this->openDirectoryCurrentPictureToolStripMenuItem, this->copyNameOfCurrentPictureToolStripMenuItem
 			   });
 			   this->FileToolStripMenuItem->Name = L"FileToolStripMenuItem";
 			   this->FileToolStripMenuItem->Size = System::Drawing::Size(37, 20);
@@ -163,6 +163,14 @@ namespace PhotoViewer
 			   this->openDirectoryCurrentPictureToolStripMenuItem->Size = System::Drawing::Size(318, 22);
 			   this->openDirectoryCurrentPictureToolStripMenuItem->Text = L"Open directory current picture";
 			   this->openDirectoryCurrentPictureToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::OpenDirectoryCurrentPictureToolStripMenuItem_Click);
+			   // 
+			   // copyNameOfCurrentPictureToolStripMenuItem
+			   // 
+			   this->copyNameOfCurrentPictureToolStripMenuItem->Name = L"copyNameOfCurrentPictureToolStripMenuItem";
+			   this->copyNameOfCurrentPictureToolStripMenuItem->ShortcutKeys = static_cast<System::Windows::Forms::Keys>((System::Windows::Forms::Keys::Control | System::Windows::Forms::Keys::N));
+			   this->copyNameOfCurrentPictureToolStripMenuItem->Size = System::Drawing::Size(318, 22);
+			   this->copyNameOfCurrentPictureToolStripMenuItem->Text = L"Copy name of current picture";
+			   this->copyNameOfCurrentPictureToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::CopyNameOfCurrentPictureToolStripMenuItem_Click);
 			   // 
 			   // SplitContainer2
 			   // 
