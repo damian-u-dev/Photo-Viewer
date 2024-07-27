@@ -294,6 +294,56 @@ void PhotoViewer::MainForm::ShowToolMenuForFavoriteMode(bool Value)
 	exitFromFavoriteModeToolStripMenuItem->Visible = Value;
 }
 
+void PhotoViewer::MainForm::SetColorForm(Color BackColor, Color ForeColor,Color ColorMenuStrip)
+{
+	this->BackColor = BackColor;
+
+	this->bNextPicture->BackColor = BackColor;
+	this->bPreviousPicture->BackColor = BackColor;
+	this->menuStrip1->BackColor = ColorMenuStrip;
+
+	//FileToolStrip
+	CopyCurrentPictureToolStripMenuItem->BackColor = BackColor;
+	CopyCurrentPictureToolStripMenuItem->ForeColor = ForeColor;
+
+	openDirectoryCurrentPictureToolStripMenuItem->BackColor = BackColor;
+	openDirectoryCurrentPictureToolStripMenuItem->ForeColor = ForeColor;
+
+	copyNameOfCurrentPictureToolStripMenuItem->BackColor = BackColor;
+	copyNameOfCurrentPictureToolStripMenuItem->ForeColor = ForeColor;
+
+	//FavoritePicture toolstrip
+	savePictureLikeFavoriteToolStripMenuItem->BackColor = BackColor;
+	savePictureLikeFavoriteToolStripMenuItem->ForeColor = ForeColor;
+
+	switchToFavoritePicturesToolStripMenuItem->BackColor = BackColor;
+	switchToFavoritePicturesToolStripMenuItem->ForeColor = ForeColor;
+	
+	removePictureFromFavoriteToolStripMenuItem->BackColor = BackColor;
+	removePictureFromFavoriteToolStripMenuItem->ForeColor = ForeColor;
+
+	exitFromFavoriteModeToolStripMenuItem->BackColor = BackColor;
+	exitFromFavoriteModeToolStripMenuItem->ForeColor = ForeColor;
+
+	//Settings Tool Strip
+	themeToolStripMenuItem->BackColor = BackColor;
+	themeToolStripMenuItem->ForeColor = ForeColor;
+
+	lightToolStripMenuItem->BackColor = BackColor;
+	lightToolStripMenuItem->ForeColor = ForeColor;
+
+	darkToolStripMenuItem->BackColor = BackColor;
+	darkToolStripMenuItem->ForeColor = ForeColor;
+
+	//TooStripMenu
+	FileToolStripMenuItem->ForeColor = ForeColor;
+	favoritePicturesToolStripMenuItem->ForeColor = ForeColor;
+	settingsToolStripMenuItem->ForeColor = ForeColor;
+
+	this->bNextPicture->ForeColor = ForeColor;
+	this->bPreviousPicture->ForeColor = ForeColor;
+}
+
 void PhotoViewer::MainForm::SavePictureLikeFavoriteToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	if (ViewMode == PictureViewMode::FromDirectory)
@@ -375,4 +425,23 @@ System::Void PhotoViewer::MainForm::ExitFromFavoriteModeToolStripMenuItem_Click(
 	ShowToolMenuForFavoriteMode(false);
 
 	SetUpButtons();
+}
+
+void PhotoViewer::MainForm::DarkToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	lightToolStripMenuItem->Checked = false;
+	darkToolStripMenuItem->Checked = true;
+
+	SetColorForm(Color::DimGray, Color::White,Color::DimGray);
+}
+
+void PhotoViewer::MainForm::lightToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	lightToolStripMenuItem->Checked = true;
+	darkToolStripMenuItem->Checked = false;
+
+	Color DefaultBackColorForm = Color::FromArgb(255, 240, 240, 240);
+	Color DefaultForeColorForm = Color::FromArgb(255,0,0,0);
+	
+	SetColorForm(DefaultBackColorForm, DefaultForeColorForm, Color::WhiteSmoke);
 }

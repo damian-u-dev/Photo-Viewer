@@ -41,10 +41,7 @@ namespace PhotoViewer
 
 
 		PictureViewMode ViewMode = PictureViewMode::FromDirectory;
-	private: System::Windows::Forms::ToolStripMenuItem^ removePictureFromFavoriteToolStripMenuItem;
-	private: System::Windows::Forms::ToolStripMenuItem^ exitFromFavoriteModeToolStripMenuItem;
-	public:
-	public:
+
 
 	public:
 
@@ -85,6 +82,7 @@ namespace PhotoViewer
 	void SetUpButtons();
 	void SaveFavoritePicturesPaths();
 	void ShowToolMenuForFavoriteMode(bool Value);
+	void SetColorForm(Color BackColor,Color ForeColor, Color ColorMenuStrip);
 	
 	
 	
@@ -102,6 +100,12 @@ namespace PhotoViewer
 	private: System::Windows::Forms::ToolStripMenuItem^ favoritePicturesToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ savePictureLikeFavoriteToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ switchToFavoritePicturesToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ removePictureFromFavoriteToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ exitFromFavoriteModeToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ settingsToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ themeToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ lightToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ darkToolStripMenuItem;
 
 #pragma region Windows Form Designer generated code
 		   void InitializeComponent(void)
@@ -118,6 +122,10 @@ namespace PhotoViewer
 			   this->switchToFavoritePicturesToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->removePictureFromFavoriteToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->exitFromFavoriteModeToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			   this->settingsToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			   this->themeToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			   this->lightToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			   this->darkToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->SplitContainer2 = (gcnew System::Windows::Forms::SplitContainer());
 			   this->bNextPicture = (gcnew System::Windows::Forms::Button());
 			   this->bPreviousPicture = (gcnew System::Windows::Forms::Button());
@@ -164,9 +172,9 @@ namespace PhotoViewer
 			   // 
 			   // menuStrip1
 			   // 
-			   this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {
+			   this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(3) {
 				   this->FileToolStripMenuItem,
-					   this->favoritePicturesToolStripMenuItem
+					   this->favoritePicturesToolStripMenuItem, this->settingsToolStripMenuItem
 			   });
 			   this->menuStrip1->Location = System::Drawing::Point(0, 0);
 			   this->menuStrip1->Name = L"menuStrip1";
@@ -224,7 +232,7 @@ namespace PhotoViewer
 			   // 
 			   this->savePictureLikeFavoriteToolStripMenuItem->Name = L"savePictureLikeFavoriteToolStripMenuItem";
 			   this->savePictureLikeFavoriteToolStripMenuItem->ShortcutKeys = static_cast<System::Windows::Forms::Keys>((System::Windows::Forms::Keys::Control | System::Windows::Forms::Keys::S));
-			   this->savePictureLikeFavoriteToolStripMenuItem->Size = System::Drawing::Size(253, 22);
+			   this->savePictureLikeFavoriteToolStripMenuItem->Size = System::Drawing::Size(269, 22);
 			   this->savePictureLikeFavoriteToolStripMenuItem->Text = L"Save picture like favorite";
 			   this->savePictureLikeFavoriteToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::SavePictureLikeFavoriteToolStripMenuItem_Click);
 			   // 
@@ -232,15 +240,15 @@ namespace PhotoViewer
 			   // 
 			   this->switchToFavoritePicturesToolStripMenuItem->Name = L"switchToFavoritePicturesToolStripMenuItem";
 			   this->switchToFavoritePicturesToolStripMenuItem->ShortcutKeys = static_cast<System::Windows::Forms::Keys>((System::Windows::Forms::Keys::Control | System::Windows::Forms::Keys::F));
-			   this->switchToFavoritePicturesToolStripMenuItem->Size = System::Drawing::Size(253, 22);
+			   this->switchToFavoritePicturesToolStripMenuItem->Size = System::Drawing::Size(269, 22);
 			   this->switchToFavoritePicturesToolStripMenuItem->Text = L"Switch to favorite pictures";
 			   this->switchToFavoritePicturesToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::SwitchToFavoritePicturesToolStripMenuItem_Click);
 			   // 
 			   // removePictureFromFavoriteToolStripMenuItem
 			   // 
 			   this->removePictureFromFavoriteToolStripMenuItem->Name = L"removePictureFromFavoriteToolStripMenuItem";
-			   this->removePictureFromFavoriteToolStripMenuItem->ShortcutKeys = System::Windows::Forms::Keys::Delete;
-			   this->removePictureFromFavoriteToolStripMenuItem->Size = System::Drawing::Size(253, 22);
+			   this->removePictureFromFavoriteToolStripMenuItem->ShortcutKeyDisplayString = L"";
+			   this->removePictureFromFavoriteToolStripMenuItem->Size = System::Drawing::Size(251, 22);
 			   this->removePictureFromFavoriteToolStripMenuItem->Text = L"Remove picture from favorite";
 			   this->removePictureFromFavoriteToolStripMenuItem->Visible = false;
 			   this->removePictureFromFavoriteToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::RemovePictureFromFavoriteToolStripMenuItem_Click);
@@ -248,10 +256,43 @@ namespace PhotoViewer
 			   // exitFromFavoriteModeToolStripMenuItem
 			   // 
 			   this->exitFromFavoriteModeToolStripMenuItem->Name = L"exitFromFavoriteModeToolStripMenuItem";
-			   this->exitFromFavoriteModeToolStripMenuItem->Size = System::Drawing::Size(253, 22);
+			   this->exitFromFavoriteModeToolStripMenuItem->Size = System::Drawing::Size(269, 22);
 			   this->exitFromFavoriteModeToolStripMenuItem->Text = L"Exit from favorite mode";
 			   this->exitFromFavoriteModeToolStripMenuItem->Visible = false;
 			   this->exitFromFavoriteModeToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::ExitFromFavoriteModeToolStripMenuItem_Click);
+			   // 
+			   // settingsToolStripMenuItem
+			   // 
+			   this->settingsToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->themeToolStripMenuItem });
+			   this->settingsToolStripMenuItem->Name = L"settingsToolStripMenuItem";
+			   this->settingsToolStripMenuItem->Size = System::Drawing::Size(61, 20);
+			   this->settingsToolStripMenuItem->Text = L"Settings";
+			   // 
+			   // themeToolStripMenuItem
+			   // 
+			   this->themeToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {
+				   this->lightToolStripMenuItem,
+					   this->darkToolStripMenuItem
+			   });
+			   this->themeToolStripMenuItem->Name = L"themeToolStripMenuItem";
+			   this->themeToolStripMenuItem->Size = System::Drawing::Size(110, 22);
+			   this->themeToolStripMenuItem->Text = L"Theme";
+			   // 
+			   // lightToolStripMenuItem
+			   // 
+			   this->lightToolStripMenuItem->Checked = true;
+			   this->lightToolStripMenuItem->CheckState = System::Windows::Forms::CheckState::Checked;
+			   this->lightToolStripMenuItem->Name = L"lightToolStripMenuItem";
+			   this->lightToolStripMenuItem->Size = System::Drawing::Size(101, 22);
+			   this->lightToolStripMenuItem->Text = L"Light";
+			   this->lightToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::lightToolStripMenuItem_Click);
+			   // 
+			   // darkToolStripMenuItem
+			   // 
+			   this->darkToolStripMenuItem->Name = L"darkToolStripMenuItem";
+			   this->darkToolStripMenuItem->Size = System::Drawing::Size(101, 22);
+			   this->darkToolStripMenuItem->Text = L"Dark";
+			   this->darkToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::DarkToolStripMenuItem_Click);
 			   // 
 			   // SplitContainer2
 			   // 
@@ -328,5 +369,7 @@ private: void SavePictureLikeFavoriteToolStripMenuItem_Click(System::Object^ sen
 	private: void SwitchToFavoritePicturesToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 private: System::Void RemovePictureFromFavoriteToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 private: System::Void ExitFromFavoriteModeToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+private: void DarkToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+private: void lightToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 };
 }
