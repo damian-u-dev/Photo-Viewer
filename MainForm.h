@@ -11,8 +11,21 @@ namespace PhotoViewer
 
 	public ref class MainForm : public System::Windows::Forms::Form
 	{
+	private:
+		enum class PhotoViewMode
+		{
+			FromDirectory,
+			FromFavoritePictures
+		};
+
+
+
 	public:
 		ArrayList Pictures;
+		ArrayList FavoritePictures;
+
+		int IndexCurrentPicture = 0;
+		int IndexFavoritePicture = 0;
 		
 		const int INDEX_FIRST_PICTURE = 0;
 		
@@ -20,8 +33,14 @@ namespace PhotoViewer
 		String^ PATH_LAST_WINDOW_SIZE = R"(D:\Settings\LastWindowSize.txt)";
 		String^ PATH_LAST_WINDOW_LOCATION = R"(D:\Settings\LastWindowLocation.txt)";
 		String^ PATH_LAST_WINDOW_STATE = R"(D:\Settings\LastWindowState.txt)";
-		
-		int IndexCurrentPicture = 0;
+	private: System::Windows::Forms::ToolStripMenuItem^ favoritePicturesToolStripMenuItem;
+	public:
+	private: System::Windows::Forms::ToolStripMenuItem^ savePictureLikeFavoriteToolStripMenuItem;
+
+
+	public:
+		PhotoViewMode ViewMode = PhotoViewMode::FromDirectory;
+
 		int IndexLastPicture;
 		
 		MainForm(String^ directoryToFirstPhoto);
@@ -83,6 +102,8 @@ namespace PhotoViewer
 			   this->CopyCurrentPictureToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->openDirectoryCurrentPictureToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->copyNameOfCurrentPictureToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			   this->favoritePicturesToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			   this->savePictureLikeFavoriteToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->SplitContainer2 = (gcnew System::Windows::Forms::SplitContainer());
 			   this->bNextPicture = (gcnew System::Windows::Forms::Button());
 			   this->bPreviousPicture = (gcnew System::Windows::Forms::Button());
@@ -129,7 +150,10 @@ namespace PhotoViewer
 			   // 
 			   // menuStrip1
 			   // 
-			   this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->FileToolStripMenuItem });
+			   this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {
+				   this->FileToolStripMenuItem,
+					   this->favoritePicturesToolStripMenuItem
+			   });
 			   this->menuStrip1->Location = System::Drawing::Point(0, 0);
 			   this->menuStrip1->Name = L"menuStrip1";
 			   this->menuStrip1->Size = System::Drawing::Size(324, 24);
@@ -171,6 +195,20 @@ namespace PhotoViewer
 			   this->copyNameOfCurrentPictureToolStripMenuItem->Size = System::Drawing::Size(318, 22);
 			   this->copyNameOfCurrentPictureToolStripMenuItem->Text = L"Copy name of current picture";
 			   this->copyNameOfCurrentPictureToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::CopyNameOfCurrentPictureToolStripMenuItem_Click);
+			   // 
+			   // favoritePicturesToolStripMenuItem
+			   // 
+			   this->favoritePicturesToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->savePictureLikeFavoriteToolStripMenuItem });
+			   this->favoritePicturesToolStripMenuItem->Name = L"favoritePicturesToolStripMenuItem";
+			   this->favoritePicturesToolStripMenuItem->Size = System::Drawing::Size(106, 20);
+			   this->favoritePicturesToolStripMenuItem->Text = L"Favorite Pictures";
+			   // 
+			   // savePictureLikeFavoriteToolStripMenuItem
+			   // 
+			   this->savePictureLikeFavoriteToolStripMenuItem->Name = L"savePictureLikeFavoriteToolStripMenuItem";
+			   this->savePictureLikeFavoriteToolStripMenuItem->Size = System::Drawing::Size(202, 22);
+			   this->savePictureLikeFavoriteToolStripMenuItem->Text = L"Save picture like favorite";
+			   this->savePictureLikeFavoriteToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::SavePictureLikeFavoriteToolStripMenuItem_Click);
 			   // 
 			   // SplitContainer2
 			   // 
@@ -242,5 +280,7 @@ namespace PhotoViewer
 
 		   }
 #pragma endregion
+private: void SavePictureLikeFavoriteToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+	   bool isThisPictureFavorite(String^ CurrentPicture);
 };
 }

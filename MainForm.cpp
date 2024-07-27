@@ -214,3 +214,31 @@ void PhotoViewer::MainForm::CopyNameOfCurrentPictureToolStripMenuItem_Click(Syst
 {
 	Clipboard::SetText(Path::GetFileNameWithoutExtension(Pictures[IndexCurrentPicture]->ToString()));
 }
+
+void PhotoViewer::MainForm::SavePictureLikeFavoriteToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	if(ViewMode == PhotoViewMode::FromDirectory)
+	{
+		if (!isThisPictureFavorite(Pictures[IndexCurrentPicture]->ToString()))
+		{
+			FavoritePictures.Add(Pictures[IndexCurrentPicture]);
+		}
+		else
+		{
+			//PlaceHolder
+			MessageBox::Show("Hey it's already saved!\n");
+		}
+	}
+}
+
+bool PhotoViewer::MainForm::isThisPictureFavorite(String^ CurrentPicture)
+{
+	for (int i = 0; i < FavoritePictures.Count; i++)
+	{
+		if (FavoritePictures[i]->Equals(CurrentPicture))
+		{
+			return true;
+		}
+	}
+	return false;
+}
