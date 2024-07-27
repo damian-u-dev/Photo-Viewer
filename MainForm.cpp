@@ -264,6 +264,12 @@ void PhotoViewer::MainForm::SaveFavoritePicturesPaths()
 	//PLACE HOLDER
 }
 
+void PhotoViewer::MainForm::ShowToolMenuForFavoriteMode(bool Value)
+{
+	removePictureFromFavoriteToolStripMenuItem->Visible = Value;
+	exitFromFavoriteModeToolStripMenuItem->Visible = Value;
+}
+
 void PhotoViewer::MainForm::SavePictureLikeFavoriteToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	if(ViewMode == PictureViewMode::FromDirectory)
@@ -297,7 +303,8 @@ void PhotoViewer::MainForm::SwitchToFavoritePicturesToolStripMenuItem_Click(Syst
 	if(FavoritePictures.Count > 0)
 	{
 		ViewMode = PictureViewMode::FromFavoritePictures;
-		removePictureFromFavoriteToolStripMenuItem->Visible = true;
+		
+		ShowToolMenuForFavoriteMode(true);
 
 		SetUpButtons();
 		PictureBox->Image = Image::FromFile(FavoritePictures[IndexFavoritePicture]->ToString());
@@ -312,12 +319,24 @@ System::Void PhotoViewer::MainForm::RemovePictureFromFavoriteToolStripMenuItem_C
 {
 	if (IsOnePictureInArray())
 	{
-		SetUpButtons();
-		FavoritePictures.RemoveAt(0);
-
-		ViewMode = PictureViewMode::FromDirectory;
-		
-		PictureBox->Image = Image::FromFile(Pictures[IndexCurrentPicture]->ToString());
-		SetUpButtons();
+		FavoritePictures.Clear();
+		ExitFromFavoriteModeToolStripMenuItem_Click(nullptr, nullptr);
 	}
+	else
+	{
+		FavoritePictures.RemoveAt(IndexFavoritePicture);
+		
+		SetUpButtons();
+		bNextPicture_Click(nullptr, nullptr);
+	}
+}
+
+System::Void PhotoViewer::MainForm::ExitFromFavoriteModeToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	ViewMode = PictureViewMode::FromDirectory;
+	PictureBox->Image = Image::FromFile(Pictures[IndexCurrentPicture]->ToString());
+	
+	ShowToolMenuForFavoriteMode(false);
+
+	SetUpButtons();
 }
