@@ -27,6 +27,7 @@ namespace PhotoViewer
 
 		const int INDEX_FIRST_PICTURE = 0;
 		bool OnePictureInCurrentArray = false;
+		bool IsFullView = false;
 		
 		PictureViewMode ViewMode = PictureViewMode::FromDirectory;
 
@@ -35,6 +36,10 @@ namespace PhotoViewer
 		String^ PATH_LAST_WINDOW_LOCATION = R"(D:\Settings\LastWindowLocation.txt)";
 		String^ PATH_LAST_WINDOW_STATE = R"(D:\Settings\LastWindowState.txt)";
 		String^ PATH_FAVORITE_PICTURES = R"(D:\Settings\FavoritePictures.txt)";
+	private: System::Windows::Forms::ToolStripMenuItem^ fullViewToolStripMenuItem;
+	public:
+
+	public:
 		String^ PATH_WINDOW_COLOR = R"(D:\Settings\WindowColor.txt)";
 
 	public:
@@ -117,6 +122,7 @@ namespace PhotoViewer
 			   this->CopyCurrentPictureToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->openDirectoryCurrentPictureToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->copyNameOfCurrentPictureToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			   this->fullViewToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->favoritePicturesToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->savePictureLikeFavoriteToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->switchToFavoritePicturesToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
@@ -184,9 +190,9 @@ namespace PhotoViewer
 			   // 
 			   // FileToolStripMenuItem
 			   // 
-			   this->FileToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(3) {
+			   this->FileToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(4) {
 				   this->CopyCurrentPictureToolStripMenuItem,
-					   this->openDirectoryCurrentPictureToolStripMenuItem, this->copyNameOfCurrentPictureToolStripMenuItem
+					   this->openDirectoryCurrentPictureToolStripMenuItem, this->copyNameOfCurrentPictureToolStripMenuItem, this->fullViewToolStripMenuItem
 			   });
 			   this->FileToolStripMenuItem->Name = L"FileToolStripMenuItem";
 			   this->FileToolStripMenuItem->Size = System::Drawing::Size(37, 20);
@@ -217,6 +223,14 @@ namespace PhotoViewer
 			   this->copyNameOfCurrentPictureToolStripMenuItem->Size = System::Drawing::Size(318, 22);
 			   this->copyNameOfCurrentPictureToolStripMenuItem->Text = L"Copy name of current picture";
 			   this->copyNameOfCurrentPictureToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::CopyNameOfCurrentPictureToolStripMenuItem_Click);
+			   // 
+			   // fullViewToolStripMenuItem
+			   // 
+			   this->fullViewToolStripMenuItem->Name = L"fullViewToolStripMenuItem";
+			   this->fullViewToolStripMenuItem->ShortcutKeys = System::Windows::Forms::Keys::F11;
+			   this->fullViewToolStripMenuItem->Size = System::Drawing::Size(318, 22);
+			   this->fullViewToolStripMenuItem->Text = L"Full View";
+			   this->fullViewToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::FullViewToolStripMenuItem_Click);
 			   // 
 			   // favoritePicturesToolStripMenuItem
 			   // 
@@ -275,7 +289,7 @@ namespace PhotoViewer
 					   this->darkToolStripMenuItem
 			   });
 			   this->themeToolStripMenuItem->Name = L"themeToolStripMenuItem";
-			   this->themeToolStripMenuItem->Size = System::Drawing::Size(180, 22);
+			   this->themeToolStripMenuItem->Size = System::Drawing::Size(110, 22);
 			   this->themeToolStripMenuItem->Text = L"Theme";
 			   // 
 			   // lightToolStripMenuItem
@@ -364,5 +378,6 @@ namespace PhotoViewer
 
 		   }
 #pragma endregion
-	};
+	private: System::Void FullViewToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+};
 }

@@ -186,6 +186,10 @@ void PhotoViewer::MainForm::MainForm_KeyDown(System::Object^ sender, System::Win
 	{
 		bNextPicture_Click(nullptr, nullptr);
 	}
+	if (e->KeyCode == Keys::Escape && IsFullView)
+	{
+		fullViewToolStripMenuItem_Click(nullptr,nullptr);
+	}
 }
 
 void PhotoViewer::MainForm::SwitchPicture(const int lastOrFirstPicture, const int initializeValue, const int addValue)
@@ -460,4 +464,25 @@ void PhotoViewer::MainForm::lightToolStripMenuItem_Click(System::Object^ sender,
 	Color DefaultForeColorForm = Color::FromArgb(255,0,0,0);
 	
 	SetColorForm(DefaultBackColorForm, DefaultForeColorForm, Color::WhiteSmoke,Color::Black);
+}
+
+System::Void PhotoViewer::MainForm::FullViewToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	if(!IsFullView)
+	{
+		IsFullView = true;
+		this->WindowState = FormWindowState::Maximized;
+		this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::None;
+
+		this->menuStrip1->Visible = false;
+	}
+	else
+	{
+		IsFullView = false;
+		
+		this->WindowState = FormWindowState::Normal;
+		this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::Sizable;
+
+		this->menuStrip1->Visible = true;
+	}
 }
