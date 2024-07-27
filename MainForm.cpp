@@ -158,10 +158,6 @@ void PhotoViewer::MainForm::CopyCurrentPictureToolStripMenuItem_Click(System::Ob
 
 void PhotoViewer::MainForm::MainForm_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e)
 {
-	if (e->Control && e->KeyCode == Keys::C)
-	{
-		CopyCurrentPictureToolStripMenuItem_Click(sender, e);
-	}
 	if (e->KeyCode == Keys::A)
 	{
 		bPreviousPicture_Click(nullptr, nullptr);

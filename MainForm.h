@@ -149,16 +149,18 @@ namespace PhotoViewer
 			   // CopyCurrentPictureToolStripMenuItem
 			   // 
 			   this->CopyCurrentPictureToolStripMenuItem->Name = L"CopyCurrentPictureToolStripMenuItem";
-			   this->CopyCurrentPictureToolStripMenuItem->ShortcutKeyDisplayString = L"Ctrl + C";
+			   this->CopyCurrentPictureToolStripMenuItem->ShortcutKeyDisplayString = L"";
 			   this->CopyCurrentPictureToolStripMenuItem->ShortcutKeys = static_cast<System::Windows::Forms::Keys>((System::Windows::Forms::Keys::Control | System::Windows::Forms::Keys::C));
-			   this->CopyCurrentPictureToolStripMenuItem->Size = System::Drawing::Size(234, 22);
+			   this->CopyCurrentPictureToolStripMenuItem->Size = System::Drawing::Size(318, 22);
 			   this->CopyCurrentPictureToolStripMenuItem->Text = L"Copy current picture";
 			   this->CopyCurrentPictureToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::CopyCurrentPictureToolStripMenuItem_Click);
 			   // 
 			   // openDirectoryCurrentPictureToolStripMenuItem
 			   // 
 			   this->openDirectoryCurrentPictureToolStripMenuItem->Name = L"openDirectoryCurrentPictureToolStripMenuItem";
-			   this->openDirectoryCurrentPictureToolStripMenuItem->Size = System::Drawing::Size(234, 22);
+			   this->openDirectoryCurrentPictureToolStripMenuItem->ShortcutKeys = static_cast<System::Windows::Forms::Keys>(((System::Windows::Forms::Keys::Control | System::Windows::Forms::Keys::Shift)
+				   | System::Windows::Forms::Keys::F10));
+			   this->openDirectoryCurrentPictureToolStripMenuItem->Size = System::Drawing::Size(318, 22);
 			   this->openDirectoryCurrentPictureToolStripMenuItem->Text = L"Open directory current picture";
 			   this->openDirectoryCurrentPictureToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::OpenDirectoryCurrentPictureToolStripMenuItem_Click);
 			   // 
