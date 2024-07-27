@@ -68,6 +68,7 @@ namespace PhotoViewer
 	void SaveLastWindowSize();
 	void SaveLastWindowLocation();
 	void SaveLastWindowState();
+	void SaveWindowColor();
 
 	private: void CopyCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 	private: void MainForm_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e);
@@ -83,7 +84,6 @@ namespace PhotoViewer
 	void SaveFavoritePicturesPaths();
 	void ShowToolMenuForFavoriteMode(bool Value);
 	void SetColorForm(Color BackColor,Color ForeColor, Color ColorMenuStrip);
-	
 	
 	
 	private: System::Windows::Forms::PictureBox^ PictureBox;

@@ -126,6 +126,7 @@ void PhotoViewer::MainForm::SaveSettingsForm()
 		}
 
 		SaveLastWindowState();
+		SaveWindowColor();
 	}
 }
 
@@ -152,6 +153,11 @@ void PhotoViewer::MainForm::SaveLastWindowLocation()
 void PhotoViewer::MainForm::SaveLastWindowState()
 {
 	File::WriteAllText(PATH_LAST_WINDOW_STATE, WindowState.ToString());
+}
+
+void PhotoViewer::MainForm::SaveWindowColor()
+{
+	File::WriteAllText("D:\\Settings\\WindowColor.txt",this->BackColor.Name);
 }
 
 PhotoViewer::MainForm::~MainForm()
