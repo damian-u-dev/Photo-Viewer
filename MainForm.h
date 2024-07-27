@@ -29,6 +29,10 @@ namespace PhotoViewer
 		
 		const int INDEX_FIRST_PICTURE = 0;
 		
+		bool OnePictureInCurrentArray = false;
+
+
+		
 		String^ DIRECTORY_SETTINGS = R"(D:\Settings)";
 		String^ PATH_LAST_WINDOW_SIZE = R"(D:\Settings\LastWindowSize.txt)";
 		String^ PATH_LAST_WINDOW_LOCATION = R"(D:\Settings\LastWindowLocation.txt)";
@@ -73,7 +77,8 @@ namespace PhotoViewer
 
 	private: void OpenDirectoryCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 	private: void CopyNameOfCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
-
+	bool IsOnePictureInArray();
+	void SetUpButtons();
 	
 	
 	
@@ -281,6 +286,6 @@ namespace PhotoViewer
 		   }
 #pragma endregion
 private: void SavePictureLikeFavoriteToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
-	   bool isThisPictureFavorite(String^ CurrentPicture);
+	   bool IsThisPictureFavorite(String^ CurrentPicture);
 };
 }

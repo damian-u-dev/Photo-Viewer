@@ -21,6 +21,7 @@ void PhotoViewer::MainForm::SetUpWindowForm()
 	SetUpLastWindowSize();
 	SetUpLastWindowLocation();
 	SetUpLastWindowState();
+	SetUpButtons();
 }
 
 void PhotoViewer::MainForm::SetUpLastWindowSize()
@@ -184,12 +185,18 @@ void PhotoViewer::MainForm::SwitchPicture(const int lastOrFirstPicture, const in
 
 void PhotoViewer::MainForm::bNextPicture_Click(System::Object^ sender, System::EventArgs^ e)
 {
-	SwitchPicture(IndexLastPicture, INDEX_FIRST_PICTURE, IndexCurrentPicture + 1);
+	if(!OnePictureInCurrentArray)
+	{
+		SwitchPicture(IndexLastPicture, INDEX_FIRST_PICTURE, IndexCurrentPicture + 1);
+	}
 }
 
 void PhotoViewer::MainForm::bPreviousPicture_Click(System::Object^ sender, System::EventArgs^ e)
 {
-	SwitchPicture(INDEX_FIRST_PICTURE, IndexLastPicture, IndexCurrentPicture - 1);
+	if (!OnePictureInCurrentArray)
+	{
+		SwitchPicture(INDEX_FIRST_PICTURE, IndexLastPicture, IndexCurrentPicture - 1);
+	}
 }
 
 void PhotoViewer::MainForm::OpenDirectoryCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
@@ -215,11 +222,30 @@ void PhotoViewer::MainForm::CopyNameOfCurrentPictureToolStripMenuItem_Click(Syst
 	Clipboard::SetText(Path::GetFileNameWithoutExtension(Pictures[IndexCurrentPicture]->ToString()));
 }
 
+bool PhotoViewer::MainForm::IsOnePictureInArray()
+{
+	if (ViewMode == PhotoViewMode::FromDirectory)
+	{
+		return Pictures.Count == 1;
+	}
+	return FavoritePictures.Count == 1;
+}
+
+void PhotoViewer::MainForm::SetUpButtons()
+{
+	if (IsOnePictureInArray())
+	{
+		OnePictureInCurrentArray = true;
+		bNextPicture->Visible = false;
+		bPreviousPicture->Visible = false;
+	}
+}
+
 void PhotoViewer::MainForm::SavePictureLikeFavoriteToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	if(ViewMode == PhotoViewMode::FromDirectory)
 	{
-		if (!isThisPictureFavorite(Pictures[IndexCurrentPicture]->ToString()))
+		if (!IsThisPictureFavorite(Pictures[IndexCurrentPicture]->ToString()))
 		{
 			FavoritePictures.Add(Pictures[IndexCurrentPicture]);
 		}
@@ -231,7 +257,7 @@ void PhotoViewer::MainForm::SavePictureLikeFavoriteToolStripMenuItem_Click(Syste
 	}
 }
 
-bool PhotoViewer::MainForm::isThisPictureFavorite(String^ CurrentPicture)
+bool PhotoViewer::MainForm::IsThisPictureFavorite(String^ CurrentPicture)
 {
 	for (int i = 0; i < FavoritePictures.Count; i++)
 	{
