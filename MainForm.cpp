@@ -108,7 +108,7 @@ void PhotoViewer::MainForm::CheckFavoritePicturesOnExist()
 {
 	for (int i = 0; i < FavoritePictures.Count; i++)
 	{
-		if ( !File::Exists( FavoritePictures[i]->ToString() ))
+		if (!File::Exists(FavoritePictures[i]->ToString()))
 		{
 			FavoritePictures.RemoveAt(i);
 		}
@@ -183,7 +183,7 @@ void PhotoViewer::MainForm::MainForm_KeyDown(System::Object^ sender, System::Win
 
 void PhotoViewer::MainForm::SwitchPicture(const int lastOrFirstPicture, const int initializeValue, const int addValue)
 {
-	if(ViewMode == PictureViewMode::FromDirectory)
+	if (ViewMode == PictureViewMode::FromDirectory)
 	{
 		if (IndexCurrentPicture == lastOrFirstPicture)
 		{
@@ -213,7 +213,7 @@ void PhotoViewer::MainForm::SwitchPicture(const int lastOrFirstPicture, const in
 
 void PhotoViewer::MainForm::bNextPicture_Click(System::Object^ sender, System::EventArgs^ e)
 {
-	if(ViewMode == PictureViewMode::FromDirectory)
+	if (ViewMode == PictureViewMode::FromDirectory)
 	{
 		SwitchPicture(IndexLastPicture, INDEX_FIRST_PICTURE, IndexCurrentPicture + 1);
 	}
@@ -296,7 +296,7 @@ void PhotoViewer::MainForm::ShowToolMenuForFavoriteMode(bool Value)
 
 void PhotoViewer::MainForm::SavePictureLikeFavoriteToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 {
-	if(ViewMode == PictureViewMode::FromDirectory)
+	if (ViewMode == PictureViewMode::FromDirectory)
 	{
 		if (!IsThisPictureFavorite(Pictures[IndexCurrentPicture]->ToString()))
 		{
@@ -324,10 +324,10 @@ bool PhotoViewer::MainForm::IsThisPictureFavorite(String^ CurrentPicture)
 
 void PhotoViewer::MainForm::SwitchToFavoritePicturesToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 {
-	if(FavoritePictures.Count > 0)
+	if (FavoritePictures.Count > 0)
 	{
 		ViewMode = PictureViewMode::FromFavoritePictures;
-		
+
 		ShowToolMenuForFavoriteMode(true);
 
 		SetUpButtons();
@@ -348,10 +348,22 @@ System::Void PhotoViewer::MainForm::RemovePictureFromFavoriteToolStripMenuItem_C
 	}
 	else
 	{
-		FavoritePictures.RemoveAt(IndexFavoritePicture);
-		
+
+
+		//IndexFavoritePicture--;
+
+		if (IndexFavoritePicture == FavoritePictures.Count - 1)
+		{
+			FavoritePictures.RemoveAt(IndexFavoritePicture);
+			IndexFavoritePicture = 0;
+		}
+		else //IndexFavoritePicture == INDEX_FIRST_PICTURE
+		{
+			FavoritePictures.RemoveAt(IndexFavoritePicture);
+		}
+
 		SetUpButtons();
-		bNextPicture_Click(nullptr, nullptr);
+		PictureBox->Image = Image::FromFile(FavoritePictures[IndexFavoritePicture]->ToString());
 	}
 }
 
@@ -359,7 +371,7 @@ System::Void PhotoViewer::MainForm::ExitFromFavoriteModeToolStripMenuItem_Click(
 {
 	ViewMode = PictureViewMode::FromDirectory;
 	PictureBox->Image = Image::FromFile(Pictures[IndexCurrentPicture]->ToString());
-	
+
 	ShowToolMenuForFavoriteMode(false);
 
 	SetUpButtons();
