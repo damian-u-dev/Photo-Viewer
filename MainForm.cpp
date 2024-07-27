@@ -22,6 +22,7 @@ void PhotoViewer::MainForm::SetUpWindowForm()
 	SetUpLastWindowLocation();
 	SetUpLastWindowState();
 	SetUpButtons();
+	SetUpWindowColor();
 }
 
 void PhotoViewer::MainForm::SetUpLastWindowSize()
@@ -157,6 +158,7 @@ void PhotoViewer::MainForm::SaveLastWindowState()
 
 void PhotoViewer::MainForm::SaveWindowColor()
 {
+	//Path PlaceHolder change!
 	File::WriteAllText("D:\\Settings\\WindowColor.txt",this->BackColor.Name);
 }
 
@@ -348,6 +350,21 @@ void PhotoViewer::MainForm::SetColorForm(Color BackColor, Color ForeColor,Color 
 
 	this->bNextPicture->ForeColor = ForeColor;
 	this->bPreviousPicture->ForeColor = ForeColor;
+}
+
+void PhotoViewer::MainForm::SetUpWindowColor()
+{
+	//Path PlaceHolder change!
+	String^ LastColor = File::ReadAllText("D:\\Settings\\WindowColor.txt");
+	
+	if (LastColor == Color::DimGray.Name)
+	{
+		DarkToolStripMenuItem_Click(nullptr, nullptr);
+	}
+	else
+	{
+		lightToolStripMenuItem_Click(nullptr, nullptr);
+	}
 }
 
 void PhotoViewer::MainForm::SavePictureLikeFavoriteToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)

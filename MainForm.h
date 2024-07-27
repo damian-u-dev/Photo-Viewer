@@ -84,6 +84,7 @@ namespace PhotoViewer
 	void SaveFavoritePicturesPaths();
 	void ShowToolMenuForFavoriteMode(bool Value);
 	void SetColorForm(Color BackColor,Color ForeColor, Color ColorMenuStrip);
+	void SetUpWindowColor();
 	
 	
 	private: System::Windows::Forms::PictureBox^ PictureBox;
@@ -232,7 +233,7 @@ namespace PhotoViewer
 			   // 
 			   this->savePictureLikeFavoriteToolStripMenuItem->Name = L"savePictureLikeFavoriteToolStripMenuItem";
 			   this->savePictureLikeFavoriteToolStripMenuItem->ShortcutKeys = static_cast<System::Windows::Forms::Keys>((System::Windows::Forms::Keys::Control | System::Windows::Forms::Keys::S));
-			   this->savePictureLikeFavoriteToolStripMenuItem->Size = System::Drawing::Size(269, 22);
+			   this->savePictureLikeFavoriteToolStripMenuItem->Size = System::Drawing::Size(251, 22);
 			   this->savePictureLikeFavoriteToolStripMenuItem->Text = L"Save picture like favorite";
 			   this->savePictureLikeFavoriteToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::SavePictureLikeFavoriteToolStripMenuItem_Click);
 			   // 
@@ -240,7 +241,7 @@ namespace PhotoViewer
 			   // 
 			   this->switchToFavoritePicturesToolStripMenuItem->Name = L"switchToFavoritePicturesToolStripMenuItem";
 			   this->switchToFavoritePicturesToolStripMenuItem->ShortcutKeys = static_cast<System::Windows::Forms::Keys>((System::Windows::Forms::Keys::Control | System::Windows::Forms::Keys::F));
-			   this->switchToFavoritePicturesToolStripMenuItem->Size = System::Drawing::Size(269, 22);
+			   this->switchToFavoritePicturesToolStripMenuItem->Size = System::Drawing::Size(251, 22);
 			   this->switchToFavoritePicturesToolStripMenuItem->Text = L"Switch to favorite pictures";
 			   this->switchToFavoritePicturesToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::SwitchToFavoritePicturesToolStripMenuItem_Click);
 			   // 
@@ -256,7 +257,7 @@ namespace PhotoViewer
 			   // exitFromFavoriteModeToolStripMenuItem
 			   // 
 			   this->exitFromFavoriteModeToolStripMenuItem->Name = L"exitFromFavoriteModeToolStripMenuItem";
-			   this->exitFromFavoriteModeToolStripMenuItem->Size = System::Drawing::Size(269, 22);
+			   this->exitFromFavoriteModeToolStripMenuItem->Size = System::Drawing::Size(251, 22);
 			   this->exitFromFavoriteModeToolStripMenuItem->Text = L"Exit from favorite mode";
 			   this->exitFromFavoriteModeToolStripMenuItem->Visible = false;
 			   this->exitFromFavoriteModeToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::ExitFromFavoriteModeToolStripMenuItem_Click);
