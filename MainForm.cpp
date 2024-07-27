@@ -158,8 +158,7 @@ void PhotoViewer::MainForm::SaveLastWindowState()
 
 void PhotoViewer::MainForm::SaveWindowColor()
 {
-	//Path PlaceHolder change!
-	File::WriteAllText("D:\\Settings\\WindowColor.txt",this->BackColor.Name);
+	File::WriteAllText(PATH_WINDOW_COLOR,this->BackColor.Name);
 }
 
 PhotoViewer::MainForm::~MainForm()
@@ -179,11 +178,11 @@ void PhotoViewer::MainForm::CopyCurrentPictureToolStripMenuItem_Click(System::Ob
 
 void PhotoViewer::MainForm::MainForm_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e)
 {
-	if (e->KeyCode == Keys::A)
+	if (e->KeyCode == Keys::A && !OnePictureInCurrentArray)
 	{
 		bPreviousPicture_Click(nullptr, nullptr);
 	}
-	if (e->KeyCode == Keys::D)
+	if (e->KeyCode == Keys::D && !OnePictureInCurrentArray)
 	{
 		bNextPicture_Click(nullptr, nullptr);
 	}
@@ -302,13 +301,13 @@ void PhotoViewer::MainForm::ShowToolMenuForFavoriteMode(bool Value)
 	exitFromFavoriteModeToolStripMenuItem->Visible = Value;
 }
 
-void PhotoViewer::MainForm::SetColorForm(Color BackColor, Color ForeColor,Color ColorMenuStrip)
+void PhotoViewer::MainForm::SetColorForm(Color BackColor, Color ForeColor,Color ColorMenuStrip,Color ForeColorButtons)
 {
 	this->BackColor = BackColor;
 
-	this->bNextPicture->BackColor = BackColor;
-	this->bPreviousPicture->BackColor = BackColor;
-	this->menuStrip1->BackColor = ColorMenuStrip;
+	bNextPicture->BackColor = BackColor;
+	bPreviousPicture->BackColor = BackColor;
+	menuStrip1->BackColor = ColorMenuStrip;
 
 	//FileToolStrip
 	CopyCurrentPictureToolStripMenuItem->BackColor = BackColor;
@@ -347,15 +346,14 @@ void PhotoViewer::MainForm::SetColorForm(Color BackColor, Color ForeColor,Color 
 	FileToolStripMenuItem->ForeColor = ForeColor;
 	favoritePicturesToolStripMenuItem->ForeColor = ForeColor;
 	settingsToolStripMenuItem->ForeColor = ForeColor;
-
-	this->bNextPicture->ForeColor = ForeColor;
-	this->bPreviousPicture->ForeColor = ForeColor;
+		
+	bNextPicture->ForeColor = ForeColorButtons;
+	bPreviousPicture->ForeColor = ForeColorButtons;
 }
 
 void PhotoViewer::MainForm::SetUpWindowColor()
 {
-	//Path PlaceHolder change!
-	String^ LastColor = File::ReadAllText("D:\\Settings\\WindowColor.txt");
+	String^ LastColor = File::ReadAllText(PATH_WINDOW_COLOR);
 	
 	if (LastColor == Color::DimGray.Name)
 	{
@@ -374,11 +372,6 @@ void PhotoViewer::MainForm::SavePictureLikeFavoriteToolStripMenuItem_Click(Syste
 		if (!IsThisPictureFavorite(Pictures[IndexCurrentPicture]->ToString()))
 		{
 			FavoritePictures.Add(Pictures[IndexCurrentPicture]);
-		}
-		else
-		{
-			//PlaceHolder
-			MessageBox::Show("Hey it's already saved!\n");
 		}
 	}
 }
@@ -455,7 +448,7 @@ void PhotoViewer::MainForm::DarkToolStripMenuItem_Click(System::Object^ sender, 
 	lightToolStripMenuItem->Checked = false;
 	darkToolStripMenuItem->Checked = true;
 
-	SetColorForm(Color::DimGray, Color::White,Color::DimGray);
+	SetColorForm(Color::DimGray, Color::White,Color::DimGray, Color::Indigo);
 }
 
 void PhotoViewer::MainForm::lightToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
@@ -466,5 +459,5 @@ void PhotoViewer::MainForm::lightToolStripMenuItem_Click(System::Object^ sender,
 	Color DefaultBackColorForm = Color::FromArgb(255, 240, 240, 240);
 	Color DefaultForeColorForm = Color::FromArgb(255,0,0,0);
 	
-	SetColorForm(DefaultBackColorForm, DefaultForeColorForm, Color::WhiteSmoke);
+	SetColorForm(DefaultBackColorForm, DefaultForeColorForm, Color::WhiteSmoke,Color::Black);
 }

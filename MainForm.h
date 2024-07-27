@@ -17,36 +17,29 @@ namespace PhotoViewer
 			FromDirectory,
 			FromFavoritePictures
 		};
-
-
-
 	public:
 		ArrayList Pictures;
 		ArrayList FavoritePictures;
-
+		
 		int IndexCurrentPicture = 0;
 		int IndexFavoritePicture = 0;
-		
+		int IndexLastPicture;
+
 		const int INDEX_FIRST_PICTURE = 0;
-		
 		bool OnePictureInCurrentArray = false;
-
-
 		
+		PictureViewMode ViewMode = PictureViewMode::FromDirectory;
+
 		String^ DIRECTORY_SETTINGS = R"(D:\Settings)";
 		String^ PATH_LAST_WINDOW_SIZE = R"(D:\Settings\LastWindowSize.txt)";
 		String^ PATH_LAST_WINDOW_LOCATION = R"(D:\Settings\LastWindowLocation.txt)";
 		String^ PATH_LAST_WINDOW_STATE = R"(D:\Settings\LastWindowState.txt)";
 		String^ PATH_FAVORITE_PICTURES = R"(D:\Settings\FavoritePictures.txt)";
-
-
-		PictureViewMode ViewMode = PictureViewMode::FromDirectory;
-
+		String^ PATH_WINDOW_COLOR = R"(D:\Settings\WindowColor.txt)";
 
 	public:
 
-		int IndexLastPicture;
-		
+
 		MainForm(String^ directoryToFirstPhoto);
 		void SetUpWindowForm();
 		void SetUpLastWindowSize();
@@ -59,34 +52,40 @@ namespace PhotoViewer
 		void FindOutIndexOpenedPicture(String^ pathToOpenedPicture);
 		void SettingUpPictureBox();
 		void CheckFavoritePicturesOnExist();
-		
+
+		~MainForm();
+		void SaveSettingsForm();
+		void SaveLastWindowSize();
+		void SaveLastWindowLocation();
+		void SaveLastWindowState();
+		void SaveWindowColor();
+
+		void CopyCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+		void MainForm_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e);
+
+		void SwitchPicture(const int lastOrFirstPicture, const int initializeValue, const int addValue);
+		void bNextPicture_Click(System::Object^ sender, System::EventArgs^ e);
+		void bPreviousPicture_Click(System::Object^ sender, System::EventArgs^ e);
+
+		void OpenDirectoryCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+		void CopyNameOfCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+		bool IsOnePictureInArray();
+		void SetUpButtons();
+		void SaveFavoritePicturesPaths();
+		void ShowToolMenuForFavoriteMode(bool Value);
+		void SetColorForm(Color BackColor, Color ForeColor, Color ColorMenuStrip, Color ForeColorButtons);
+		void SetUpWindowColor();
+
+		bool IsThisPictureFavorite(String^ CurrentPicture);
+
+		void SavePictureLikeFavoriteToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+		void SwitchToFavoritePicturesToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+		void RemovePictureFromFavoriteToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+		void ExitFromFavoriteModeToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+		void DarkToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+		void lightToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 
 
-	protected:
-	~MainForm();
-	void SaveSettingsForm();
-	void SaveLastWindowSize();
-	void SaveLastWindowLocation();
-	void SaveLastWindowState();
-	void SaveWindowColor();
-
-	private: void CopyCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
-	private: void MainForm_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e);
-
-	void SwitchPicture(const int lastOrFirstPicture, const int initializeValue, const int addValue);
-	private: void bNextPicture_Click(System::Object^ sender, System::EventArgs^ e);
-	private: void bPreviousPicture_Click(System::Object^ sender, System::EventArgs^ e);
-
-	private: void OpenDirectoryCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
-	private: void CopyNameOfCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
-	bool IsOnePictureInArray();
-	void SetUpButtons();
-	void SaveFavoritePicturesPaths();
-	void ShowToolMenuForFavoriteMode(bool Value);
-	void SetColorForm(Color BackColor,Color ForeColor, Color ColorMenuStrip);
-	void SetUpWindowColor();
-	
-	
 	private: System::Windows::Forms::PictureBox^ PictureBox;
 	private: System::Windows::Forms::SplitContainer^ SplitContainer;
 	private: System::Windows::Forms::SplitContainer^ SplitContainer2;
@@ -276,7 +275,7 @@ namespace PhotoViewer
 					   this->darkToolStripMenuItem
 			   });
 			   this->themeToolStripMenuItem->Name = L"themeToolStripMenuItem";
-			   this->themeToolStripMenuItem->Size = System::Drawing::Size(110, 22);
+			   this->themeToolStripMenuItem->Size = System::Drawing::Size(180, 22);
 			   this->themeToolStripMenuItem->Text = L"Theme";
 			   // 
 			   // lightToolStripMenuItem
@@ -316,24 +315,24 @@ namespace PhotoViewer
 			   // bNextPicture
 			   // 
 			   this->bNextPicture->Anchor = System::Windows::Forms::AnchorStyles::None;
-			   this->bNextPicture->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
+			   this->bNextPicture->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			   this->bNextPicture->Location = System::Drawing::Point(168, 15);
 			   this->bNextPicture->Name = L"bNextPicture";
 			   this->bNextPicture->Size = System::Drawing::Size(75, 23);
 			   this->bNextPicture->TabIndex = 1;
-			   this->bNextPicture->Text = L">";
+			   this->bNextPicture->Text = L"->";
 			   this->bNextPicture->UseVisualStyleBackColor = true;
 			   this->bNextPicture->Click += gcnew System::EventHandler(this, &MainForm::bNextPicture_Click);
 			   // 
 			   // bPreviousPicture
 			   // 
 			   this->bPreviousPicture->Anchor = System::Windows::Forms::AnchorStyles::None;
-			   this->bPreviousPicture->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
+			   this->bPreviousPicture->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			   this->bPreviousPicture->Location = System::Drawing::Point(56, 15);
 			   this->bPreviousPicture->Name = L"bPreviousPicture";
 			   this->bPreviousPicture->Size = System::Drawing::Size(75, 23);
 			   this->bPreviousPicture->TabIndex = 1;
-			   this->bPreviousPicture->Text = L"<";
+			   this->bPreviousPicture->Text = L"<-";
 			   this->bPreviousPicture->UseVisualStyleBackColor = true;
 			   this->bPreviousPicture->Click += gcnew System::EventHandler(this, &MainForm::bPreviousPicture_Click);
 			   // 
@@ -365,12 +364,5 @@ namespace PhotoViewer
 
 		   }
 #pragma endregion
-private: void SavePictureLikeFavoriteToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
-	   bool IsThisPictureFavorite(String^ CurrentPicture);
-	private: void SwitchToFavoritePicturesToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
-private: System::Void RemovePictureFromFavoriteToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
-private: System::Void ExitFromFavoriteModeToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
-private: void DarkToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
-private: void lightToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
-};
+	};
 }
