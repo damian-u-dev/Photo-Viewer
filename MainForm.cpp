@@ -104,6 +104,17 @@ void PhotoViewer::MainForm::SettingUpPictureBox()
 	PictureBox->Image = Image::FromFile(Pictures[IndexCurrentPicture]->ToString());
 }
 
+void PhotoViewer::MainForm::CheckFavoritePicturesOnExist()
+{
+	for (int i = 0; i < FavoritePictures.Count; i++)
+	{
+		if ( !File::Exists( FavoritePictures[i]->ToString() ))
+		{
+			FavoritePictures.RemoveAt(i);
+		}
+	}
+}
+
 void PhotoViewer::MainForm::SaveSettingsForm()
 {
 	if (Directory::Exists(DIRECTORY_SETTINGS))
@@ -267,4 +278,20 @@ bool PhotoViewer::MainForm::IsThisPictureFavorite(String^ CurrentPicture)
 		}
 	}
 	return false;
+}
+
+void PhotoViewer::MainForm::SwitchToFavoritePicturesToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	if(FavoritePictures.Count > 0)
+	{
+		ViewMode = PhotoViewMode::FromFavoritePictures;
+
+
+		SetUpButtons();
+		PictureBox->Image = Image::FromFile(FavoritePictures[IndexFavoritePicture]->ToString());
+	}
+	else
+	{
+		MessageBox::Show("You don't have any favorite pictures.", "Favorite Pictures");
+	}
 }
