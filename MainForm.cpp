@@ -6,6 +6,7 @@
 using namespace System::IO;
 using namespace System::Collections::Generic;
 using namespace System;
+using namespace Windows::Forms;
 
 PhotoViewer::MainForm::MainForm(String^ pathToOpenedPicture)
 {
@@ -395,6 +396,30 @@ void PhotoViewer::MainForm::SetUpWindowColor()
 	}
 }
 
+void PhotoViewer::MainForm::SetUserFont(System::Drawing::Font^ UserFont)
+{
+	//File ToolStrip Menu
+	FileToolStripMenuItem->Font = UserFont;
+	CopyCurrentPictureToolStripMenuItem->Font = UserFont;
+	copyNameOfCurrentPictureToolStripMenuItem->Font = UserFont;
+	fullViewToolStripMenuItem->Font = UserFont;
+	exitToolStripMenuItem->Font = UserFont;
+
+	//FavoritePictures ToolStripMenuItem
+	favoritePicturesToolStripMenuItem->Font = UserFont;
+	savePictureLikeFavoriteToolStripMenuItem->Font = UserFont;
+	switchToFavoritePicturesToolStripMenuItem->Font = UserFont;
+	removePictureFromFavoriteToolStripMenuItem->Font = UserFont;
+	exitFromFavoriteModeToolStripMenuItem->Font = UserFont;
+
+	//settings ToolStripMenuItem
+	settingsToolStripMenuItem->Font = UserFont;
+	themeToolStripMenuItem->Font = UserFont;
+	lightToolStripMenuItem->Font = UserFont;
+	darkToolStripMenuItem->Font = UserFont;
+	changeFontToolStripMenuItem->Font = UserFont;
+}
+
 void PhotoViewer::MainForm::SavePictureLikeFavoriteToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	if (ViewMode == PictureViewMode::FromDirectory)
@@ -518,4 +543,23 @@ void PhotoViewer::MainForm::FullViewToolStripMenuItem_Click(System::Object^ send
 void PhotoViewer::MainForm::ExitToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	Close();
+}
+
+void PhotoViewer::MainForm::ChangeFontToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	FontDialog FontDialog;
+	FontDialog.AllowScriptChange = false;
+	FontDialog.FontMustExist = true;
+	FontDialog.MaxSize = 14;
+	FontDialog.ShowColor = false;
+	FontDialog.ShowEffects = false;
+	FontDialog.ShowHelp = false;
+
+
+	Windows::Forms::DialogResult DialogResult = FontDialog.ShowDialog();
+
+	if (DialogResult == Windows::Forms::DialogResult::OK)
+	{
+		SetUserFont(FontDialog.Font);
+	}
 }

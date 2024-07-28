@@ -40,6 +40,7 @@ namespace PhotoViewer
 		String^ PATH_FAVORITE_PICTURES = R"(D:\Settings\FavoritePictures.txt)";
 	private: System::Windows::Forms::ToolStripMenuItem^ fullViewToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ exitToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ changeFontToolStripMenuItem;
 	public:
 
 	public:
@@ -83,6 +84,7 @@ namespace PhotoViewer
 		void ShowToolMenuForFavoriteMode(bool Value);
 		void SetColorForm(Color BackColor, Color ForeColor, Color ColorMenuStrip, Color ForeColorButtons);
 		void SetUpWindowColor();
+		void SetUserFont(System::Drawing::Font^ UserFont);
 
 		bool IsThisPictureFavorite(String^ CurrentPicture);
 
@@ -136,6 +138,7 @@ namespace PhotoViewer
 			   this->themeToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->lightToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->darkToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			   this->changeFontToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->SplitContainer2 = (gcnew System::Windows::Forms::SplitContainer());
 			   this->bNextPicture = (gcnew System::Windows::Forms::Button());
 			   this->bPreviousPicture = (gcnew System::Windows::Forms::Button());
@@ -291,7 +294,10 @@ namespace PhotoViewer
 			   // 
 			   // settingsToolStripMenuItem
 			   // 
-			   this->settingsToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->themeToolStripMenuItem });
+			   this->settingsToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {
+				   this->themeToolStripMenuItem,
+					   this->changeFontToolStripMenuItem
+			   });
 			   this->settingsToolStripMenuItem->Name = L"settingsToolStripMenuItem";
 			   this->settingsToolStripMenuItem->Size = System::Drawing::Size(61, 20);
 			   this->settingsToolStripMenuItem->Text = L"Settings";
@@ -303,7 +309,7 @@ namespace PhotoViewer
 					   this->darkToolStripMenuItem
 			   });
 			   this->themeToolStripMenuItem->Name = L"themeToolStripMenuItem";
-			   this->themeToolStripMenuItem->Size = System::Drawing::Size(110, 22);
+			   this->themeToolStripMenuItem->Size = System::Drawing::Size(180, 22);
 			   this->themeToolStripMenuItem->Text = L"Theme";
 			   // 
 			   // lightToolStripMenuItem
@@ -321,6 +327,13 @@ namespace PhotoViewer
 			   this->darkToolStripMenuItem->Size = System::Drawing::Size(101, 22);
 			   this->darkToolStripMenuItem->Text = L"Dark";
 			   this->darkToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::DarkToolStripMenuItem_Click);
+			   // 
+			   // changeFontToolStripMenuItem
+			   // 
+			   this->changeFontToolStripMenuItem->Name = L"changeFontToolStripMenuItem";
+			   this->changeFontToolStripMenuItem->Size = System::Drawing::Size(180, 22);
+			   this->changeFontToolStripMenuItem->Text = L"Change Font";
+			   this->changeFontToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::ChangeFontToolStripMenuItem_Click);
 			   // 
 			   // SplitContainer2
 			   // 
@@ -394,5 +407,6 @@ namespace PhotoViewer
 #pragma endregion
 	private: void FullViewToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 	private: void ExitToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+	private: void ChangeFontToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 };
 }
