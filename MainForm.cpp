@@ -320,6 +320,14 @@ void PhotoViewer::MainForm::SetUpButtons()
 void PhotoViewer::MainForm::SaveFavoritePicturesPaths()
 {
 	//PLACE HOLDER
+	List<String^> list(FavoritePictures.Count);
+
+	for (int i = 0; i < FavoritePictures.Count; i++)
+	{
+		list.Add(FavoritePictures[i]->ToString());
+	}
+
+	File::WriteAllLines(PATH_FAVORITE_PICTURES, % list);
 }
 
 void PhotoViewer::MainForm::ShowToolMenuForFavoriteMode(bool Value)
