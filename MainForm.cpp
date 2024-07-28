@@ -589,3 +589,8 @@ void PhotoViewer::MainForm::ChangeFontToolStripMenuItem_Click(System::Object^ se
 		SetUserFont(FontDialog.Font);
 	}
 }
+
+void PhotoViewer::MainForm::ResetFontToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	SetUserFont(% System::Drawing::Font("Segoe UI",9));
+}

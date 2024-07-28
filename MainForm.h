@@ -44,6 +44,7 @@ namespace PhotoViewer
 	private: System::Windows::Forms::ToolStripMenuItem^ fullViewToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ exitToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ changeFontToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ resetFontToolStripMenuItem;
 
 	public:
 
@@ -144,10 +145,11 @@ namespace PhotoViewer
 			   this->themeToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->lightToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->darkToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			   this->changeFontToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			   this->resetFontToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->SplitContainer2 = (gcnew System::Windows::Forms::SplitContainer());
 			   this->bNextPicture = (gcnew System::Windows::Forms::Button());
 			   this->bPreviousPicture = (gcnew System::Windows::Forms::Button());
-			   this->changeFontToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->SplitContainer))->BeginInit();
 			   this->SplitContainer->Panel1->SuspendLayout();
 			   this->SplitContainer->Panel2->SuspendLayout();
@@ -300,9 +302,9 @@ namespace PhotoViewer
 			   // 
 			   // settingsToolStripMenuItem
 			   // 
-			   this->settingsToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {
+			   this->settingsToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(3) {
 				   this->themeToolStripMenuItem,
-					   this->changeFontToolStripMenuItem
+					   this->changeFontToolStripMenuItem, this->resetFontToolStripMenuItem
 			   });
 			   this->settingsToolStripMenuItem->Name = L"settingsToolStripMenuItem";
 			   this->settingsToolStripMenuItem->Size = System::Drawing::Size(61, 20);
@@ -323,16 +325,30 @@ namespace PhotoViewer
 			   this->lightToolStripMenuItem->Checked = true;
 			   this->lightToolStripMenuItem->CheckState = System::Windows::Forms::CheckState::Checked;
 			   this->lightToolStripMenuItem->Name = L"lightToolStripMenuItem";
-			   this->lightToolStripMenuItem->Size = System::Drawing::Size(180, 22);
+			   this->lightToolStripMenuItem->Size = System::Drawing::Size(101, 22);
 			   this->lightToolStripMenuItem->Text = L"Light";
 			   this->lightToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::lightToolStripMenuItem_Click);
 			   // 
 			   // darkToolStripMenuItem
 			   // 
 			   this->darkToolStripMenuItem->Name = L"darkToolStripMenuItem";
-			   this->darkToolStripMenuItem->Size = System::Drawing::Size(180, 22);
+			   this->darkToolStripMenuItem->Size = System::Drawing::Size(101, 22);
 			   this->darkToolStripMenuItem->Text = L"Dark";
 			   this->darkToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::DarkToolStripMenuItem_Click);
+			   // 
+			   // changeFontToolStripMenuItem
+			   // 
+			   this->changeFontToolStripMenuItem->Name = L"changeFontToolStripMenuItem";
+			   this->changeFontToolStripMenuItem->Size = System::Drawing::Size(180, 22);
+			   this->changeFontToolStripMenuItem->Text = L"Change Font";
+			   this->changeFontToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::ChangeFontToolStripMenuItem_Click);
+			   // 
+			   // resetFontToolStripMenuItem
+			   // 
+			   this->resetFontToolStripMenuItem->Name = L"resetFontToolStripMenuItem";
+			   this->resetFontToolStripMenuItem->Size = System::Drawing::Size(180, 22);
+			   this->resetFontToolStripMenuItem->Text = L"Reset Font";
+			   this->resetFontToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::ResetFontToolStripMenuItem_Click);
 			   // 
 			   // SplitContainer2
 			   // 
@@ -376,13 +392,6 @@ namespace PhotoViewer
 			   this->bPreviousPicture->UseVisualStyleBackColor = true;
 			   this->bPreviousPicture->Click += gcnew System::EventHandler(this, &MainForm::bPreviousPicture_Click);
 			   // 
-			   // changeFontToolStripMenuItem
-			   // 
-			   this->changeFontToolStripMenuItem->Name = L"changeFontToolStripMenuItem";
-			   this->changeFontToolStripMenuItem->Size = System::Drawing::Size(180, 22);
-			   this->changeFontToolStripMenuItem->Text = L"Change Font";
-			   this->changeFontToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::ChangeFontToolStripMenuItem_Click);
-			   // 
 			   // MainForm
 			   // 
 			   this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -414,5 +423,6 @@ namespace PhotoViewer
 	private: void FullViewToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 	private: void ExitToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 	private: void ChangeFontToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+	private: void ResetFontToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 };
 }
