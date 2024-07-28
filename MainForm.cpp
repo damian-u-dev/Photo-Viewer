@@ -390,6 +390,12 @@ void PhotoViewer::MainForm::SetColorForm(Color BackColor, Color ForeColor, Color
 	darkToolStripMenuItem->BackColor = BackColor;
 	darkToolStripMenuItem->ForeColor = ForeColor;
 
+	changeFontToolStripMenuItem->BackColor = BackColor;
+	changeFontToolStripMenuItem->ForeColor = ForeColor;
+
+	resetFontToolStripMenuItem->BackColor = BackColor;
+	resetFontToolStripMenuItem->ForeColor = ForeColor;
+
 	//TooStripMenu
 	FileToolStripMenuItem->ForeColor = ForeColor;
 	favoritePicturesToolStripMenuItem->ForeColor = ForeColor;
