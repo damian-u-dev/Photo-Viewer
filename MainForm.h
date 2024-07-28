@@ -59,6 +59,7 @@ namespace PhotoViewer
 		void SetUpLastWindowSize();
 		void SetUpLastWindowLocation();
 		void SetUpLastWindowState();
+		void InitializeFavoritePictures();
 
 		array<String^>^ GetFilesCurrentDirectory(String^ directory);
 		bool IsCorrectExtension(String^ extension);

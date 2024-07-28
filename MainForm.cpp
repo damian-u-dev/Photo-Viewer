@@ -15,6 +15,7 @@ PhotoViewer::MainForm::MainForm(String^ pathToOpenedPicture)
 	FindOutIndexOpenedPicture(pathToOpenedPicture);
 	SettingUpPictureBox();
 	SetUpWindowForm();
+	InitializeFavoritePictures();
 }
 
 void PhotoViewer::MainForm::SetUpWindowForm()
@@ -76,6 +77,12 @@ void PhotoViewer::MainForm::SetUpLastWindowState()
 	{
 		WindowState = FormWindowState::Maximized;
 	}
+}
+
+void PhotoViewer::MainForm::InitializeFavoritePictures()
+{
+	FavoritePictures.AddRange(File::ReadAllLines(PATH_FAVORITE_PICTURES));
+	CheckFavoritePicturesOnExist();
 }
 
 array<String^>^ PhotoViewer::MainForm::GetFilesCurrentDirectory(String^ pathToPicture)
