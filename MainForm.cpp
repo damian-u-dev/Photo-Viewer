@@ -18,15 +18,21 @@ PhotoViewer::MainForm::MainForm(String^ pathToOpenedPicture)
 
 void PhotoViewer::MainForm::SetUpWindowForm()
 {
-	SetUpLastWindowSize();
-	SetUpLastWindowLocation();
-	SetUpLastWindowState();
+	if (Directory::Exists(DIRECTORY_SETTINGS))
+	{
+		SetUpLastWindowSize();
+		SetUpLastWindowLocation();
+		SetUpLastWindowState();
+		SetUpWindowColor();
+	}
 	SetUpButtons();
-	SetUpWindowColor();
 }
 
 void PhotoViewer::MainForm::SetUpLastWindowSize()
 {
+	if (!File::Exists(PATH_LAST_WINDOW_SIZE))
+		return;
+
 	array<String^>^ LastWindowSize = File::ReadAllLines(PATH_LAST_WINDOW_SIZE);
 
 
@@ -39,6 +45,9 @@ void PhotoViewer::MainForm::SetUpLastWindowSize()
 
 void PhotoViewer::MainForm::SetUpLastWindowLocation()
 {
+	if (!File::Exists(PATH_LAST_WINDOW_LOCATION))
+		return;
+
 	array<String^>^ LastWindowLocation = File::ReadAllLines(PATH_LAST_WINDOW_LOCATION);
 
 	int LastX = Convert::ToInt32(LastWindowLocation[0]);
@@ -52,6 +61,9 @@ void PhotoViewer::MainForm::SetUpLastWindowLocation()
 
 void PhotoViewer::MainForm::SetUpLastWindowState()
 {
+	if (!File::Exists(PATH_LAST_WINDOW_STATE))
+		return;
+
 	String^ LastWindowModeStr = File::ReadAllText(PATH_LAST_WINDOW_STATE);
 
 	if (LastWindowModeStr == "Normal")
@@ -118,17 +130,19 @@ void PhotoViewer::MainForm::CheckFavoritePicturesOnExist()
 
 void PhotoViewer::MainForm::SaveSettingsForm()
 {
-	if (Directory::Exists(DIRECTORY_SETTINGS))
+	if (!Directory::Exists(DIRECTORY_SETTINGS))
 	{
-		if (WindowState == FormWindowState::Normal)
-		{
-			SaveLastWindowSize();
-			SaveLastWindowLocation();
-		}
-
-		SaveLastWindowState();
-		SaveWindowColor();
+		Directory::CreateDirectory(DIRECTORY_SETTINGS);
 	}
+
+	if (WindowState == FormWindowState::Normal)
+	{
+		SaveLastWindowSize();
+		SaveLastWindowLocation();
+	}
+
+	SaveLastWindowState();
+	SaveWindowColor();
 }
 
 void PhotoViewer::MainForm::SaveLastWindowSize()
@@ -158,7 +172,7 @@ void PhotoViewer::MainForm::SaveLastWindowState()
 
 void PhotoViewer::MainForm::SaveWindowColor()
 {
-	File::WriteAllText(PATH_WINDOW_COLOR,this->BackColor.Name);
+	File::WriteAllText(PATH_WINDOW_COLOR, this->BackColor.Name);
 }
 
 PhotoViewer::MainForm::~MainForm()
@@ -188,7 +202,7 @@ void PhotoViewer::MainForm::MainForm_KeyDown(System::Object^ sender, System::Win
 	}
 	if (e->KeyCode == Keys::Escape && IsFullView)
 	{
-		fullViewToolStripMenuItem_Click(nullptr,nullptr);
+		FullViewToolStripMenuItem_Click(nullptr, nullptr);
 	}
 }
 
@@ -305,7 +319,7 @@ void PhotoViewer::MainForm::ShowToolMenuForFavoriteMode(bool Value)
 	exitFromFavoriteModeToolStripMenuItem->Visible = Value;
 }
 
-void PhotoViewer::MainForm::SetColorForm(Color BackColor, Color ForeColor,Color ColorMenuStrip,Color ForeColorButtons)
+void PhotoViewer::MainForm::SetColorForm(Color BackColor, Color ForeColor, Color ColorMenuStrip, Color ForeColorButtons)
 {
 	this->BackColor = BackColor;
 
@@ -329,7 +343,7 @@ void PhotoViewer::MainForm::SetColorForm(Color BackColor, Color ForeColor,Color 
 
 	switchToFavoritePicturesToolStripMenuItem->BackColor = BackColor;
 	switchToFavoritePicturesToolStripMenuItem->ForeColor = ForeColor;
-	
+
 	removePictureFromFavoriteToolStripMenuItem->BackColor = BackColor;
 	removePictureFromFavoriteToolStripMenuItem->ForeColor = ForeColor;
 
@@ -350,15 +364,21 @@ void PhotoViewer::MainForm::SetColorForm(Color BackColor, Color ForeColor,Color 
 	FileToolStripMenuItem->ForeColor = ForeColor;
 	favoritePicturesToolStripMenuItem->ForeColor = ForeColor;
 	settingsToolStripMenuItem->ForeColor = ForeColor;
-		
+
 	bNextPicture->ForeColor = ForeColorButtons;
 	bPreviousPicture->ForeColor = ForeColorButtons;
 }
 
 void PhotoViewer::MainForm::SetUpWindowColor()
 {
+	if (!File::Exists(PATH_WINDOW_COLOR))
+	{
+		lightToolStripMenuItem_Click(nullptr, nullptr);
+		return;
+	}
+
 	String^ LastColor = File::ReadAllText(PATH_WINDOW_COLOR);
-	
+
 	if (LastColor == Color::DimGray.Name)
 	{
 		DarkToolStripMenuItem_Click(nullptr, nullptr);
@@ -452,7 +472,7 @@ void PhotoViewer::MainForm::DarkToolStripMenuItem_Click(System::Object^ sender, 
 	lightToolStripMenuItem->Checked = false;
 	darkToolStripMenuItem->Checked = true;
 
-	SetColorForm(Color::DimGray, Color::White,Color::DimGray, Color::Indigo);
+	SetColorForm(Color::DimGray, Color::White, Color::DimGray, Color::Indigo);
 }
 
 void PhotoViewer::MainForm::lightToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
@@ -461,14 +481,14 @@ void PhotoViewer::MainForm::lightToolStripMenuItem_Click(System::Object^ sender,
 	darkToolStripMenuItem->Checked = false;
 
 	Color DefaultBackColorForm = Color::FromArgb(255, 240, 240, 240);
-	Color DefaultForeColorForm = Color::FromArgb(255,0,0,0);
-	
-	SetColorForm(DefaultBackColorForm, DefaultForeColorForm, Color::WhiteSmoke,Color::Black);
+	Color DefaultForeColorForm = Color::FromArgb(255, 0, 0, 0);
+
+	SetColorForm(DefaultBackColorForm, DefaultForeColorForm, Color::WhiteSmoke, Color::Black);
 }
 
 System::Void PhotoViewer::MainForm::FullViewToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 {
-	if(!IsFullView)
+	if (!IsFullView)
 	{
 		IsFullView = true;
 		this->WindowState = FormWindowState::Maximized;
@@ -479,7 +499,7 @@ System::Void PhotoViewer::MainForm::FullViewToolStripMenuItem_Click(System::Obje
 	else
 	{
 		IsFullView = false;
-		
+
 		this->WindowState = FormWindowState::Normal;
 		this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::Sizable;
 
