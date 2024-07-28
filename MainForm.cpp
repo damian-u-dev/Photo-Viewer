@@ -25,6 +25,7 @@ void PhotoViewer::MainForm::SetUpWindowForm()
 		SetUpLastWindowLocation();
 		SetUpLastWindowState();
 		SetUpWindowColor();
+		SetUpUserFont();
 	}
 	SetUpButtons();
 }
@@ -140,6 +141,7 @@ void PhotoViewer::MainForm::SaveSettingsForm()
 	{
 		SaveLastWindowSize();
 		SaveLastWindowLocation();
+		SaveUserFont();
 	}
 
 	SaveLastWindowState();
@@ -174,6 +176,12 @@ void PhotoViewer::MainForm::SaveLastWindowState()
 void PhotoViewer::MainForm::SaveWindowColor()
 {
 	File::WriteAllText(PATH_WINDOW_COLOR, this->BackColor.Name);
+}
+
+void PhotoViewer::MainForm::SaveUserFont()
+{
+	File::WriteAllText(PATH_FONT, FileToolStripMenuItem->Font->Name);
+	File::WriteAllText(PATH_SIZE_FONT, FileToolStripMenuItem->Font->Size.ToString());
 }
 
 PhotoViewer::MainForm::~MainForm()
@@ -394,6 +402,24 @@ void PhotoViewer::MainForm::SetUpWindowColor()
 	{
 		lightToolStripMenuItem_Click(nullptr, nullptr);
 	}
+}
+
+void PhotoViewer::MainForm::SetUpUserFont()
+{
+	if (!File::Exists(PATH_FONT))
+		return;
+
+	String^ UserFont = File::ReadAllText(PATH_FONT);
+
+	double SizeFont{ };
+	if (!File::Exists(PATH_SIZE_FONT))
+	{
+		SizeFont = 8.0;
+	}
+
+	SizeFont = Convert::ToDouble(File::ReadAllText(PATH_SIZE_FONT));
+
+	SetUserFont(% System::Drawing::Font(UserFont, SizeFont));
 }
 
 void PhotoViewer::MainForm::SetUserFont(System::Drawing::Font^ UserFont)

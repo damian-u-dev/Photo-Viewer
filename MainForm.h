@@ -38,9 +38,13 @@ namespace PhotoViewer
 		String^ PATH_LAST_WINDOW_LOCATION = R"(D:\Settings\LastWindowLocation.txt)";
 		String^ PATH_LAST_WINDOW_STATE = R"(D:\Settings\LastWindowState.txt)";
 		String^ PATH_FAVORITE_PICTURES = R"(D:\Settings\FavoritePictures.txt)";
+		String^ PATH_FONT = R"(D:\Settings\Font.txt)";
+		String^ PATH_SIZE_FONT = R"(D:\Settings\SizeFont.txt)";
+
 	private: System::Windows::Forms::ToolStripMenuItem^ fullViewToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ exitToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ changeFontToolStripMenuItem;
+
 	public:
 
 	public:
@@ -68,6 +72,7 @@ namespace PhotoViewer
 		void SaveLastWindowLocation();
 		void SaveLastWindowState();
 		void SaveWindowColor();
+		void SaveUserFont();
 
 		void CopyCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 		void MainForm_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e);
@@ -84,6 +89,7 @@ namespace PhotoViewer
 		void ShowToolMenuForFavoriteMode(bool Value);
 		void SetColorForm(Color BackColor, Color ForeColor, Color ColorMenuStrip, Color ForeColorButtons);
 		void SetUpWindowColor();
+		void SetUpUserFont();
 		void SetUserFont(System::Drawing::Font^ UserFont);
 
 		bool IsThisPictureFavorite(String^ CurrentPicture);
@@ -138,10 +144,10 @@ namespace PhotoViewer
 			   this->themeToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->lightToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->darkToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			   this->changeFontToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->SplitContainer2 = (gcnew System::Windows::Forms::SplitContainer());
 			   this->bNextPicture = (gcnew System::Windows::Forms::Button());
 			   this->bPreviousPicture = (gcnew System::Windows::Forms::Button());
+			   this->changeFontToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->SplitContainer))->BeginInit();
 			   this->SplitContainer->Panel1->SuspendLayout();
 			   this->SplitContainer->Panel2->SuspendLayout();
@@ -317,23 +323,16 @@ namespace PhotoViewer
 			   this->lightToolStripMenuItem->Checked = true;
 			   this->lightToolStripMenuItem->CheckState = System::Windows::Forms::CheckState::Checked;
 			   this->lightToolStripMenuItem->Name = L"lightToolStripMenuItem";
-			   this->lightToolStripMenuItem->Size = System::Drawing::Size(101, 22);
+			   this->lightToolStripMenuItem->Size = System::Drawing::Size(180, 22);
 			   this->lightToolStripMenuItem->Text = L"Light";
 			   this->lightToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::lightToolStripMenuItem_Click);
 			   // 
 			   // darkToolStripMenuItem
 			   // 
 			   this->darkToolStripMenuItem->Name = L"darkToolStripMenuItem";
-			   this->darkToolStripMenuItem->Size = System::Drawing::Size(101, 22);
+			   this->darkToolStripMenuItem->Size = System::Drawing::Size(180, 22);
 			   this->darkToolStripMenuItem->Text = L"Dark";
 			   this->darkToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::DarkToolStripMenuItem_Click);
-			   // 
-			   // changeFontToolStripMenuItem
-			   // 
-			   this->changeFontToolStripMenuItem->Name = L"changeFontToolStripMenuItem";
-			   this->changeFontToolStripMenuItem->Size = System::Drawing::Size(180, 22);
-			   this->changeFontToolStripMenuItem->Text = L"Change Font";
-			   this->changeFontToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::ChangeFontToolStripMenuItem_Click);
 			   // 
 			   // SplitContainer2
 			   // 
@@ -376,6 +375,13 @@ namespace PhotoViewer
 			   this->bPreviousPicture->Text = L"<-";
 			   this->bPreviousPicture->UseVisualStyleBackColor = true;
 			   this->bPreviousPicture->Click += gcnew System::EventHandler(this, &MainForm::bPreviousPicture_Click);
+			   // 
+			   // changeFontToolStripMenuItem
+			   // 
+			   this->changeFontToolStripMenuItem->Name = L"changeFontToolStripMenuItem";
+			   this->changeFontToolStripMenuItem->Size = System::Drawing::Size(180, 22);
+			   this->changeFontToolStripMenuItem->Text = L"Change Font";
+			   this->changeFontToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::ChangeFontToolStripMenuItem_Click);
 			   // 
 			   // MainForm
 			   // 
