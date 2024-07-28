@@ -123,7 +123,7 @@ void PhotoViewer::MainForm::FindOutIndexOpenedPicture(String^ pathToOpenedPictur
 
 void PhotoViewer::MainForm::SettingUpPictureBox()
 {
-	PictureBox->Image = Image::FromFile(Pictures[IndexCurrentPicture]->ToString());
+	SetPicture(Pictures[IndexCurrentPicture]->ToString());
 }
 
 void PhotoViewer::MainForm::CheckFavoritePicturesOnExist()
@@ -135,6 +135,18 @@ void PhotoViewer::MainForm::CheckFavoritePicturesOnExist()
 			FavoritePictures.RemoveAt(i);
 		}
 	}
+}
+
+void PhotoViewer::MainForm::SetPicture(String^ PathToPicture)
+{
+	PictureBox->Image = Image::FromFile(PathToPicture);
+	SetNewTitle(Path::GetFileNameWithoutExtension(PathToPicture));
+}
+
+void PhotoViewer::MainForm::SetNewTitle(String^ NewTitle)
+{
+	NewTitle += " - Photo-Viewer";
+	this->Text = NewTitle;
 }
 
 void PhotoViewer::MainForm::SaveSettingsForm()
@@ -235,7 +247,7 @@ void PhotoViewer::MainForm::SwitchPicture(const int lastOrFirstPicture, const in
 			IndexCurrentPicture = addValue;
 		}
 
-		PictureBox->Image = Image::FromFile(Pictures[IndexCurrentPicture]->ToString());
+		SetPicture(Pictures[IndexCurrentPicture]->ToString());
 	}
 	else
 	{
@@ -247,8 +259,8 @@ void PhotoViewer::MainForm::SwitchPicture(const int lastOrFirstPicture, const in
 		{
 			IndexFavoritePicture = addValue;
 		}
-
-		PictureBox->Image = Image::FromFile(FavoritePictures[IndexFavoritePicture]->ToString());
+		
+		SetPicture(FavoritePictures[IndexFavoritePicture]->ToString());
 	}
 }
 
@@ -499,7 +511,7 @@ void PhotoViewer::MainForm::SwitchToFavoritePicturesToolStripMenuItem_Click(Syst
 		ShowToolMenuForFavoriteMode(true);
 
 		SetUpButtons();
-		PictureBox->Image = Image::FromFile(FavoritePictures[IndexFavoritePicture]->ToString());
+		SetPicture(FavoritePictures[IndexFavoritePicture]->ToString());
 	}
 	else
 	{
@@ -531,14 +543,14 @@ System::Void PhotoViewer::MainForm::RemovePictureFromFavoriteToolStripMenuItem_C
 		}
 
 		SetUpButtons();
-		PictureBox->Image = Image::FromFile(FavoritePictures[IndexFavoritePicture]->ToString());
+		SetPicture(FavoritePictures[IndexFavoritePicture]->ToString());
 	}
 }
 
 System::Void PhotoViewer::MainForm::ExitFromFavoriteModeToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	ViewMode = PictureViewMode::FromDirectory;
-	PictureBox->Image = Image::FromFile(Pictures[IndexCurrentPicture]->ToString());
+	SetPicture(Pictures[IndexCurrentPicture]->ToString());
 
 	ShowToolMenuForFavoriteMode(false);
 

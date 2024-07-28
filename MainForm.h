@@ -67,6 +67,8 @@ namespace PhotoViewer
 		void FindOutIndexOpenedPicture(String^ pathToOpenedPicture);
 		void SettingUpPictureBox();
 		void CheckFavoritePicturesOnExist();
+		void SetPicture(String^ PathToPicture);
+		void SetNewTitle(String^ NewTitle);
 
 		~MainForm();
 		void SaveSettingsForm();
