@@ -351,7 +351,14 @@ void PhotoViewer::MainForm::OpenDirectoryCurrentPictureToolStripMenuItem_Click(S
 
 void PhotoViewer::MainForm::CopyNameOfCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 {
-	Clipboard::SetText(Path::GetFileNameWithoutExtension(Pictures[IndexCurrentPicture]->ToString()));
+	if(ViewMode == PictureViewMode::FromDirectory)
+	{
+		Clipboard::SetText(Path::GetFileNameWithoutExtension(Pictures[IndexCurrentPicture]->ToString()));
+	}
+	else
+	{
+		Clipboard::SetText(Path::GetFileNameWithoutExtension(FavoritePictures[IndexFavoritePicture]->ToString()));
+	}
 }
 
 bool PhotoViewer::MainForm::IsOnePictureInArray()
