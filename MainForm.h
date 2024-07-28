@@ -39,6 +39,7 @@ namespace PhotoViewer
 		String^ PATH_LAST_WINDOW_STATE = R"(D:\Settings\LastWindowState.txt)";
 		String^ PATH_FAVORITE_PICTURES = R"(D:\Settings\FavoritePictures.txt)";
 	private: System::Windows::Forms::ToolStripMenuItem^ fullViewToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ exitToolStripMenuItem;
 	public:
 
 	public:
@@ -125,6 +126,7 @@ namespace PhotoViewer
 			   this->openDirectoryCurrentPictureToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->copyNameOfCurrentPictureToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->fullViewToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			   this->exitToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->favoritePicturesToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->savePictureLikeFavoriteToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->switchToFavoritePicturesToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
@@ -192,9 +194,10 @@ namespace PhotoViewer
 			   // 
 			   // FileToolStripMenuItem
 			   // 
-			   this->FileToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(4) {
+			   this->FileToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(5) {
 				   this->CopyCurrentPictureToolStripMenuItem,
-					   this->openDirectoryCurrentPictureToolStripMenuItem, this->copyNameOfCurrentPictureToolStripMenuItem, this->fullViewToolStripMenuItem
+					   this->openDirectoryCurrentPictureToolStripMenuItem, this->copyNameOfCurrentPictureToolStripMenuItem, this->fullViewToolStripMenuItem,
+					   this->exitToolStripMenuItem
 			   });
 			   this->FileToolStripMenuItem->Name = L"FileToolStripMenuItem";
 			   this->FileToolStripMenuItem->Size = System::Drawing::Size(37, 20);
@@ -233,6 +236,15 @@ namespace PhotoViewer
 			   this->fullViewToolStripMenuItem->Size = System::Drawing::Size(318, 22);
 			   this->fullViewToolStripMenuItem->Text = L"Full View";
 			   this->fullViewToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::FullViewToolStripMenuItem_Click);
+			   // 
+			   // exitToolStripMenuItem
+			   // 
+			   this->exitToolStripMenuItem->Name = L"exitToolStripMenuItem";
+			   this->exitToolStripMenuItem->ShortcutKeyDisplayString = L"";
+			   this->exitToolStripMenuItem->ShortcutKeys = static_cast<System::Windows::Forms::Keys>((System::Windows::Forms::Keys::Control | System::Windows::Forms::Keys::W));
+			   this->exitToolStripMenuItem->Size = System::Drawing::Size(318, 22);
+			   this->exitToolStripMenuItem->Text = L"Exit";
+			   this->exitToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::ExitToolStripMenuItem_Click);
 			   // 
 			   // favoritePicturesToolStripMenuItem
 			   // 
@@ -380,6 +392,7 @@ namespace PhotoViewer
 
 		   }
 #pragma endregion
-	private: System::Void FullViewToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+	private: void FullViewToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+	private: void ExitToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 };
 }

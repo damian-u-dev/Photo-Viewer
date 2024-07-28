@@ -340,6 +340,9 @@ void PhotoViewer::MainForm::SetColorForm(Color BackColor, Color ForeColor, Color
 	fullViewToolStripMenuItem->BackColor = BackColor;
 	fullViewToolStripMenuItem->ForeColor = ForeColor;
 
+	exitToolStripMenuItem->BackColor = BackColor;
+	exitToolStripMenuItem->ForeColor = ForeColor;
+
 	//FavoritePicture toolstrip
 	savePictureLikeFavoriteToolStripMenuItem->BackColor = BackColor;
 	savePictureLikeFavoriteToolStripMenuItem->ForeColor = ForeColor;
@@ -489,7 +492,7 @@ void PhotoViewer::MainForm::lightToolStripMenuItem_Click(System::Object^ sender,
 	SetColorForm(DefaultBackColorForm, DefaultForeColorForm, Color::WhiteSmoke, Color::Black);
 }
 
-System::Void PhotoViewer::MainForm::FullViewToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
+void PhotoViewer::MainForm::FullViewToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	if (!IsFullView)
 	{
@@ -510,4 +513,9 @@ System::Void PhotoViewer::MainForm::FullViewToolStripMenuItem_Click(System::Obje
 
 		this->menuStrip1->Visible = true;
 	}
+}
+
+void PhotoViewer::MainForm::ExitToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	Close();
 }
