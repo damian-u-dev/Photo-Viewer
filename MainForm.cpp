@@ -18,6 +18,57 @@ PhotoViewer::MainForm::MainForm(String^ pathToOpenedPicture)
 	InitializeFavoritePictures();
 }
 
+void PhotoViewer::MainForm::SortFiles(array<String^>^ AllFiles)
+{
+	for (int i = 0; i < AllFiles->Length; i++)
+	{
+		if (IsCorrectExtension(AllFiles[i]))
+		{
+			Pictures.Add(AllFiles[i]);
+		}
+	}
+	IndexLastPicture = Pictures.Count - 1;
+}
+
+void PhotoViewer::MainForm::FindOutIndexOpenedPicture(String^ pathToOpenedPicture)
+{
+	for (int i = 0; i < Pictures.Count; i++)
+	{
+		if (Pictures[i]->Equals(pathToOpenedPicture))
+		{
+			IndexCurrentPicture = i;
+			break;
+		}
+	}
+}
+
+void PhotoViewer::MainForm::SettingUpPictureBox()
+{
+	SetPicture(Pictures[IndexCurrentPicture]->ToString());
+}
+
+void PhotoViewer::MainForm::SetPicture(String^ PathToPicture)
+{
+	PictureBox->Image = Image::FromFile(PathToPicture);
+	SetNewTitle(Path::GetFileNameWithoutExtension(PathToPicture));
+}
+
+void PhotoViewer::MainForm::SetNewTitle(String^ NewTitle)
+{
+	NewTitle += " - Photo-Viewer";
+	this->Text = NewTitle;
+}
+
+void PhotoViewer::MainForm::InitializeFavoritePictures()
+{
+	if (!File::Exists(PATH_FAVORITE_PICTURES))
+		return;
+
+	FavoritePictures.AddRange(File::ReadAllLines(PATH_FAVORITE_PICTURES));
+	CheckFavoritePicturesOnExist();
+}
+
+
 void PhotoViewer::MainForm::SetUpWindowForm()
 {
 	if (Directory::Exists(DIRECTORY_SETTINGS))
@@ -79,10 +130,42 @@ void PhotoViewer::MainForm::SetUpLastWindowState()
 	}
 }
 
-void PhotoViewer::MainForm::InitializeFavoritePictures()
+void PhotoViewer::MainForm::SetUpWindowColor()
 {
-	FavoritePictures.AddRange(File::ReadAllLines(PATH_FAVORITE_PICTURES));
-	CheckFavoritePicturesOnExist();
+	if (!File::Exists(PATH_WINDOW_COLOR))
+	{
+		lightToolStripMenuItem_Click(nullptr, nullptr);
+		return;
+	}
+
+	String^ LastColor = File::ReadAllText(PATH_WINDOW_COLOR);
+
+	if (LastColor == Color::DimGray.Name)
+	{
+		DarkToolStripMenuItem_Click(nullptr, nullptr);
+	}
+	else
+	{
+		lightToolStripMenuItem_Click(nullptr, nullptr);
+	}
+}
+
+void PhotoViewer::MainForm::SetUpUserFont()
+{
+	if (!File::Exists(PATH_FONT))
+		return;
+
+	String^ UserFont = File::ReadAllText(PATH_FONT);
+
+	double SizeFont{ };
+	if (!File::Exists(PATH_SIZE_FONT))
+	{
+		SizeFont = 8.0;
+	}
+
+	SizeFont = Convert::ToDouble(File::ReadAllText(PATH_SIZE_FONT));
+
+	SetUserFont(% System::Drawing::Font(UserFont, SizeFont));
 }
 
 array<String^>^ PhotoViewer::MainForm::GetFilesCurrentDirectory(String^ pathToPicture)
@@ -97,35 +180,6 @@ bool PhotoViewer::MainForm::IsCorrectExtension(String^ extension)
 		extension->EndsWith(".jpg") || extension->EndsWith(".gif"));
 }
 
-void PhotoViewer::MainForm::SortFiles(array<String^>^ AllFiles)
-{
-	for (int i = 0; i < AllFiles->Length; i++)
-	{
-		if (IsCorrectExtension(AllFiles[i]))
-		{
-			Pictures.Add(AllFiles[i]);
-		}
-	}
-	IndexLastPicture = Pictures.Count - 1;
-}
-
-void PhotoViewer::MainForm::FindOutIndexOpenedPicture(String^ pathToOpenedPicture)
-{
-	for (int i = 0; i < Pictures.Count; i++)
-	{
-		if (Pictures[i]->Equals(pathToOpenedPicture))
-		{
-			IndexCurrentPicture = i;
-			break;
-		}
-	}
-}
-
-void PhotoViewer::MainForm::SettingUpPictureBox()
-{
-	SetPicture(Pictures[IndexCurrentPicture]->ToString());
-}
-
 void PhotoViewer::MainForm::CheckFavoritePicturesOnExist()
 {
 	for (int i = 0; i < FavoritePictures.Count; i++)
@@ -137,17 +191,6 @@ void PhotoViewer::MainForm::CheckFavoritePicturesOnExist()
 	}
 }
 
-void PhotoViewer::MainForm::SetPicture(String^ PathToPicture)
-{
-	PictureBox->Image = Image::FromFile(PathToPicture);
-	SetNewTitle(Path::GetFileNameWithoutExtension(PathToPicture));
-}
-
-void PhotoViewer::MainForm::SetNewTitle(String^ NewTitle)
-{
-	NewTitle += " - Photo-Viewer";
-	this->Text = NewTitle;
-}
 
 void PhotoViewer::MainForm::SaveSettingsForm()
 {
@@ -349,11 +392,7 @@ void PhotoViewer::MainForm::SaveFavoritePicturesPaths()
 	File::WriteAllLines(PATH_FAVORITE_PICTURES, % list);
 }
 
-void PhotoViewer::MainForm::ShowToolMenuForFavoriteMode(bool Value)
-{
-	removePictureFromFavoriteToolStripMenuItem->Visible = Value;
-	exitFromFavoriteModeToolStripMenuItem->Visible = Value;
-}
+
 
 void PhotoViewer::MainForm::SetColorForm(Color BackColor, Color ForeColor, Color ColorMenuStrip, Color ForeColorButtons)
 {
@@ -417,44 +456,6 @@ void PhotoViewer::MainForm::SetColorForm(Color BackColor, Color ForeColor, Color
 	bPreviousPicture->ForeColor = ForeColorButtons;
 }
 
-void PhotoViewer::MainForm::SetUpWindowColor()
-{
-	if (!File::Exists(PATH_WINDOW_COLOR))
-	{
-		lightToolStripMenuItem_Click(nullptr, nullptr);
-		return;
-	}
-
-	String^ LastColor = File::ReadAllText(PATH_WINDOW_COLOR);
-
-	if (LastColor == Color::DimGray.Name)
-	{
-		DarkToolStripMenuItem_Click(nullptr, nullptr);
-	}
-	else
-	{
-		lightToolStripMenuItem_Click(nullptr, nullptr);
-	}
-}
-
-void PhotoViewer::MainForm::SetUpUserFont()
-{
-	if (!File::Exists(PATH_FONT))
-		return;
-
-	String^ UserFont = File::ReadAllText(PATH_FONT);
-
-	double SizeFont{ };
-	if (!File::Exists(PATH_SIZE_FONT))
-	{
-		SizeFont = 8.0;
-	}
-
-	SizeFont = Convert::ToDouble(File::ReadAllText(PATH_SIZE_FONT));
-
-	SetUserFont(% System::Drawing::Font(UserFont, SizeFont));
-}
-
 void PhotoViewer::MainForm::SetUserFont(System::Drawing::Font^ UserFont)
 {
 	//File ToolStrip Menu
@@ -500,6 +501,12 @@ bool PhotoViewer::MainForm::IsThisPictureFavorite(String^ CurrentPicture)
 		}
 	}
 	return false;
+}
+
+void PhotoViewer::MainForm::ShowToolMenuForFavoriteMode(bool Value)
+{
+	removePictureFromFavoriteToolStripMenuItem->Visible = Value;
+	exitFromFavoriteModeToolStripMenuItem->Visible = Value;
 }
 
 void PhotoViewer::MainForm::SwitchToFavoritePicturesToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)

@@ -33,6 +33,7 @@ namespace PhotoViewer
 		
 		PictureViewMode ViewMode = PictureViewMode::FromDirectory;
 
+#ifdef _DEBUG
 		String^ DIRECTORY_SETTINGS = R"(D:\Settings)";
 		String^ PATH_LAST_WINDOW_SIZE = R"(D:\Settings\LastWindowSize.txt)";
 		String^ PATH_LAST_WINDOW_LOCATION = R"(D:\Settings\LastWindowLocation.txt)";
@@ -40,32 +41,39 @@ namespace PhotoViewer
 		String^ PATH_FAVORITE_PICTURES = R"(D:\Settings\FavoritePictures.txt)";
 		String^ PATH_FONT = R"(D:\Settings\Font.txt)";
 		String^ PATH_SIZE_FONT = R"(D:\Settings\SizeFont.txt)";
-
-	private: System::Windows::Forms::ToolStripMenuItem^ fullViewToolStripMenuItem;
-	private: System::Windows::Forms::ToolStripMenuItem^ exitToolStripMenuItem;
-	private: System::Windows::Forms::ToolStripMenuItem^ changeFontToolStripMenuItem;
-	private: System::Windows::Forms::ToolStripMenuItem^ resetFontToolStripMenuItem;
-
-	public:
-
-	public:
 		String^ PATH_WINDOW_COLOR = R"(D:\Settings\WindowColor.txt)";
 
+#endif // _DEBUG
+
+#ifndef _DEBUG
+		String^ DIRECTORY_SETTINGS = R"(C:\ProgramData\Photo-Viewer)";
+		String^ PATH_LAST_WINDOW_SIZE = R"(C:\ProgramData\Photo-Viewer\LastWindowSize.txt)";
+		String^ PATH_LAST_WINDOW_LOCATION = R"(C:\ProgramData\Photo-Viewer\LastWindowLocation.txt)";
+		String^ PATH_LAST_WINDOW_STATE = R"(C:\ProgramData\Photo-Viewer\LastWindowState.txt)";
+		String^ PATH_FAVORITE_PICTURES = R"(C:\ProgramData\Photo-Viewer\FavoritePictures.txt)";
+		String^ PATH_FONT = R"(C:\ProgramData\Photo-Viewer\Font.txt)";
+		String^ PATH_SIZE_FONT = R"(C:\ProgramData\Photo-Viewer\SizeFont.txt)";
+		String^ PATH_WINDOW_COLOR = R"(C:\ProgramData\Photo-Viewer\WindowColor.txt)";
+#endif // !_DEBUG
+
+
 	public:
-
-
 		MainForm(String^ directoryToFirstPhoto);
+		void SortFiles(array<String^>^ AllFiles);
+		void FindOutIndexOpenedPicture(String^ pathToOpenedPicture);
+		void SettingUpPictureBox();
+		
 		void SetUpWindowForm();
 		void SetUpLastWindowSize();
 		void SetUpLastWindowLocation();
 		void SetUpLastWindowState();
+		void SetUpWindowColor();
+		void SetUpUserFont();
+		void SetUserFont(System::Drawing::Font^ UserFont);
 		void InitializeFavoritePictures();
 
 		array<String^>^ GetFilesCurrentDirectory(String^ directory);
 		bool IsCorrectExtension(String^ extension);
-		void SortFiles(array<String^>^ AllFiles);
-		void FindOutIndexOpenedPicture(String^ pathToOpenedPicture);
-		void SettingUpPictureBox();
 		void CheckFavoritePicturesOnExist();
 		void SetPicture(String^ PathToPicture);
 		void SetNewTitle(String^ NewTitle);
@@ -78,23 +86,14 @@ namespace PhotoViewer
 		void SaveWindowColor();
 		void SaveUserFont();
 
-		void CopyCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 		void MainForm_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e);
 
 		void SwitchPicture(const int lastOrFirstPicture, const int initializeValue, const int addValue);
-		void bNextPicture_Click(System::Object^ sender, System::EventArgs^ e);
-		void bPreviousPicture_Click(System::Object^ sender, System::EventArgs^ e);
-
-		void OpenDirectoryCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
-		void CopyNameOfCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 		bool IsOnePictureInArray();
 		void SetUpButtons();
 		void SaveFavoritePicturesPaths();
 		void ShowToolMenuForFavoriteMode(bool Value);
 		void SetColorForm(Color BackColor, Color ForeColor, Color ColorMenuStrip, Color ForeColorButtons);
-		void SetUpWindowColor();
-		void SetUpUserFont();
-		void SetUserFont(System::Drawing::Font^ UserFont);
 
 		bool IsThisPictureFavorite(String^ CurrentPicture);
 
@@ -104,6 +103,15 @@ namespace PhotoViewer
 		void ExitFromFavoriteModeToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 		void DarkToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 		void lightToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+		void FullViewToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+		void ExitToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+		void ChangeFontToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+		void ResetFontToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+		void CopyCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+		void bNextPicture_Click(System::Object^ sender, System::EventArgs^ e);
+		void bPreviousPicture_Click(System::Object^ sender, System::EventArgs^ e);
+		void OpenDirectoryCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+		void CopyNameOfCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 
 
 	private: System::Windows::Forms::PictureBox^ PictureBox;
@@ -126,6 +134,10 @@ namespace PhotoViewer
 	private: System::Windows::Forms::ToolStripMenuItem^ themeToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ lightToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ darkToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ fullViewToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ exitToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ changeFontToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ resetFontToolStripMenuItem;
 
 #pragma region Windows Form Designer generated code
 		   void InitializeComponent(void)
@@ -423,9 +435,5 @@ namespace PhotoViewer
 
 		   }
 #pragma endregion
-	private: void FullViewToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
-	private: void ExitToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
-	private: void ChangeFontToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
-	private: void ResetFontToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 };
 }
