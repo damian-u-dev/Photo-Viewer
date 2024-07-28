@@ -337,6 +337,9 @@ void PhotoViewer::MainForm::SetColorForm(Color BackColor, Color ForeColor, Color
 	copyNameOfCurrentPictureToolStripMenuItem->BackColor = BackColor;
 	copyNameOfCurrentPictureToolStripMenuItem->ForeColor = ForeColor;
 
+	fullViewToolStripMenuItem->BackColor = BackColor;
+	fullViewToolStripMenuItem->ForeColor = ForeColor;
+
 	//FavoritePicture toolstrip
 	savePictureLikeFavoriteToolStripMenuItem->BackColor = BackColor;
 	savePictureLikeFavoriteToolStripMenuItem->ForeColor = ForeColor;
@@ -490,6 +493,8 @@ System::Void PhotoViewer::MainForm::FullViewToolStripMenuItem_Click(System::Obje
 {
 	if (!IsFullView)
 	{
+		WindowStateBeforeFullView = this->WindowState;
+
 		IsFullView = true;
 		this->WindowState = FormWindowState::Maximized;
 		this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::None;
@@ -500,7 +505,7 @@ System::Void PhotoViewer::MainForm::FullViewToolStripMenuItem_Click(System::Obje
 	{
 		IsFullView = false;
 
-		this->WindowState = FormWindowState::Normal;
+		this->WindowState = WindowStateBeforeFullView;
 		this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::Sizable;
 
 		this->menuStrip1->Visible = true;

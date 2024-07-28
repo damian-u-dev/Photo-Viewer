@@ -27,7 +27,9 @@ namespace PhotoViewer
 
 		const int INDEX_FIRST_PICTURE = 0;
 		bool OnePictureInCurrentArray = false;
+
 		bool IsFullView = false;
+		FormWindowState WindowStateBeforeFullView;
 		
 		PictureViewMode ViewMode = PictureViewMode::FromDirectory;
 
