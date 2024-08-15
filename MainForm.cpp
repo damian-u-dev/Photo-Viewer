@@ -1,6 +1,7 @@
 #include "MainForm.h"
 #include <stdlib.h>
 #include <memory>
+#include "About PV Form.h"
 
 
 using namespace System::IO;
@@ -44,7 +45,7 @@ void PhotoViewer::MainForm::FindOutIndexOpenedPicture(String^ pathToOpenedPictur
 
 void PhotoViewer::MainForm::SettingUpPictureBox()
 {
-	SetPicture(Pictures[IndexCurrentPicture]->ToString());
+	SetPicture(GetPathToPictureAtPictureBox());
 }
 
 void PhotoViewer::MainForm::SetPicture(String^ PathToPicture)
@@ -157,13 +158,13 @@ void PhotoViewer::MainForm::SetUpUserFont()
 
 	String^ UserFont = File::ReadAllText(PATH_FONT);
 
-	double SizeFont{ };
+	float SizeFont{ };
 	if (!File::Exists(PATH_SIZE_FONT))
 	{
 		SizeFont = 8.0;
 	}
 
-	SizeFont = Convert::ToDouble(File::ReadAllText(PATH_SIZE_FONT));
+	SizeFont = static_cast<float>(Convert::ToDouble(File::ReadAllText(PATH_SIZE_FONT)));
 
 	SetUserFont(% System::Drawing::Font(UserFont, SizeFont));
 }
@@ -290,7 +291,7 @@ void PhotoViewer::MainForm::SwitchPicture(const int lastOrFirstPicture, const in
 			IndexCurrentPicture = addValue;
 		}
 
-		SetPicture(Pictures[IndexCurrentPicture]->ToString());
+		SetPicture(GetPathToPictureAtPictureBox());
 	}
 	else
 	{
@@ -302,8 +303,8 @@ void PhotoViewer::MainForm::SwitchPicture(const int lastOrFirstPicture, const in
 		{
 			IndexFavoritePicture = addValue;
 		}
-		
-		SetPicture(FavoritePictures[IndexFavoritePicture]->ToString());
+
+		SetPicture(GetPathToPictureAtPictureBox());
 	}
 }
 
@@ -334,7 +335,7 @@ void PhotoViewer::MainForm::bPreviousPicture_Click(System::Object^ sender, Syste
 void PhotoViewer::MainForm::OpenDirectoryCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	String^ PathToExplorer = "\"C:\\Windows\\explorer.exe ";
-	String^ CurrentDirectory = Path::GetDirectoryName(Pictures[IndexCurrentPicture]->ToString());
+	String^ CurrentDirectory = Path::GetDirectoryName(GetPathToPictureAtPictureBox());
 
 	array<wchar_t>^ FullPath = (PathToExplorer + CurrentDirectory)->ToCharArray();
 
@@ -351,14 +352,17 @@ void PhotoViewer::MainForm::OpenDirectoryCurrentPictureToolStripMenuItem_Click(S
 
 void PhotoViewer::MainForm::CopyNameOfCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 {
-	if(ViewMode == PictureViewMode::FromDirectory)
-	{
-		Clipboard::SetText(Path::GetFileNameWithoutExtension(Pictures[IndexCurrentPicture]->ToString()));
-	}
-	else
-	{
-		Clipboard::SetText(Path::GetFileNameWithoutExtension(FavoritePictures[IndexFavoritePicture]->ToString()));
-	}
+	Clipboard::SetText(Path::GetFileNameWithoutExtension(GetPathToPictureAtPictureBox()));
+}
+
+System::Void PhotoViewer::MainForm::AboutPhotoViewerToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	AboutPVForm AboutPhotoViewer;
+	//AboutPhotoViewer = "About Photo Viewer";
+	Color FontColor = (this->BackColor.Name == "DimGray") ? Color::White : Color::Black;
+
+	AboutPhotoViewer.SetColorForm(this->BackColor, FontColor);
+	AboutPhotoViewer.ShowDialog();
 }
 
 bool PhotoViewer::MainForm::IsOnePictureInArray()
@@ -454,6 +458,9 @@ void PhotoViewer::MainForm::SetColorForm(Color BackColor, Color ForeColor, Color
 	resetFontToolStripMenuItem->BackColor = BackColor;
 	resetFontToolStripMenuItem->ForeColor = ForeColor;
 
+	aboutPhotoViewerToolStripMenuItem->BackColor = BackColor;
+	aboutPhotoViewerToolStripMenuItem->ForeColor= ForeColor;
+
 	//TooStripMenu
 	FileToolStripMenuItem->ForeColor = ForeColor;
 	favoritePicturesToolStripMenuItem->ForeColor = ForeColor;
@@ -491,9 +498,10 @@ void PhotoViewer::MainForm::SavePictureLikeFavoriteToolStripMenuItem_Click(Syste
 {
 	if (ViewMode == PictureViewMode::FromDirectory)
 	{
-		if (!IsThisPictureFavorite(Pictures[IndexCurrentPicture]->ToString()))
+		String^ CurrentPicture = GetPathToPictureAtPictureBox();
+		if (!IsThisPictureFavorite(CurrentPicture))
 		{
-			FavoritePictures.Add(Pictures[IndexCurrentPicture]);
+			FavoritePictures.Add(CurrentPicture);
 		}
 	}
 }
@@ -508,6 +516,18 @@ bool PhotoViewer::MainForm::IsThisPictureFavorite(String^ CurrentPicture)
 		}
 	}
 	return false;
+}
+
+String^ PhotoViewer::MainForm::GetPathToPictureAtPictureBox()
+{
+	if (ViewMode == PictureViewMode::FromDirectory)
+	{
+		return Pictures[IndexCurrentPicture]->ToString();
+	}
+	else
+	{
+		return FavoritePictures[IndexFavoritePicture]->ToString();
+	}
 }
 
 void PhotoViewer::MainForm::ShowToolMenuForFavoriteMode(bool Value)
@@ -525,7 +545,7 @@ void PhotoViewer::MainForm::SwitchToFavoritePicturesToolStripMenuItem_Click(Syst
 		ShowToolMenuForFavoriteMode(true);
 
 		SetUpButtons();
-		SetPicture(FavoritePictures[IndexFavoritePicture]->ToString());
+		SetPicture(GetPathToPictureAtPictureBox());
 	}
 	else
 	{
@@ -557,14 +577,14 @@ System::Void PhotoViewer::MainForm::RemovePictureFromFavoriteToolStripMenuItem_C
 		}
 
 		SetUpButtons();
-		SetPicture(FavoritePictures[IndexFavoritePicture]->ToString());
+		SetPicture(GetPathToPictureAtPictureBox());
 	}
 }
 
 System::Void PhotoViewer::MainForm::ExitFromFavoriteModeToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	ViewMode = PictureViewMode::FromDirectory;
-	SetPicture(Pictures[IndexCurrentPicture]->ToString());
+	SetPicture(GetPathToPictureAtPictureBox());
 
 	ShowToolMenuForFavoriteMode(false);
 
@@ -621,6 +641,7 @@ void PhotoViewer::MainForm::ExitToolStripMenuItem_Click(System::Object^ sender, 
 void PhotoViewer::MainForm::ChangeFontToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	FontDialog FontDialog;
+	FontDialog.Font = FileToolStripMenuItem->Font;
 	FontDialog.AllowScriptChange = false;
 	FontDialog.FontMustExist = true;
 	FontDialog.MaxSize = 14;
@@ -639,5 +660,5 @@ void PhotoViewer::MainForm::ChangeFontToolStripMenuItem_Click(System::Object^ se
 
 void PhotoViewer::MainForm::ResetFontToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 {
-	SetUserFont(% System::Drawing::Font("Segoe UI",9));
+	SetUserFont(% System::Drawing::Font("Segoe UI", 9));
 }

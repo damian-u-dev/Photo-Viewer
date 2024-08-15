@@ -18,21 +18,6 @@ namespace PhotoViewer
 			FromFavoritePictures
 		};
 	public:
-		ArrayList Pictures;
-		ArrayList FavoritePictures;
-		
-		int IndexCurrentPicture = 0;
-		int IndexFavoritePicture = 0;
-		int IndexLastPicture;
-
-		const int INDEX_FIRST_PICTURE = 0;
-		bool OnePictureInCurrentArray = false;
-
-		bool IsFullView = false;
-		FormWindowState WindowStateBeforeFullView;
-		
-		PictureViewMode ViewMode = PictureViewMode::FromDirectory;
-
 #ifdef _DEBUG
 		String^ DIRECTORY_SETTINGS = R"(D:\Settings)";
 		String^ PATH_LAST_WINDOW_SIZE = R"(D:\Settings\LastWindowSize.txt)";
@@ -54,7 +39,25 @@ namespace PhotoViewer
 		String^ PATH_FONT = R"(C:\ProgramData\Photo-Viewer\Font.txt)";
 		String^ PATH_SIZE_FONT = R"(C:\ProgramData\Photo-Viewer\SizeFont.txt)";
 		String^ PATH_WINDOW_COLOR = R"(C:\ProgramData\Photo-Viewer\WindowColor.txt)";
+	public:
 #endif // !_DEBUG
+
+		ArrayList Pictures;
+		ArrayList FavoritePictures;
+		
+		int IndexCurrentPicture = 0;
+		int IndexFavoritePicture = 0;
+		int IndexLastPicture;
+
+		const int INDEX_FIRST_PICTURE = 0;
+		bool OnePictureInCurrentArray = false;
+
+		bool IsFullView = false;
+		FormWindowState WindowStateBeforeFullView;
+		
+		PictureViewMode ViewMode = PictureViewMode::FromDirectory;
+
+	private: System::Windows::Forms::ToolStripMenuItem^ aboutPhotoViewerToolStripMenuItem;
 
 
 	public:
@@ -96,6 +99,8 @@ namespace PhotoViewer
 		void SetColorForm(Color BackColor, Color ForeColor, Color ColorMenuStrip, Color ForeColorButtons);
 
 		bool IsThisPictureFavorite(String^ CurrentPicture);
+
+		String^ GetPathToPictureAtPictureBox();
 
 		void SavePictureLikeFavoriteToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 		void SwitchToFavoritePicturesToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
@@ -142,6 +147,7 @@ namespace PhotoViewer
 #pragma region Windows Form Designer generated code
 		   void InitializeComponent(void)
 		   {
+			   System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(MainForm::typeid));
 			   this->SplitContainer = (gcnew System::Windows::Forms::SplitContainer());
 			   this->PictureBox = (gcnew System::Windows::Forms::PictureBox());
 			   this->menuStrip1 = (gcnew System::Windows::Forms::MenuStrip());
@@ -162,6 +168,7 @@ namespace PhotoViewer
 			   this->darkToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->changeFontToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->resetFontToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			   this->aboutPhotoViewerToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->SplitContainer2 = (gcnew System::Windows::Forms::SplitContainer());
 			   this->bNextPicture = (gcnew System::Windows::Forms::Button());
 			   this->bPreviousPicture = (gcnew System::Windows::Forms::Button());
@@ -191,8 +198,8 @@ namespace PhotoViewer
 			   // SplitContainer.Panel2
 			   // 
 			   this->SplitContainer->Panel2->Controls->Add(this->SplitContainer2);
-			   this->SplitContainer->Size = System::Drawing::Size(324, 365);
-			   this->SplitContainer->SplitterDistance = 319;
+			   this->SplitContainer->Size = System::Drawing::Size(423, 505);
+			   this->SplitContainer->SplitterDistance = 440;
 			   this->SplitContainer->TabIndex = 0;
 			   this->SplitContainer->TabStop = false;
 			   // 
@@ -201,7 +208,7 @@ namespace PhotoViewer
 			   this->PictureBox->Dock = System::Windows::Forms::DockStyle::Fill;
 			   this->PictureBox->Location = System::Drawing::Point(0, 24);
 			   this->PictureBox->Name = L"PictureBox";
-			   this->PictureBox->Size = System::Drawing::Size(324, 295);
+			   this->PictureBox->Size = System::Drawing::Size(423, 416);
 			   this->PictureBox->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
 			   this->PictureBox->TabIndex = 0;
 			   this->PictureBox->TabStop = false;
@@ -214,7 +221,7 @@ namespace PhotoViewer
 			   });
 			   this->menuStrip1->Location = System::Drawing::Point(0, 0);
 			   this->menuStrip1->Name = L"menuStrip1";
-			   this->menuStrip1->Size = System::Drawing::Size(324, 24);
+			   this->menuStrip1->Size = System::Drawing::Size(423, 24);
 			   this->menuStrip1->TabIndex = 1;
 			   this->menuStrip1->Text = L"menuStrip1";
 			   // 
@@ -317,9 +324,9 @@ namespace PhotoViewer
 			   // 
 			   // settingsToolStripMenuItem
 			   // 
-			   this->settingsToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(3) {
+			   this->settingsToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(4) {
 				   this->themeToolStripMenuItem,
-					   this->changeFontToolStripMenuItem, this->resetFontToolStripMenuItem
+					   this->changeFontToolStripMenuItem, this->resetFontToolStripMenuItem, this->aboutPhotoViewerToolStripMenuItem
 			   });
 			   this->settingsToolStripMenuItem->Name = L"settingsToolStripMenuItem";
 			   this->settingsToolStripMenuItem->Size = System::Drawing::Size(61, 20);
@@ -332,7 +339,7 @@ namespace PhotoViewer
 					   this->darkToolStripMenuItem
 			   });
 			   this->themeToolStripMenuItem->Name = L"themeToolStripMenuItem";
-			   this->themeToolStripMenuItem->Size = System::Drawing::Size(180, 22);
+			   this->themeToolStripMenuItem->Size = System::Drawing::Size(182, 22);
 			   this->themeToolStripMenuItem->Text = L"Theme";
 			   // 
 			   // lightToolStripMenuItem
@@ -354,16 +361,23 @@ namespace PhotoViewer
 			   // changeFontToolStripMenuItem
 			   // 
 			   this->changeFontToolStripMenuItem->Name = L"changeFontToolStripMenuItem";
-			   this->changeFontToolStripMenuItem->Size = System::Drawing::Size(180, 22);
+			   this->changeFontToolStripMenuItem->Size = System::Drawing::Size(182, 22);
 			   this->changeFontToolStripMenuItem->Text = L"Change Font";
 			   this->changeFontToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::ChangeFontToolStripMenuItem_Click);
 			   // 
 			   // resetFontToolStripMenuItem
 			   // 
 			   this->resetFontToolStripMenuItem->Name = L"resetFontToolStripMenuItem";
-			   this->resetFontToolStripMenuItem->Size = System::Drawing::Size(180, 22);
+			   this->resetFontToolStripMenuItem->Size = System::Drawing::Size(182, 22);
 			   this->resetFontToolStripMenuItem->Text = L"Reset Font";
 			   this->resetFontToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::ResetFontToolStripMenuItem_Click);
+			   // 
+			   // aboutPhotoViewerToolStripMenuItem
+			   // 
+			   this->aboutPhotoViewerToolStripMenuItem->Name = L"aboutPhotoViewerToolStripMenuItem";
+			   this->aboutPhotoViewerToolStripMenuItem->Size = System::Drawing::Size(182, 22);
+			   this->aboutPhotoViewerToolStripMenuItem->Text = L"About Photo-Viewer";
+			   this->aboutPhotoViewerToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::AboutPhotoViewerToolStripMenuItem_Click);
 			   // 
 			   // SplitContainer2
 			   // 
@@ -377,7 +391,7 @@ namespace PhotoViewer
 			   this->SplitContainer2->Panel1->Controls->Add(this->bNextPicture);
 			   this->SplitContainer2->Panel1->Controls->Add(this->bPreviousPicture);
 			   this->SplitContainer2->Panel2Collapsed = true;
-			   this->SplitContainer2->Size = System::Drawing::Size(324, 42);
+			   this->SplitContainer2->Size = System::Drawing::Size(423, 61);
 			   this->SplitContainer2->SplitterDistance = 28;
 			   this->SplitContainer2->SplitterWidth = 1;
 			   this->SplitContainer2->TabIndex = 0;
@@ -387,7 +401,7 @@ namespace PhotoViewer
 			   // 
 			   this->bNextPicture->Anchor = System::Windows::Forms::AnchorStyles::None;
 			   this->bNextPicture->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			   this->bNextPicture->Location = System::Drawing::Point(168, 15);
+			   this->bNextPicture->Location = System::Drawing::Point(214, 24);
 			   this->bNextPicture->Name = L"bNextPicture";
 			   this->bNextPicture->Size = System::Drawing::Size(75, 23);
 			   this->bNextPicture->TabIndex = 1;
@@ -399,7 +413,7 @@ namespace PhotoViewer
 			   // 
 			   this->bPreviousPicture->Anchor = System::Windows::Forms::AnchorStyles::None;
 			   this->bPreviousPicture->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			   this->bPreviousPicture->Location = System::Drawing::Point(56, 15);
+			   this->bPreviousPicture->Location = System::Drawing::Point(102, 24);
 			   this->bPreviousPicture->Name = L"bPreviousPicture";
 			   this->bPreviousPicture->Size = System::Drawing::Size(75, 23);
 			   this->bPreviousPicture->TabIndex = 1;
@@ -411,11 +425,12 @@ namespace PhotoViewer
 			   // 
 			   this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			   this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			   this->ClientSize = System::Drawing::Size(324, 365);
+			   this->ClientSize = System::Drawing::Size(423, 505);
 			   this->Controls->Add(this->SplitContainer);
+			   this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			   this->KeyPreview = true;
 			   this->MainMenuStrip = this->menuStrip1;
-			   this->MinimumSize = System::Drawing::Size(340, 404);
+			   this->MinimumSize = System::Drawing::Size(350, 404);
 			   this->Name = L"MainForm";
 			   this->StartPosition = System::Windows::Forms::FormStartPosition::Manual;
 			   this->Text = L"Photo-Viewer";
@@ -435,5 +450,6 @@ namespace PhotoViewer
 
 		   }
 #pragma endregion
+private: System::Void AboutPhotoViewerToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 };
 }
