@@ -10,7 +10,7 @@ int main(array<String^>^ argv)
 {
 	Application::SetCompatibleTextRenderingDefault(false);
 	Application::EnableVisualStyles();
-	PhotoViewer::MainForm mainForm(R"(D:\Photos\elliesnewbbg_1705251529_7323999466669755694_index_0_12.jpeg)");
+	PhotoViewer::MainForm mainForm(R"(D:\Media\Entertainment\Plushie\Pictures\elliesnewbbg_1705251529_7323999466669755694_index_0_12.jpeg)");
 	Application::Run(% mainForm);
 }
 #endif // _DEBUG

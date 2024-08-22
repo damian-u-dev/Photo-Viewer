@@ -17,7 +17,7 @@ namespace PhotoViewer {
 		void SetColorForm(Color FormColor, Color FontColor);
 		void AboutPVForm_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e);
 
-		String^ GitHubLink;
+		String^ GitHubLink = "-------";
 
 
 	private: System::Windows::Forms::Label^ l_NameOfProgramm;
@@ -66,9 +66,9 @@ namespace PhotoViewer {
 			this->l_Developer->AutoSize = true;
 			this->l_Developer->Font = (gcnew System::Drawing::Font(L"Arial", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->l_Developer->Location = System::Drawing::Point(138, 144);
+			this->l_Developer->Location = System::Drawing::Point(121, 144);
 			this->l_Developer->Name = L"l_Developer";
-			this->l_Developer->Size = System::Drawing::Size(84, 14);
+			this->l_Developer->Size = System::Drawing::Size(140, 14);
 			this->l_Developer->TabIndex = 3;
 			this->l_Developer->Text = L"Developed by ";
 			// 
