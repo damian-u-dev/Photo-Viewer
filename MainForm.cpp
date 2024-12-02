@@ -9,14 +9,53 @@ using namespace System::Collections::Generic;
 using namespace System;
 using namespace Windows::Forms;
 
+
 PhotoViewer::MainForm::MainForm(String^ pathToOpenedPicture)
 {
 	InitializeComponent();
-	SortFiles(GetFilesCurrentDirectory(pathToOpenedPicture));
-	FindOutIndexOpenedPicture(pathToOpenedPicture);
+	if (pathToOpenedPicture->Length == 0)
+	{
+		ViewMode = PictureViewMode::NoPictureFromDir;
+		timer1->Enabled = true;
+	}
+	else
+	{
+		SetUpPhotoViewer(pathToOpenedPicture);
+	}
+}
+
+void PhotoViewer::MainForm::SetUpPhotoViewer(String^ pathToPicture)
+{
+	SortFiles(GetFilesCurrentDirectory(pathToPicture));
+	FindOutIndexOpenedPicture(pathToPicture);
 	SettingUpPictureBox();
 	SetUpWindowForm();
 	InitializeFavoritePictures();
+}
+
+void PhotoViewer::MainForm::OpenPictureFromExplorer()
+{
+	timer1->Enabled = false;
+
+	OpenFileDialog fileDialog;
+	fileDialog.Multiselect = false;
+	fileDialog.Title = "Select a picture file";
+	fileDialog.Filter = "Image files (*.png;*jpg)|*.png;*.jpg";
+
+	if (fileDialog.ShowDialog() == System::Windows::Forms::DialogResult::Cancel)
+	{
+		empty_dir->Visible = true;
+		FileToolStripMenuItem->Visible = false;
+		savePictureLikeFavoriteToolStripMenuItem->Visible = false;
+		NoPicture = true;
+
+		InitializeFavoritePictures();
+	}
+	else
+	{
+		ViewMode = PictureViewMode::FromDirectory;
+		SetUpPhotoViewer(fileDialog.FileName);
+	}
 }
 
 void PhotoViewer::MainForm::SortFiles(array<String^>^ AllFiles)
@@ -259,11 +298,18 @@ PhotoViewer::MainForm::~MainForm()
 
 void PhotoViewer::MainForm::CopyCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 {
+	if (ViewMode == PictureViewMode::NoPictureFromDir)
+		return;
+	
 	Clipboard::SetImage(PictureBox->Image);
 }
 
 void PhotoViewer::MainForm::MainForm_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e)
 {
+	bool isEmpty = ViewMode == PictureViewMode::NoPictureFromDir;
+	if (isEmpty)
+		return;
+
 	if (e->KeyCode == Keys::A && !OnePictureInCurrentArray)
 	{
 		bPreviousPicture_Click(nullptr, nullptr);
@@ -334,6 +380,9 @@ void PhotoViewer::MainForm::bPreviousPicture_Click(System::Object^ sender, Syste
 
 void PhotoViewer::MainForm::OpenDirectoryCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 {
+	if (ViewMode == PictureViewMode::NoPictureFromDir)
+		return;
+
 	String^ PathToExplorer = "\"C:\\Windows\\explorer.exe ";
 	String^ CurrentDirectory = Path::GetDirectoryName(GetPathToPictureAtPictureBox());
 
@@ -352,10 +401,13 @@ void PhotoViewer::MainForm::OpenDirectoryCurrentPictureToolStripMenuItem_Click(S
 
 void PhotoViewer::MainForm::CopyNameOfCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 {
+	if (ViewMode == PictureViewMode::NoPictureFromDir)
+		return;
+
 	Clipboard::SetText(Path::GetFileNameWithoutExtension(GetPathToPictureAtPictureBox()));
 }
 
-System::Void PhotoViewer::MainForm::AboutPhotoViewerToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
+void PhotoViewer::MainForm::AboutPhotoViewerToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	AboutPVForm AboutPhotoViewer;
 	//AboutPhotoViewer = "About Photo Viewer";
@@ -363,6 +415,11 @@ System::Void PhotoViewer::MainForm::AboutPhotoViewerToolStripMenuItem_Click(Syst
 
 	AboutPhotoViewer.SetColorForm(this->BackColor, FontColor);
 	AboutPhotoViewer.ShowDialog();
+}
+
+void PhotoViewer::MainForm::timer1_Tick(System::Object^ sender, System::EventArgs^ e)
+{
+	OpenPictureFromExplorer();
 }
 
 bool PhotoViewer::MainForm::IsOnePictureInArray()
@@ -459,7 +516,7 @@ void PhotoViewer::MainForm::SetColorForm(Color BackColor, Color ForeColor, Color
 	resetFontToolStripMenuItem->ForeColor = ForeColor;
 
 	aboutPhotoViewerToolStripMenuItem->BackColor = BackColor;
-	aboutPhotoViewerToolStripMenuItem->ForeColor= ForeColor;
+	aboutPhotoViewerToolStripMenuItem->ForeColor = ForeColor;
 
 	//TooStripMenu
 	FileToolStripMenuItem->ForeColor = ForeColor;
@@ -468,6 +525,9 @@ void PhotoViewer::MainForm::SetColorForm(Color BackColor, Color ForeColor, Color
 
 	bNextPicture->ForeColor = ForeColorButtons;
 	bPreviousPicture->ForeColor = ForeColorButtons;
+
+	//empty dir
+	empty_dir->ForeColor = ForeColor;
 }
 
 void PhotoViewer::MainForm::SetUserFont(System::Drawing::Font^ UserFont)
@@ -541,6 +601,7 @@ void PhotoViewer::MainForm::SwitchToFavoritePicturesToolStripMenuItem_Click(Syst
 	if (FavoritePictures.Count > 0)
 	{
 		ViewMode = PictureViewMode::FromFavoritePictures;
+		empty_dir->Visible = false;
 
 		ShowToolMenuForFavoriteMode(true);
 
@@ -583,6 +644,13 @@ System::Void PhotoViewer::MainForm::RemovePictureFromFavoriteToolStripMenuItem_C
 
 System::Void PhotoViewer::MainForm::ExitFromFavoriteModeToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 {
+	if (NoPicture)
+	{
+		empty_dir->Visible = true;
+		PictureBox->Image = nullptr;
+		return;
+	}
+
 	ViewMode = PictureViewMode::FromDirectory;
 	SetPicture(GetPathToPictureAtPictureBox());
 
@@ -612,6 +680,9 @@ void PhotoViewer::MainForm::lightToolStripMenuItem_Click(System::Object^ sender,
 
 void PhotoViewer::MainForm::FullViewToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 {
+	if (ViewMode == PictureViewMode::NoPictureFromDir)
+		return;
+
 	if (!IsFullView)
 	{
 		WindowStateBeforeFullView = this->WindowState;

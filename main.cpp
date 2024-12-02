@@ -3,27 +3,21 @@
 using namespace System;
 using namespace System::Windows::Forms;
 
-#ifdef _DEBUG
-
 [STAThreadAttribute]
 int main(array<String^>^ argv)
 {
 	Application::SetCompatibleTextRenderingDefault(false);
 	Application::EnableVisualStyles();
-	PhotoViewer::MainForm mainForm(R"(D:\Media\Entertainment\Plushie\Pictures\elliesnewbbg_1705251529_7323999466669755694_index_0_12.jpeg)");
+
+	String^ PathToPicture = "";
+
+	if (argv->Length > 0 && PhotoViewer::MainForm::IsCorrectExtension(argv[0]))
+	{
+		PathToPicture = argv[0];
+	}
+
+	//PhotoViewer::MainForm mainForm(R"(D:\test\2c5bcad4a0e92ab14e6927424efc00be.jpg)");
+
+	PhotoViewer::MainForm mainForm(PathToPicture);
 	Application::Run(% mainForm);
 }
-#endif // _DEBUG
-
-
-
-#ifndef _DEBUG
-[STAThreadAttribute]
-int main(array<String^>^ argv)
-{
-	Application::SetCompatibleTextRenderingDefault(false);
-	Application::EnableVisualStyles();
-	PhotoViewer::MainForm mainForm(argv[0]);
-	Application::Run(% mainForm);
-}
-#endif // !_DEBUG

@@ -15,7 +15,8 @@ namespace PhotoViewer
 		enum class PictureViewMode
 		{
 			FromDirectory,
-			FromFavoritePictures
+			FromFavoritePictures,
+			NoPictureFromDir
 		};
 	public:
 #ifdef _DEBUG
@@ -39,12 +40,12 @@ namespace PhotoViewer
 		String^ PATH_FONT = R"(C:\ProgramData\Photo-Viewer\Font.txt)";
 		String^ PATH_SIZE_FONT = R"(C:\ProgramData\Photo-Viewer\SizeFont.txt)";
 		String^ PATH_WINDOW_COLOR = R"(C:\ProgramData\Photo-Viewer\WindowColor.txt)";
-	public:
 #endif // !_DEBUG
+
 
 		ArrayList Pictures;
 		ArrayList FavoritePictures;
-		
+
 		int IndexCurrentPicture = 0;
 		int IndexFavoritePicture = 0;
 		int IndexLastPicture;
@@ -53,19 +54,24 @@ namespace PhotoViewer
 		bool OnePictureInCurrentArray = false;
 
 		bool IsFullView = false;
-		FormWindowState WindowStateBeforeFullView;
-		
-		PictureViewMode ViewMode = PictureViewMode::FromDirectory;
+		bool NoPicture = false;
 
-	private: System::Windows::Forms::ToolStripMenuItem^ aboutPhotoViewerToolStripMenuItem;
+		FormWindowState WindowStateBeforeFullView;
+
+		PictureViewMode ViewMode = PictureViewMode::FromDirectory;
+	System::Windows::Forms::Timer^ timer1;
+	System::Windows::Forms::Label^ empty_dir;
+	System::Windows::Forms::ToolStripMenuItem^ aboutPhotoViewerToolStripMenuItem;
 
 
 	public:
 		MainForm(String^ directoryToFirstPhoto);
+		void SetUpPhotoViewer(String^ pathToPicture);
+		void OpenPictureFromExplorer();
 		void SortFiles(array<String^>^ AllFiles);
 		void FindOutIndexOpenedPicture(String^ pathToOpenedPicture);
 		void SettingUpPictureBox();
-		
+
 		void SetUpWindowForm();
 		void SetUpLastWindowSize();
 		void SetUpLastWindowLocation();
@@ -76,7 +82,7 @@ namespace PhotoViewer
 		void InitializeFavoritePictures();
 
 		array<String^>^ GetFilesCurrentDirectory(String^ directory);
-		bool IsCorrectExtension(String^ extension);
+		static bool IsCorrectExtension(String^ extension);
 		void CheckFavoritePicturesOnExist();
 		void SetPicture(String^ PathToPicture);
 		void SetNewTitle(String^ NewTitle);
@@ -119,6 +125,9 @@ namespace PhotoViewer
 		void CopyNameOfCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 
 
+	void AboutPhotoViewerToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+	void timer1_Tick(System::Object^ sender, System::EventArgs^ e);
+
 	private: System::Windows::Forms::PictureBox^ PictureBox;
 	private: System::Windows::Forms::SplitContainer^ SplitContainer;
 	private: System::Windows::Forms::SplitContainer^ SplitContainer2;
@@ -147,8 +156,10 @@ namespace PhotoViewer
 #pragma region Windows Form Designer generated code
 		   void InitializeComponent(void)
 		   {
+			   this->components = (gcnew System::ComponentModel::Container());
 			   System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(MainForm::typeid));
 			   this->SplitContainer = (gcnew System::Windows::Forms::SplitContainer());
+			   this->empty_dir = (gcnew System::Windows::Forms::Label());
 			   this->PictureBox = (gcnew System::Windows::Forms::PictureBox());
 			   this->menuStrip1 = (gcnew System::Windows::Forms::MenuStrip());
 			   this->FileToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
@@ -172,6 +183,7 @@ namespace PhotoViewer
 			   this->SplitContainer2 = (gcnew System::Windows::Forms::SplitContainer());
 			   this->bNextPicture = (gcnew System::Windows::Forms::Button());
 			   this->bPreviousPicture = (gcnew System::Windows::Forms::Button());
+			   this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
 			   (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->SplitContainer))->BeginInit();
 			   this->SplitContainer->Panel1->SuspendLayout();
 			   this->SplitContainer->Panel2->SuspendLayout();
@@ -192,6 +204,7 @@ namespace PhotoViewer
 			   // 
 			   // SplitContainer.Panel1
 			   // 
+			   this->SplitContainer->Panel1->Controls->Add(this->empty_dir);
 			   this->SplitContainer->Panel1->Controls->Add(this->PictureBox);
 			   this->SplitContainer->Panel1->Controls->Add(this->menuStrip1);
 			   // 
@@ -202,6 +215,18 @@ namespace PhotoViewer
 			   this->SplitContainer->SplitterDistance = 440;
 			   this->SplitContainer->TabIndex = 0;
 			   this->SplitContainer->TabStop = false;
+			   // 
+			   // empty_dir
+			   // 
+			   this->empty_dir->Font = (gcnew System::Drawing::Font(L"Arial Black", 9.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				   static_cast<System::Byte>(204)));
+			   this->empty_dir->Location = System::Drawing::Point(3, 40);
+			   this->empty_dir->Name = L"empty_dir";
+			   this->empty_dir->Size = System::Drawing::Size(417, 120);
+			   this->empty_dir->TabIndex = 2;
+			   this->empty_dir->Text = L"To view picture you need to move a picture from explorer or use button \"Open expl"
+				   L"orer to choose the picture\". Also you can switch to favorite pictures";
+			   this->empty_dir->Visible = false;
 			   // 
 			   // PictureBox
 			   // 
@@ -421,6 +446,11 @@ namespace PhotoViewer
 			   this->bPreviousPicture->UseVisualStyleBackColor = true;
 			   this->bPreviousPicture->Click += gcnew System::EventHandler(this, &MainForm::bPreviousPicture_Click);
 			   // 
+			   // timer1
+			   // 
+			   this->timer1->Interval = 500;
+			   this->timer1->Tick += gcnew System::EventHandler(this, &MainForm::timer1_Tick);
+			   // 
 			   // MainForm
 			   // 
 			   this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -450,6 +480,5 @@ namespace PhotoViewer
 
 		   }
 #pragma endregion
-private: System::Void AboutPhotoViewerToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
-};
+	};
 }
