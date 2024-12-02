@@ -300,7 +300,7 @@ void PhotoViewer::MainForm::CopyCurrentPictureToolStripMenuItem_Click(System::Ob
 {
 	if (ViewMode == PictureViewMode::NoPictureFromDir)
 		return;
-	
+
 	Clipboard::SetImage(PictureBox->Image);
 }
 
@@ -420,6 +420,33 @@ void PhotoViewer::MainForm::AboutPhotoViewerToolStripMenuItem_Click(System::Obje
 void PhotoViewer::MainForm::timer1_Tick(System::Object^ sender, System::EventArgs^ e)
 {
 	OpenPictureFromExplorer();
+}
+
+void PhotoViewer::MainForm::openToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	OpenFileDialog fileDialog;
+	fileDialog.Multiselect = false;
+	fileDialog.Title = "Select a picture file";
+	fileDialog.Filter = "Image files (*.png;*jpg)|*.png;*.jpg";
+
+	if (fileDialog.ShowDialog() == System::Windows::Forms::DialogResult::OK)
+	{
+		Pictures.Clear();
+		SortFiles(GetFilesCurrentDirectory(fileDialog.FileName));
+		FindOutIndexOpenedPicture(fileDialog.FileName);
+
+		if(ViewMode == PictureViewMode::FromFavoritePictures)
+		{
+			ViewMode = PictureViewMode::FromDirectory;
+			ShowToolMenuForFavoriteMode(false);
+		}
+		else if (ViewMode == PictureViewMode::NoPictureFromDir)
+		{
+			ViewMode = PictureViewMode::FromDirectory;
+			empty_dir->Visible = false;
+		}
+		SettingUpPictureBox();
+	}
 }
 
 bool PhotoViewer::MainForm::IsOnePictureInArray()

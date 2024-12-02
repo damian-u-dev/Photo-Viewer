@@ -59,9 +59,15 @@ namespace PhotoViewer
 		FormWindowState WindowStateBeforeFullView;
 
 		PictureViewMode ViewMode = PictureViewMode::FromDirectory;
-	System::Windows::Forms::Timer^ timer1;
-	System::Windows::Forms::Label^ empty_dir;
-	System::Windows::Forms::ToolStripMenuItem^ aboutPhotoViewerToolStripMenuItem;
+		System::Windows::Forms::Timer^ timer1;
+		System::Windows::Forms::Label^ empty_dir;
+	private: System::Windows::Forms::ToolStripMenuItem^ openToolStripMenuItem;
+	public:
+
+	public:
+
+	public:
+		System::Windows::Forms::ToolStripMenuItem^ aboutPhotoViewerToolStripMenuItem;
 
 
 	public:
@@ -125,8 +131,9 @@ namespace PhotoViewer
 		void CopyNameOfCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 
 
-	void AboutPhotoViewerToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
-	void timer1_Tick(System::Object^ sender, System::EventArgs^ e);
+		void AboutPhotoViewerToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+		void timer1_Tick(System::Object^ sender, System::EventArgs^ e);
+		void openToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 
 	private: System::Windows::Forms::PictureBox^ PictureBox;
 	private: System::Windows::Forms::SplitContainer^ SplitContainer;
@@ -184,6 +191,7 @@ namespace PhotoViewer
 			   this->bNextPicture = (gcnew System::Windows::Forms::Button());
 			   this->bPreviousPicture = (gcnew System::Windows::Forms::Button());
 			   this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
+			   this->openToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->SplitContainer))->BeginInit();
 			   this->SplitContainer->Panel1->SuspendLayout();
 			   this->SplitContainer->Panel2->SuspendLayout();
@@ -240,9 +248,9 @@ namespace PhotoViewer
 			   // 
 			   // menuStrip1
 			   // 
-			   this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(3) {
+			   this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(4) {
 				   this->FileToolStripMenuItem,
-					   this->favoritePicturesToolStripMenuItem, this->settingsToolStripMenuItem
+					   this->favoritePicturesToolStripMenuItem, this->settingsToolStripMenuItem, this->openToolStripMenuItem
 			   });
 			   this->menuStrip1->Location = System::Drawing::Point(0, 0);
 			   this->menuStrip1->Name = L"menuStrip1";
@@ -450,6 +458,13 @@ namespace PhotoViewer
 			   // 
 			   this->timer1->Interval = 500;
 			   this->timer1->Tick += gcnew System::EventHandler(this, &MainForm::timer1_Tick);
+			   // 
+			   // openToolStripMenuItem
+			   // 
+			   this->openToolStripMenuItem->Name = L"openToolStripMenuItem";
+			   this->openToolStripMenuItem->Size = System::Drawing::Size(48, 20);
+			   this->openToolStripMenuItem->Text = L"Open";
+			   this->openToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::openToolStripMenuItem_Click);
 			   // 
 			   // MainForm
 			   // 
