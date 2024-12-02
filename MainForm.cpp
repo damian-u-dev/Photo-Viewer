@@ -446,6 +446,7 @@ void PhotoViewer::MainForm::openToolStripMenuItem_Click(System::Object^ sender, 
 			empty_dir->Visible = false;
 		}
 		SettingUpPictureBox();
+		SetUpButtons();
 	}
 }
 

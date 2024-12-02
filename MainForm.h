@@ -187,11 +187,11 @@ namespace PhotoViewer
 			   this->changeFontToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->resetFontToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->aboutPhotoViewerToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			   this->openToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->SplitContainer2 = (gcnew System::Windows::Forms::SplitContainer());
 			   this->bNextPicture = (gcnew System::Windows::Forms::Button());
 			   this->bPreviousPicture = (gcnew System::Windows::Forms::Button());
 			   this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
-			   this->openToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->SplitContainer))->BeginInit();
 			   this->SplitContainer->Panel1->SuspendLayout();
 			   this->SplitContainer->Panel2->SuspendLayout();
@@ -412,6 +412,13 @@ namespace PhotoViewer
 			   this->aboutPhotoViewerToolStripMenuItem->Text = L"About Photo-Viewer";
 			   this->aboutPhotoViewerToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::AboutPhotoViewerToolStripMenuItem_Click);
 			   // 
+			   // openToolStripMenuItem
+			   // 
+			   this->openToolStripMenuItem->Name = L"openToolStripMenuItem";
+			   this->openToolStripMenuItem->Size = System::Drawing::Size(48, 20);
+			   this->openToolStripMenuItem->Text = L"Open";
+			   this->openToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::openToolStripMenuItem_Click);
+			   // 
 			   // SplitContainer2
 			   // 
 			   this->SplitContainer2->Dock = System::Windows::Forms::DockStyle::Fill;
@@ -458,13 +465,6 @@ namespace PhotoViewer
 			   // 
 			   this->timer1->Interval = 500;
 			   this->timer1->Tick += gcnew System::EventHandler(this, &MainForm::timer1_Tick);
-			   // 
-			   // openToolStripMenuItem
-			   // 
-			   this->openToolStripMenuItem->Name = L"openToolStripMenuItem";
-			   this->openToolStripMenuItem->Size = System::Drawing::Size(48, 20);
-			   this->openToolStripMenuItem->Text = L"Open";
-			   this->openToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::openToolStripMenuItem_Click);
 			   // 
 			   // MainForm
 			   // 

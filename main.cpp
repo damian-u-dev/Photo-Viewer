@@ -17,8 +17,8 @@ int main(array<String^>^ argv)
 	}
 
 
-	//PhotoViewer::MainForm mainForm(R"(D:\test\2c5bcad4a0e92ab14e6927424efc00be.jpg)");
+	PhotoViewer::MainForm mainForm(R"(D:\test\2c5bcad4a0e92ab14e6927424efc00be.jpg)");
 
-	PhotoViewer::MainForm mainForm(PathToPicture);
+	//PhotoViewer::MainForm mainForm(PathToPicture);
 	Application::Run(% mainForm);
 }
