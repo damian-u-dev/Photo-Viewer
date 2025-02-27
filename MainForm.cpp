@@ -8,14 +8,13 @@ using namespace System::IO;
 using namespace System::Collections::Generic;
 using namespace System;
 using namespace Windows::Forms;
-
+using namespace System::Windows::Forms;
 
 PhotoViewer::MainForm::MainForm(String^ pathToOpenedPicture)
 {
 	InitializeComponent();
 	if (pathToOpenedPicture->Length == 0)
 	{
-		ViewMode = PictureViewMode::NoPictureFromDir;
 		timer1->Enabled = true;
 	}
 	else
@@ -33,30 +32,72 @@ void PhotoViewer::MainForm::SetUpPhotoViewer(String^ pathToPicture)
 	InitializeFavoritePictures();
 }
 
-void PhotoViewer::MainForm::OpenPictureFromExplorer()
+void PhotoViewer::MainForm::InitializeDialog(OpenFileDialog^ refFileDialog)
+{
+	refFileDialog->Multiselect = false;
+	refFileDialog->Title = "Select a picture file";
+	refFileDialog->Filter = "Image files (*.png;*jpg)|*.png;*.jpg";
+}
+
+void PhotoViewer::MainForm::OpenPictureFromExplorerTimer()
 {
 	timer1->Enabled = false;
-
+	
 	OpenFileDialog fileDialog;
-	fileDialog.Multiselect = false;
-	fileDialog.Title = "Select a picture file";
-	fileDialog.Filter = "Image files (*.png;*jpg)|*.png;*.jpg";
+	InitializeDialog(%fileDialog);
 
-	if (fileDialog.ShowDialog() == System::Windows::Forms::DialogResult::Cancel)
-	{
-		empty_dir->Visible = true;
-		FileToolStripMenuItem->Visible = false;
-		savePictureLikeFavoriteToolStripMenuItem->Visible = false;
-		NoPicture = true;
-
-		InitializeFavoritePictures();
-	}
-	else
+	auto DialogResult = fileDialog.ShowDialog();
+	
+	if (DialogResult == Windows::Forms::DialogResult::OK)
 	{
 		ViewMode = PictureViewMode::FromDirectory;
 		SetUpPhotoViewer(fileDialog.FileName);
 	}
+	else
+	{
+		ViewMode = PictureViewMode::NoPictureFromDir;
+		NoPictureMainDir = true;
+
+		empty_dir->Visible = true;
+		FileToolStripMenuItem->Visible = false;
+		savePictureLikeFavoriteToolStripMenuItem->Visible = false;
+
+		InitializeFavoritePictures();
+	}
 }
+
+void PhotoViewer::MainForm::ToolMenu_OpenPictureFromExplorerInAnyTime(System::Object^ sender, System::EventArgs^ e)
+{
+	OpenFileDialog fileDialog;
+	InitializeDialog(% fileDialog);
+
+	auto DialogResult = fileDialog.ShowDialog();
+	if (DialogResult == Windows::Forms::DialogResult::OK)
+	{
+		Pictures.Clear();
+		SortFiles(GetFilesCurrentDirectory(fileDialog.FileName));
+		FindOutIndexOpenedPicture(fileDialog.FileName);
+
+		if (ViewMode == PictureViewMode::FromFavoritePictures)
+		{
+			ShowToolMenuForFavoriteMode(false);
+		}
+		else if (ViewMode == PictureViewMode::NoPictureFromDir)
+		{
+			NoPictureMainDir = false;
+
+			empty_dir->Visible = false;
+			FileToolStripMenuItem->Visible = true;
+			savePictureLikeFavoriteToolStripMenuItem->Visible = true;
+		}
+
+		ViewMode = PictureViewMode::FromDirectory;
+		SettingUpPictureBox();
+		SetUpButtons();
+	}
+}
+
+
 
 void PhotoViewer::MainForm::SortFiles(array<String^>^ AllFiles)
 {
@@ -419,35 +460,7 @@ void PhotoViewer::MainForm::AboutPhotoViewerToolStripMenuItem_Click(System::Obje
 
 void PhotoViewer::MainForm::timer1_Tick(System::Object^ sender, System::EventArgs^ e)
 {
-	OpenPictureFromExplorer();
-}
-
-void PhotoViewer::MainForm::openToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
-{
-	OpenFileDialog fileDialog;
-	fileDialog.Multiselect = false;
-	fileDialog.Title = "Select a picture file";
-	fileDialog.Filter = "Image files (*.png;*jpg)|*.png;*.jpg";
-
-	if (fileDialog.ShowDialog() == System::Windows::Forms::DialogResult::OK)
-	{
-		Pictures.Clear();
-		SortFiles(GetFilesCurrentDirectory(fileDialog.FileName));
-		FindOutIndexOpenedPicture(fileDialog.FileName);
-
-		if(ViewMode == PictureViewMode::FromFavoritePictures)
-		{
-			ViewMode = PictureViewMode::FromDirectory;
-			ShowToolMenuForFavoriteMode(false);
-		}
-		else if (ViewMode == PictureViewMode::NoPictureFromDir)
-		{
-			ViewMode = PictureViewMode::FromDirectory;
-			empty_dir->Visible = false;
-		}
-		SettingUpPictureBox();
-		SetUpButtons();
-	}
+	OpenPictureFromExplorerTimer();
 }
 
 bool PhotoViewer::MainForm::IsOnePictureInArray()
@@ -632,8 +645,12 @@ void PhotoViewer::MainForm::SwitchToFavoritePicturesToolStripMenuItem_Click(Syst
 {
 	if (FavoritePictures.Count > 0)
 	{
+		if (ViewMode == PictureViewMode::NoPictureFromDir)
+		{
+			empty_dir->Visible = false;
+		}
+
 		ViewMode = PictureViewMode::FromFavoritePictures;
-		empty_dir->Visible = false;
 
 		ShowToolMenuForFavoriteMode(true);
 
@@ -676,10 +693,15 @@ System::Void PhotoViewer::MainForm::RemovePictureFromFavoriteToolStripMenuItem_C
 
 System::Void PhotoViewer::MainForm::ExitFromFavoriteModeToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 {
-	if (NoPicture)
+	if (NoPictureMainDir)
 	{
 		empty_dir->Visible = true;
 		PictureBox->Image = nullptr;
+		ViewMode = PictureViewMode::NoPictureFromDir;
+		ShowToolMenuForFavoriteMode(false);
+		bNextPicture->Visible = false;
+		bPreviousPicture->Visible = false;
+
 		return;
 	}
 

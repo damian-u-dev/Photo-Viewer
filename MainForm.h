@@ -54,7 +54,7 @@ namespace PhotoViewer
 		bool OnePictureInCurrentArray = false;
 
 		bool IsFullView = false;
-		bool NoPicture = false;
+		bool NoPictureMainDir = false;
 
 		FormWindowState WindowStateBeforeFullView;
 
@@ -73,7 +73,7 @@ namespace PhotoViewer
 	public:
 		MainForm(String^ directoryToFirstPhoto);
 		void SetUpPhotoViewer(String^ pathToPicture);
-		void OpenPictureFromExplorer();
+		void OpenPictureFromExplorerTimer();
 		void SortFiles(array<String^>^ AllFiles);
 		void FindOutIndexOpenedPicture(String^ pathToOpenedPicture);
 		void SettingUpPictureBox();
@@ -133,7 +133,8 @@ namespace PhotoViewer
 
 		void AboutPhotoViewerToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 		void timer1_Tick(System::Object^ sender, System::EventArgs^ e);
-		void openToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+		void InitializeDialog(OpenFileDialog^ fileDialog);
+		void ToolMenu_OpenPictureFromExplorerInAnyTime(System::Object^ sender, System::EventArgs^ e);
 
 	private: System::Windows::Forms::PictureBox^ PictureBox;
 	private: System::Windows::Forms::SplitContainer^ SplitContainer;
@@ -417,7 +418,7 @@ namespace PhotoViewer
 			   this->openToolStripMenuItem->Name = L"openToolStripMenuItem";
 			   this->openToolStripMenuItem->Size = System::Drawing::Size(48, 21);
 			   this->openToolStripMenuItem->Text = L"Open";
-			   this->openToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::openToolStripMenuItem_Click);
+			   this->openToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::ToolMenu_OpenPictureFromExplorerInAnyTime);
 			   // 
 			   // SplitContainer2
 			   // 
@@ -495,5 +496,5 @@ namespace PhotoViewer
 
 		   }
 #pragma endregion
-	};
+};
 }
