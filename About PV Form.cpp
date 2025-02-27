@@ -25,7 +25,6 @@ void PhotoViewer::AboutPVForm::SetColorForm(Color FormColor, Color FontColor)
 
 	l_NameOfProgramm->ForeColor = FontColor;
 	l_Copyrights->ForeColor = FontColor;
-	l_Developer->ForeColor = FontColor;
 }
 
 void PhotoViewer::AboutPVForm::AboutPVForm_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e)

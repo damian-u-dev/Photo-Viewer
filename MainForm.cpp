@@ -556,6 +556,10 @@ void PhotoViewer::MainForm::SetColorForm(Color BackColor, Color ForeColor, Color
 
 	//empty dir
 	empty_dir->ForeColor = ForeColor;
+
+	//Open Menu
+	openToolStripMenuItem->BackColor = BackColor;
+	openToolStripMenuItem->ForeColor = ForeColor;
 }
 
 void PhotoViewer::MainForm::SetUserFont(System::Drawing::Font^ UserFont)

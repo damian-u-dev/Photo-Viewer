@@ -22,7 +22,7 @@ namespace PhotoViewer {
 
 	private: System::Windows::Forms::Label^ l_NameOfProgramm;
 	private: System::Windows::Forms::Label^ l_Copyrights;
-	private: System::Windows::Forms::Label^ l_Developer;
+
 	private: System::Windows::Forms::LinkLabel^ link_GitHub;
 
 	protected:
@@ -35,7 +35,6 @@ namespace PhotoViewer {
 		{
 			this->l_NameOfProgramm = (gcnew System::Windows::Forms::Label());
 			this->l_Copyrights = (gcnew System::Windows::Forms::Label());
-			this->l_Developer = (gcnew System::Windows::Forms::Label());
 			this->link_GitHub = (gcnew System::Windows::Forms::LinkLabel());
 			this->SuspendLayout();
 			// 
@@ -92,7 +91,6 @@ namespace PhotoViewer {
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(264, 167);
 			this->Controls->Add(this->link_GitHub);
-			this->Controls->Add(this->l_Developer);
 			this->Controls->Add(this->l_Copyrights);
 			this->Controls->Add(this->l_NameOfProgramm);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedToolWindow;

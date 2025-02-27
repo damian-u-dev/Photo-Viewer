@@ -219,8 +219,8 @@ namespace PhotoViewer
 			   // SplitContainer.Panel2
 			   // 
 			   this->SplitContainer->Panel2->Controls->Add(this->SplitContainer2);
-			   this->SplitContainer->Size = System::Drawing::Size(423, 505);
-			   this->SplitContainer->SplitterDistance = 440;
+			   this->SplitContainer->Size = System::Drawing::Size(334, 365);
+			   this->SplitContainer->SplitterDistance = 318;
 			   this->SplitContainer->TabIndex = 0;
 			   this->SplitContainer->TabStop = false;
 			   // 
@@ -230,18 +230,18 @@ namespace PhotoViewer
 				   static_cast<System::Byte>(204)));
 			   this->empty_dir->Location = System::Drawing::Point(3, 40);
 			   this->empty_dir->Name = L"empty_dir";
-			   this->empty_dir->Size = System::Drawing::Size(417, 120);
+			   this->empty_dir->Size = System::Drawing::Size(319, 120);
 			   this->empty_dir->TabIndex = 2;
-			   this->empty_dir->Text = L"To view picture you need to move a picture from explorer or use button \"Open expl"
-				   L"orer to choose the picture\". Also you can switch to favorite pictures";
+			   this->empty_dir->Text = L"To view picture use button \"Open\" to choose your picture from explorer\r\n\r\nAlso yo"
+				   L"u can switch to favorite pictures";
 			   this->empty_dir->Visible = false;
 			   // 
 			   // PictureBox
 			   // 
 			   this->PictureBox->Dock = System::Windows::Forms::DockStyle::Fill;
-			   this->PictureBox->Location = System::Drawing::Point(0, 24);
+			   this->PictureBox->Location = System::Drawing::Point(0, 25);
 			   this->PictureBox->Name = L"PictureBox";
-			   this->PictureBox->Size = System::Drawing::Size(423, 416);
+			   this->PictureBox->Size = System::Drawing::Size(334, 293);
 			   this->PictureBox->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
 			   this->PictureBox->TabIndex = 0;
 			   this->PictureBox->TabStop = false;
@@ -254,7 +254,7 @@ namespace PhotoViewer
 			   });
 			   this->menuStrip1->Location = System::Drawing::Point(0, 0);
 			   this->menuStrip1->Name = L"menuStrip1";
-			   this->menuStrip1->Size = System::Drawing::Size(423, 24);
+			   this->menuStrip1->Size = System::Drawing::Size(334, 25);
 			   this->menuStrip1->TabIndex = 1;
 			   this->menuStrip1->Text = L"menuStrip1";
 			   // 
@@ -266,7 +266,7 @@ namespace PhotoViewer
 					   this->exitToolStripMenuItem
 			   });
 			   this->FileToolStripMenuItem->Name = L"FileToolStripMenuItem";
-			   this->FileToolStripMenuItem->Size = System::Drawing::Size(37, 20);
+			   this->FileToolStripMenuItem->Size = System::Drawing::Size(41, 21);
 			   this->FileToolStripMenuItem->Text = L"File";
 			   // 
 			   // CopyCurrentPictureToolStripMenuItem
@@ -274,7 +274,7 @@ namespace PhotoViewer
 			   this->CopyCurrentPictureToolStripMenuItem->Name = L"CopyCurrentPictureToolStripMenuItem";
 			   this->CopyCurrentPictureToolStripMenuItem->ShortcutKeyDisplayString = L"";
 			   this->CopyCurrentPictureToolStripMenuItem->ShortcutKeys = static_cast<System::Windows::Forms::Keys>((System::Windows::Forms::Keys::Control | System::Windows::Forms::Keys::C));
-			   this->CopyCurrentPictureToolStripMenuItem->Size = System::Drawing::Size(318, 22);
+			   this->CopyCurrentPictureToolStripMenuItem->Size = System::Drawing::Size(342, 22);
 			   this->CopyCurrentPictureToolStripMenuItem->Text = L"Copy current picture";
 			   this->CopyCurrentPictureToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::CopyCurrentPictureToolStripMenuItem_Click);
 			   // 
@@ -283,7 +283,7 @@ namespace PhotoViewer
 			   this->openDirectoryCurrentPictureToolStripMenuItem->Name = L"openDirectoryCurrentPictureToolStripMenuItem";
 			   this->openDirectoryCurrentPictureToolStripMenuItem->ShortcutKeys = static_cast<System::Windows::Forms::Keys>(((System::Windows::Forms::Keys::Control | System::Windows::Forms::Keys::Shift)
 				   | System::Windows::Forms::Keys::F10));
-			   this->openDirectoryCurrentPictureToolStripMenuItem->Size = System::Drawing::Size(318, 22);
+			   this->openDirectoryCurrentPictureToolStripMenuItem->Size = System::Drawing::Size(342, 22);
 			   this->openDirectoryCurrentPictureToolStripMenuItem->Text = L"Open directory current picture";
 			   this->openDirectoryCurrentPictureToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::OpenDirectoryCurrentPictureToolStripMenuItem_Click);
 			   // 
@@ -291,7 +291,7 @@ namespace PhotoViewer
 			   // 
 			   this->copyNameOfCurrentPictureToolStripMenuItem->Name = L"copyNameOfCurrentPictureToolStripMenuItem";
 			   this->copyNameOfCurrentPictureToolStripMenuItem->ShortcutKeys = static_cast<System::Windows::Forms::Keys>((System::Windows::Forms::Keys::Control | System::Windows::Forms::Keys::N));
-			   this->copyNameOfCurrentPictureToolStripMenuItem->Size = System::Drawing::Size(318, 22);
+			   this->copyNameOfCurrentPictureToolStripMenuItem->Size = System::Drawing::Size(342, 22);
 			   this->copyNameOfCurrentPictureToolStripMenuItem->Text = L"Copy name of current picture";
 			   this->copyNameOfCurrentPictureToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::CopyNameOfCurrentPictureToolStripMenuItem_Click);
 			   // 
@@ -299,7 +299,7 @@ namespace PhotoViewer
 			   // 
 			   this->fullViewToolStripMenuItem->Name = L"fullViewToolStripMenuItem";
 			   this->fullViewToolStripMenuItem->ShortcutKeys = System::Windows::Forms::Keys::F11;
-			   this->fullViewToolStripMenuItem->Size = System::Drawing::Size(318, 22);
+			   this->fullViewToolStripMenuItem->Size = System::Drawing::Size(342, 22);
 			   this->fullViewToolStripMenuItem->Text = L"Full View";
 			   this->fullViewToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::FullViewToolStripMenuItem_Click);
 			   // 
@@ -308,7 +308,7 @@ namespace PhotoViewer
 			   this->exitToolStripMenuItem->Name = L"exitToolStripMenuItem";
 			   this->exitToolStripMenuItem->ShortcutKeyDisplayString = L"";
 			   this->exitToolStripMenuItem->ShortcutKeys = static_cast<System::Windows::Forms::Keys>((System::Windows::Forms::Keys::Control | System::Windows::Forms::Keys::W));
-			   this->exitToolStripMenuItem->Size = System::Drawing::Size(318, 22);
+			   this->exitToolStripMenuItem->Size = System::Drawing::Size(342, 22);
 			   this->exitToolStripMenuItem->Text = L"Exit";
 			   this->exitToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::ExitToolStripMenuItem_Click);
 			   // 
@@ -319,14 +319,14 @@ namespace PhotoViewer
 					   this->switchToFavoritePicturesToolStripMenuItem, this->removePictureFromFavoriteToolStripMenuItem, this->exitFromFavoriteModeToolStripMenuItem
 			   });
 			   this->favoritePicturesToolStripMenuItem->Name = L"favoritePicturesToolStripMenuItem";
-			   this->favoritePicturesToolStripMenuItem->Size = System::Drawing::Size(106, 20);
+			   this->favoritePicturesToolStripMenuItem->Size = System::Drawing::Size(117, 21);
 			   this->favoritePicturesToolStripMenuItem->Text = L"Favorite Pictures";
 			   // 
 			   // savePictureLikeFavoriteToolStripMenuItem
 			   // 
 			   this->savePictureLikeFavoriteToolStripMenuItem->Name = L"savePictureLikeFavoriteToolStripMenuItem";
 			   this->savePictureLikeFavoriteToolStripMenuItem->ShortcutKeys = static_cast<System::Windows::Forms::Keys>((System::Windows::Forms::Keys::Control | System::Windows::Forms::Keys::S));
-			   this->savePictureLikeFavoriteToolStripMenuItem->Size = System::Drawing::Size(251, 22);
+			   this->savePictureLikeFavoriteToolStripMenuItem->Size = System::Drawing::Size(274, 22);
 			   this->savePictureLikeFavoriteToolStripMenuItem->Text = L"Save picture like favorite";
 			   this->savePictureLikeFavoriteToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::SavePictureLikeFavoriteToolStripMenuItem_Click);
 			   // 
@@ -334,7 +334,7 @@ namespace PhotoViewer
 			   // 
 			   this->switchToFavoritePicturesToolStripMenuItem->Name = L"switchToFavoritePicturesToolStripMenuItem";
 			   this->switchToFavoritePicturesToolStripMenuItem->ShortcutKeys = static_cast<System::Windows::Forms::Keys>((System::Windows::Forms::Keys::Control | System::Windows::Forms::Keys::F));
-			   this->switchToFavoritePicturesToolStripMenuItem->Size = System::Drawing::Size(251, 22);
+			   this->switchToFavoritePicturesToolStripMenuItem->Size = System::Drawing::Size(274, 22);
 			   this->switchToFavoritePicturesToolStripMenuItem->Text = L"Switch to favorite pictures";
 			   this->switchToFavoritePicturesToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::SwitchToFavoritePicturesToolStripMenuItem_Click);
 			   // 
@@ -342,7 +342,7 @@ namespace PhotoViewer
 			   // 
 			   this->removePictureFromFavoriteToolStripMenuItem->Name = L"removePictureFromFavoriteToolStripMenuItem";
 			   this->removePictureFromFavoriteToolStripMenuItem->ShortcutKeyDisplayString = L"";
-			   this->removePictureFromFavoriteToolStripMenuItem->Size = System::Drawing::Size(251, 22);
+			   this->removePictureFromFavoriteToolStripMenuItem->Size = System::Drawing::Size(274, 22);
 			   this->removePictureFromFavoriteToolStripMenuItem->Text = L"Remove picture from favorite";
 			   this->removePictureFromFavoriteToolStripMenuItem->Visible = false;
 			   this->removePictureFromFavoriteToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::RemovePictureFromFavoriteToolStripMenuItem_Click);
@@ -350,7 +350,7 @@ namespace PhotoViewer
 			   // exitFromFavoriteModeToolStripMenuItem
 			   // 
 			   this->exitFromFavoriteModeToolStripMenuItem->Name = L"exitFromFavoriteModeToolStripMenuItem";
-			   this->exitFromFavoriteModeToolStripMenuItem->Size = System::Drawing::Size(251, 22);
+			   this->exitFromFavoriteModeToolStripMenuItem->Size = System::Drawing::Size(274, 22);
 			   this->exitFromFavoriteModeToolStripMenuItem->Text = L"Exit from favorite mode";
 			   this->exitFromFavoriteModeToolStripMenuItem->Visible = false;
 			   this->exitFromFavoriteModeToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::ExitFromFavoriteModeToolStripMenuItem_Click);
@@ -362,7 +362,7 @@ namespace PhotoViewer
 					   this->changeFontToolStripMenuItem, this->resetFontToolStripMenuItem, this->aboutPhotoViewerToolStripMenuItem
 			   });
 			   this->settingsToolStripMenuItem->Name = L"settingsToolStripMenuItem";
-			   this->settingsToolStripMenuItem->Size = System::Drawing::Size(61, 20);
+			   this->settingsToolStripMenuItem->Size = System::Drawing::Size(68, 21);
 			   this->settingsToolStripMenuItem->Text = L"Settings";
 			   // 
 			   // themeToolStripMenuItem
@@ -372,7 +372,7 @@ namespace PhotoViewer
 					   this->darkToolStripMenuItem
 			   });
 			   this->themeToolStripMenuItem->Name = L"themeToolStripMenuItem";
-			   this->themeToolStripMenuItem->Size = System::Drawing::Size(182, 22);
+			   this->themeToolStripMenuItem->Size = System::Drawing::Size(185, 22);
 			   this->themeToolStripMenuItem->Text = L"Theme";
 			   // 
 			   // lightToolStripMenuItem
@@ -380,42 +380,42 @@ namespace PhotoViewer
 			   this->lightToolStripMenuItem->Checked = true;
 			   this->lightToolStripMenuItem->CheckState = System::Windows::Forms::CheckState::Checked;
 			   this->lightToolStripMenuItem->Name = L"lightToolStripMenuItem";
-			   this->lightToolStripMenuItem->Size = System::Drawing::Size(101, 22);
+			   this->lightToolStripMenuItem->Size = System::Drawing::Size(105, 22);
 			   this->lightToolStripMenuItem->Text = L"Light";
 			   this->lightToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::lightToolStripMenuItem_Click);
 			   // 
 			   // darkToolStripMenuItem
 			   // 
 			   this->darkToolStripMenuItem->Name = L"darkToolStripMenuItem";
-			   this->darkToolStripMenuItem->Size = System::Drawing::Size(101, 22);
+			   this->darkToolStripMenuItem->Size = System::Drawing::Size(105, 22);
 			   this->darkToolStripMenuItem->Text = L"Dark";
 			   this->darkToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::DarkToolStripMenuItem_Click);
 			   // 
 			   // changeFontToolStripMenuItem
 			   // 
 			   this->changeFontToolStripMenuItem->Name = L"changeFontToolStripMenuItem";
-			   this->changeFontToolStripMenuItem->Size = System::Drawing::Size(182, 22);
+			   this->changeFontToolStripMenuItem->Size = System::Drawing::Size(185, 22);
 			   this->changeFontToolStripMenuItem->Text = L"Change Font";
 			   this->changeFontToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::ChangeFontToolStripMenuItem_Click);
 			   // 
 			   // resetFontToolStripMenuItem
 			   // 
 			   this->resetFontToolStripMenuItem->Name = L"resetFontToolStripMenuItem";
-			   this->resetFontToolStripMenuItem->Size = System::Drawing::Size(182, 22);
+			   this->resetFontToolStripMenuItem->Size = System::Drawing::Size(185, 22);
 			   this->resetFontToolStripMenuItem->Text = L"Reset Font";
 			   this->resetFontToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::ResetFontToolStripMenuItem_Click);
 			   // 
 			   // aboutPhotoViewerToolStripMenuItem
 			   // 
 			   this->aboutPhotoViewerToolStripMenuItem->Name = L"aboutPhotoViewerToolStripMenuItem";
-			   this->aboutPhotoViewerToolStripMenuItem->Size = System::Drawing::Size(182, 22);
+			   this->aboutPhotoViewerToolStripMenuItem->Size = System::Drawing::Size(185, 22);
 			   this->aboutPhotoViewerToolStripMenuItem->Text = L"About Photo-Viewer";
 			   this->aboutPhotoViewerToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::AboutPhotoViewerToolStripMenuItem_Click);
 			   // 
 			   // openToolStripMenuItem
 			   // 
 			   this->openToolStripMenuItem->Name = L"openToolStripMenuItem";
-			   this->openToolStripMenuItem->Size = System::Drawing::Size(48, 20);
+			   this->openToolStripMenuItem->Size = System::Drawing::Size(48, 21);
 			   this->openToolStripMenuItem->Text = L"Open";
 			   this->openToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::openToolStripMenuItem_Click);
 			   // 
@@ -431,7 +431,7 @@ namespace PhotoViewer
 			   this->SplitContainer2->Panel1->Controls->Add(this->bNextPicture);
 			   this->SplitContainer2->Panel1->Controls->Add(this->bPreviousPicture);
 			   this->SplitContainer2->Panel2Collapsed = true;
-			   this->SplitContainer2->Size = System::Drawing::Size(423, 61);
+			   this->SplitContainer2->Size = System::Drawing::Size(334, 43);
 			   this->SplitContainer2->SplitterDistance = 28;
 			   this->SplitContainer2->SplitterWidth = 1;
 			   this->SplitContainer2->TabIndex = 0;
@@ -441,7 +441,7 @@ namespace PhotoViewer
 			   // 
 			   this->bNextPicture->Anchor = System::Windows::Forms::AnchorStyles::None;
 			   this->bNextPicture->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			   this->bNextPicture->Location = System::Drawing::Point(214, 24);
+			   this->bNextPicture->Location = System::Drawing::Point(170, 15);
 			   this->bNextPicture->Name = L"bNextPicture";
 			   this->bNextPicture->Size = System::Drawing::Size(75, 23);
 			   this->bNextPicture->TabIndex = 1;
@@ -453,7 +453,7 @@ namespace PhotoViewer
 			   // 
 			   this->bPreviousPicture->Anchor = System::Windows::Forms::AnchorStyles::None;
 			   this->bPreviousPicture->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			   this->bPreviousPicture->Location = System::Drawing::Point(102, 24);
+			   this->bPreviousPicture->Location = System::Drawing::Point(58, 15);
 			   this->bPreviousPicture->Name = L"bPreviousPicture";
 			   this->bPreviousPicture->Size = System::Drawing::Size(75, 23);
 			   this->bPreviousPicture->TabIndex = 1;
@@ -470,7 +470,7 @@ namespace PhotoViewer
 			   // 
 			   this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			   this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			   this->ClientSize = System::Drawing::Size(423, 505);
+			   this->ClientSize = System::Drawing::Size(334, 365);
 			   this->Controls->Add(this->SplitContainer);
 			   this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			   this->KeyPreview = true;
