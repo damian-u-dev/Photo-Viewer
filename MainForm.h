@@ -55,22 +55,10 @@ namespace PhotoViewer
 
 		bool IsFullView = false;
 		bool NoPictureMainDir = false;
-
 		FormWindowState WindowStateBeforeFullView;
-
 		PictureViewMode ViewMode = PictureViewMode::FromDirectory;
-		System::Windows::Forms::Timer^ timer1;
-		System::Windows::Forms::Label^ empty_dir;
-	private: System::Windows::Forms::ToolStripMenuItem^ openToolStripMenuItem;
-	public:
 
-	public:
-
-	public:
-		System::Windows::Forms::ToolStripMenuItem^ aboutPhotoViewerToolStripMenuItem;
-
-
-	public:
+public:
 		MainForm(String^ directoryToFirstPhoto);
 		void SetUpPhotoViewer(String^ pathToPicture);
 		void OpenPictureFromExplorerTimer();
@@ -87,11 +75,13 @@ namespace PhotoViewer
 		void SetUserFont(System::Drawing::Font^ UserFont);
 		void InitializeFavoritePictures();
 
+		void SetVisibilityButtons(bool Visible);
 		array<String^>^ GetFilesCurrentDirectory(String^ directory);
 		static bool IsCorrectExtension(String^ extension);
 		void CheckFavoritePicturesOnExist();
 		void SetPicture(String^ PathToPicture);
 		void SetNewTitle(String^ NewTitle);
+		void InitializeDialog(OpenFileDialog^ fileDialog);
 
 		~MainForm();
 		void SaveSettingsForm();
@@ -129,13 +119,10 @@ namespace PhotoViewer
 		void bPreviousPicture_Click(System::Object^ sender, System::EventArgs^ e);
 		void OpenDirectoryCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 		void CopyNameOfCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
-
-
 		void AboutPhotoViewerToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
 		void timer1_Tick(System::Object^ sender, System::EventArgs^ e);
-		void InitializeDialog(OpenFileDialog^ fileDialog);
 		void ToolMenu_OpenPictureFromExplorerInAnyTime(System::Object^ sender, System::EventArgs^ e);
-		void SetVisibilityButtons(bool Visible);
+		
 
 	private: System::Windows::Forms::PictureBox^ PictureBox;
 	private: System::Windows::Forms::SplitContainer^ SplitContainer;
@@ -161,6 +148,10 @@ namespace PhotoViewer
 	private: System::Windows::Forms::ToolStripMenuItem^ exitToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ changeFontToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ resetFontToolStripMenuItem;
+	private: System::Windows::Forms::Timer^ timer1;
+	private: System::Windows::Forms::Label^ empty_dir;
+	private: System::Windows::Forms::ToolStripMenuItem^ openToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ aboutPhotoViewerToolStripMenuItem;
 
 #pragma region Windows Form Designer generated code
 		   void InitializeComponent(void)
