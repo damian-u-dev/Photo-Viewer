@@ -135,6 +135,7 @@ namespace PhotoViewer
 		void timer1_Tick(System::Object^ sender, System::EventArgs^ e);
 		void InitializeDialog(OpenFileDialog^ fileDialog);
 		void ToolMenu_OpenPictureFromExplorerInAnyTime(System::Object^ sender, System::EventArgs^ e);
+		void SetVisibilityButtons(bool Visible);
 
 	private: System::Windows::Forms::PictureBox^ PictureBox;
 	private: System::Windows::Forms::SplitContainer^ SplitContainer;

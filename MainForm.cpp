@@ -15,6 +15,8 @@ PhotoViewer::MainForm::MainForm(String^ pathToOpenedPicture)
 	InitializeComponent();
 	if (pathToOpenedPicture->Length == 0)
 	{
+		SetUpWindowForm();
+		SetVisibilityButtons(false);
 		timer1->Enabled = true;
 	}
 	else
@@ -95,6 +97,12 @@ void PhotoViewer::MainForm::ToolMenu_OpenPictureFromExplorerInAnyTime(System::Ob
 		SettingUpPictureBox();
 		SetUpButtons();
 	}
+}
+
+void PhotoViewer::MainForm::SetVisibilityButtons(bool Visible)
+{
+	bNextPicture->Visible = Visible;
+	bPreviousPicture->Visible = Visible;
 }
 
 
