@@ -1,7 +1,6 @@
 #include "MainForm.h"
-#include <stdlib.h>
-#include <memory>
 #include "About PV Form.h"
+#include <memory>
 
 
 using namespace System::IO;
@@ -17,12 +16,31 @@ PhotoViewer::MainForm::MainForm(String^ pathToOpenedPicture)
 	{
 		SetUpWindowForm();
 		SetVisibilityButtons(false);
-		timer1->Enabled = true;
+		TimerOpeningExplorer->Enabled = true;
 	}
 	else
 	{
 		SetUpPhotoViewer(pathToOpenedPicture);
 	}
+}
+
+void PhotoViewer::MainForm::SetUpWindowForm()
+{
+	if (Directory::Exists(DIRECTORY_SETTINGS))
+	{
+		SetUpLastWindowSize();
+		SetUpLastWindowLocation();
+		SetUpLastWindowState();
+		SetUpWindowColor();
+		SetUpUserFont();
+	}
+	SetUpButtons();
+}
+
+void PhotoViewer::MainForm::SetVisibilityButtons(bool visible)
+{
+	bNextPicture->Visible = visible;
+	bPreviousPicture->Visible = visible;
 }
 
 void PhotoViewer::MainForm::SetUpPhotoViewer(String^ pathToPicture)
@@ -38,19 +56,19 @@ void PhotoViewer::MainForm::InitializeDialog(OpenFileDialog^ refFileDialog)
 {
 	refFileDialog->Multiselect = false;
 	refFileDialog->Title = "Select a picture file";
-	refFileDialog->Filter = "Image files (*.png;*jpg)|*.png;*.jpg";
+	refFileDialog->Filter = "Image files (*.png;*jpg;*jpeg;*gif;*ico)|*.png;*.jpg;*.jpeg;*.gif;*.ico";
 }
 
 void PhotoViewer::MainForm::OpenPictureFromExplorerTimer()
 {
-	timer1->Enabled = false;
+	TimerOpeningExplorer->Enabled = false;
 	
 	OpenFileDialog fileDialog;
 	InitializeDialog(%fileDialog);
 
-	auto DialogResult = fileDialog.ShowDialog();
+	auto dialogResult = fileDialog.ShowDialog();
 	
-	if (DialogResult == Windows::Forms::DialogResult::OK)
+	if (dialogResult == Windows::Forms::DialogResult::OK)
 	{
 		ViewMode = PictureViewMode::FromDirectory;
 		SetUpPhotoViewer(fileDialog.FileName);
@@ -60,9 +78,9 @@ void PhotoViewer::MainForm::OpenPictureFromExplorerTimer()
 		ViewMode = PictureViewMode::NoPictureFromDir;
 		NoPictureMainDir = true;
 
-		empty_dir->Visible = true;
+		Empty_dir->Visible = true;
 		FileToolStripMenuItem->Visible = false;
-		savePictureLikeFavoriteToolStripMenuItem->Visible = false;
+		SavePictureLikeFavoriteToolStripMenuItem->Visible = false;
 
 		InitializeFavoritePictures();
 	}
@@ -73,8 +91,8 @@ void PhotoViewer::MainForm::ToolMenu_OpenPictureFromExplorerInAnyTime(System::Ob
 	OpenFileDialog fileDialog;
 	InitializeDialog(% fileDialog);
 
-	auto DialogResult = fileDialog.ShowDialog();
-	if (DialogResult == Windows::Forms::DialogResult::OK)
+	auto dialogResult = fileDialog.ShowDialog();
+	if (dialogResult == Windows::Forms::DialogResult::OK)
 	{
 		Pictures.Clear();
 		SortFiles(GetFilesCurrentDirectory(fileDialog.FileName));
@@ -88,21 +106,15 @@ void PhotoViewer::MainForm::ToolMenu_OpenPictureFromExplorerInAnyTime(System::Ob
 		{
 			NoPictureMainDir = false;
 
-			empty_dir->Visible = false;
+			Empty_dir->Visible = false;
 			FileToolStripMenuItem->Visible = true;
-			savePictureLikeFavoriteToolStripMenuItem->Visible = true;
+			SavePictureLikeFavoriteToolStripMenuItem->Visible = true;
 		}
 
 		ViewMode = PictureViewMode::FromDirectory;
 		SettingUpPictureBox();
 		SetUpButtons();
 	}
-}
-
-void PhotoViewer::MainForm::SetVisibilityButtons(bool visible)
-{
-	bNextPicture->Visible = visible;
-	bPreviousPicture->Visible = visible;
 }
 
 void PhotoViewer::MainForm::SortFiles(array<String^>^ allFiles)
@@ -153,20 +165,6 @@ void PhotoViewer::MainForm::InitializeFavoritePictures()
 
 	FavoritePictures.AddRange(File::ReadAllLines(PATH_FAVORITE_PICTURES));
 	CheckFavoritePicturesOnExist();
-}
-
-
-void PhotoViewer::MainForm::SetUpWindowForm()
-{
-	if (Directory::Exists(DIRECTORY_SETTINGS))
-	{
-		SetUpLastWindowSize();
-		SetUpLastWindowLocation();
-		SetUpLastWindowState();
-		SetUpWindowColor();
-		SetUpUserFont();
-	}
-	SetUpButtons();
 }
 
 void PhotoViewer::MainForm::SetUpLastWindowSize()
@@ -221,7 +219,7 @@ void PhotoViewer::MainForm::SetUpWindowColor()
 {
 	if (!File::Exists(PATH_WINDOW_COLOR))
 	{
-		lightToolStripMenuItem_Click(nullptr, nullptr);
+		LightToolStripMenuItem_Click(nullptr, nullptr);
 		return;
 	}
 
@@ -233,7 +231,7 @@ void PhotoViewer::MainForm::SetUpWindowColor()
 	}
 	else
 	{
-		lightToolStripMenuItem_Click(nullptr, nullptr);
+		LightToolStripMenuItem_Click(nullptr, nullptr);
 	}
 }
 
@@ -263,8 +261,10 @@ array<String^>^ PhotoViewer::MainForm::GetFilesCurrentDirectory(String^ pathToPi
 
 bool PhotoViewer::MainForm::IsCorrectExtension(String^ extension)
 {
-	return (extension->EndsWith(".jpeg") || extension->EndsWith(".png") ||
-		extension->EndsWith(".jpg") || extension->EndsWith(".gif"));
+	return (extension->EndsWith(".jpeg") || extension->EndsWith(".png") 
+		|| extension->EndsWith(".jpg")   || extension->EndsWith(".gif"))
+		|| extension->EndsWith(".ico");
+
 }
 
 void PhotoViewer::MainForm::CheckFavoritePicturesOnExist()
@@ -342,6 +342,18 @@ PhotoViewer::MainForm::~MainForm()
 	}
 }
 
+void PhotoViewer::MainForm::SaveFavoritePicturesPaths()
+{
+	List<String^> paths(FavoritePictures.Count);
+
+	for (int i = 0; i < FavoritePictures.Count; i++)
+	{
+		paths.Add(FavoritePictures[i]->ToString());
+	}
+
+	File::WriteAllLines(PATH_FAVORITE_PICTURES, % paths);
+}
+
 void PhotoViewer::MainForm::CopyCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	if (ViewMode == PictureViewMode::NoPictureFromDir)
@@ -352,7 +364,7 @@ void PhotoViewer::MainForm::CopyCurrentPictureToolStripMenuItem_Click(System::Ob
 
 void PhotoViewer::MainForm::MainForm_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e)
 {
-	bool isEmpty = ViewMode == PictureViewMode::NoPictureFromDir;
+	bool isEmpty = (ViewMode == PictureViewMode::NoPictureFromDir);
 	if (isEmpty)
 		return;
 
@@ -370,34 +382,33 @@ void PhotoViewer::MainForm::MainForm_KeyDown(System::Object^ sender, System::Win
 	}
 }
 
-void PhotoViewer::MainForm::SwitchPicture(const int lastOrFirstPicture, const int initializeValue, const int addValue)
+void PhotoViewer::MainForm::SwitchPicture(int rangeOfArray, int defaultValue, int changedIndex)
 {
 	if (ViewMode == PictureViewMode::FromDirectory)
 	{
-		if (IndexCurrentPicture == lastOrFirstPicture)
+		if (IndexCurrentPicture == rangeOfArray)
 		{
-			IndexCurrentPicture = initializeValue;
+			IndexCurrentPicture = defaultValue;
 		}
 		else
 		{
-			IndexCurrentPicture = addValue;
+			IndexCurrentPicture = changedIndex;
 		}
-
-		SetPicture(GetPathToPictureAtPictureBox());
 	}
 	else
 	{
-		if (IndexFavoritePicture == lastOrFirstPicture)
+		if (IndexFavoritePicture == rangeOfArray)
 		{
-			IndexFavoritePicture = initializeValue;
+			IndexFavoritePicture = defaultValue;
 		}
 		else
 		{
-			IndexFavoritePicture = addValue;
+			IndexFavoritePicture = changedIndex;
 		}
 
-		SetPicture(GetPathToPictureAtPictureBox());
 	}
+	
+	SetPicture(GetPathToPictureAtPictureBox());
 }
 
 void PhotoViewer::MainForm::bNextPicture_Click(System::Object^ sender, System::EventArgs^ e)
@@ -462,7 +473,7 @@ void PhotoViewer::MainForm::AboutPhotoViewerToolStripMenuItem_Click(System::Obje
 	aboutPhotoViewer.ShowDialog();
 }
 
-void PhotoViewer::MainForm::timer1_Tick(System::Object^ sender, System::EventArgs^ e)
+void PhotoViewer::MainForm::TimerExplorer_Tick(System::Object^ sender, System::EventArgs^ e)
 {
 	OpenPictureFromExplorerTimer();
 }
@@ -482,112 +493,103 @@ void PhotoViewer::MainForm::SetUpButtons()
 	SetVisibilityButtons(!OnePictureInCurrentArray);
 }
 
-void PhotoViewer::MainForm::SaveFavoritePicturesPaths()
+void PhotoViewer::MainForm::SetColorForm(Color backColor, Color foreColor, Color colorMenuStrip, Color foreColorButtons)
 {
-	List<String^> paths(FavoritePictures.Count);
+	this->BackColor = backColor;
 
-	for (int i = 0; i < FavoritePictures.Count; i++)
-	{
-		paths.Add(FavoritePictures[i]->ToString());
-	}
-
-	File::WriteAllLines(PATH_FAVORITE_PICTURES, % paths);
-}
-
-void PhotoViewer::MainForm::SetColorForm(Color BackColor, Color ForeColor, Color ColorMenuStrip, Color ForeColorButtons)
-{
-	this->BackColor = BackColor;
-
-	bNextPicture->BackColor = BackColor;
-	bPreviousPicture->BackColor = BackColor;
-	menuStrip1->BackColor = ColorMenuStrip;
+	bNextPicture->BackColor = backColor;
+	bPreviousPicture->BackColor = backColor;
+	menuStrip1->BackColor = colorMenuStrip;
 
 	//FileToolStrip
-	CopyCurrentPictureToolStripMenuItem->BackColor = BackColor;
-	CopyCurrentPictureToolStripMenuItem->ForeColor = ForeColor;
+	CopyCurrentPictureToolStripMenuItem->BackColor = backColor;
+	CopyCurrentPictureToolStripMenuItem->ForeColor = foreColor;
 
-	openDirectoryCurrentPictureToolStripMenuItem->BackColor = BackColor;
-	openDirectoryCurrentPictureToolStripMenuItem->ForeColor = ForeColor;
+	OpenDirectoryCurrentPictureToolStripMenuItem->BackColor = backColor;
+	OpenDirectoryCurrentPictureToolStripMenuItem->ForeColor = foreColor;
 
-	copyNameOfCurrentPictureToolStripMenuItem->BackColor = BackColor;
-	copyNameOfCurrentPictureToolStripMenuItem->ForeColor = ForeColor;
+	FullViewToolStripMenuItem->BackColor = backColor;
+	FullViewToolStripMenuItem->ForeColor = foreColor;
 
-	fullViewToolStripMenuItem->BackColor = BackColor;
-	fullViewToolStripMenuItem->ForeColor = ForeColor;
+	CopyNameOfCurrentPictureToolStripMenuItem->BackColor = backColor;
+	CopyNameOfCurrentPictureToolStripMenuItem->ForeColor = foreColor;
 
-	exitToolStripMenuItem->BackColor = BackColor;
-	exitToolStripMenuItem->ForeColor = ForeColor;
+	ExitToolStripMenuItem->BackColor = backColor;
+	ExitToolStripMenuItem->ForeColor = foreColor;
 
 	//FavoritePicture toolstrip
-	savePictureLikeFavoriteToolStripMenuItem->BackColor = BackColor;
-	savePictureLikeFavoriteToolStripMenuItem->ForeColor = ForeColor;
+	SavePictureLikeFavoriteToolStripMenuItem->BackColor = backColor;
+	SavePictureLikeFavoriteToolStripMenuItem->ForeColor = foreColor;
 
-	switchToFavoritePicturesToolStripMenuItem->BackColor = BackColor;
-	switchToFavoritePicturesToolStripMenuItem->ForeColor = ForeColor;
+	SwitchToFavoritePicturesToolStripMenuItem->BackColor = backColor;
+	SwitchToFavoritePicturesToolStripMenuItem->ForeColor = foreColor;
 
-	removePictureFromFavoriteToolStripMenuItem->BackColor = BackColor;
-	removePictureFromFavoriteToolStripMenuItem->ForeColor = ForeColor;
+	RemovePictureFromFavoriteToolStripMenuItem->BackColor = backColor;
+	RemovePictureFromFavoriteToolStripMenuItem->ForeColor = foreColor;
 
-	exitFromFavoriteModeToolStripMenuItem->BackColor = BackColor;
-	exitFromFavoriteModeToolStripMenuItem->ForeColor = ForeColor;
+	ExitFromFavoriteModeToolStripMenuItem->BackColor = backColor;
+	ExitFromFavoriteModeToolStripMenuItem->ForeColor = foreColor;
 
 	//Settings Tool Strip
-	themeToolStripMenuItem->BackColor = BackColor;
-	themeToolStripMenuItem->ForeColor = ForeColor;
+	ThemeToolStripMenuItem->BackColor = backColor;
+	ThemeToolStripMenuItem->ForeColor = foreColor;
 
-	lightToolStripMenuItem->BackColor = BackColor;
-	lightToolStripMenuItem->ForeColor = ForeColor;
+	LightToolStripMenuItem->BackColor = backColor;
+	LightToolStripMenuItem->ForeColor = foreColor;
 
-	darkToolStripMenuItem->BackColor = BackColor;
-	darkToolStripMenuItem->ForeColor = ForeColor;
+	DarkToolStripMenuItem->BackColor = backColor;
+	DarkToolStripMenuItem->ForeColor = foreColor;
 
-	changeFontToolStripMenuItem->BackColor = BackColor;
-	changeFontToolStripMenuItem->ForeColor = ForeColor;
+	ChangeFontToolStripMenuItem->BackColor = backColor;
+	ChangeFontToolStripMenuItem->ForeColor = foreColor;
 
-	resetFontToolStripMenuItem->BackColor = BackColor;
-	resetFontToolStripMenuItem->ForeColor = ForeColor;
+	ResetFontToolStripMenuItem->BackColor = backColor;
+	ResetFontToolStripMenuItem->ForeColor = foreColor;
 
-	aboutPhotoViewerToolStripMenuItem->BackColor = BackColor;
-	aboutPhotoViewerToolStripMenuItem->ForeColor = ForeColor;
+	AboutPhotoViewerToolStripMenuItem->BackColor = backColor;
+	AboutPhotoViewerToolStripMenuItem->ForeColor = foreColor;
 
 	//TooStripMenu
-	FileToolStripMenuItem->ForeColor = ForeColor;
-	favoritePicturesToolStripMenuItem->ForeColor = ForeColor;
-	settingsToolStripMenuItem->ForeColor = ForeColor;
+	FileToolStripMenuItem->ForeColor = foreColor;
+	FavoritePicturesToolStripMenuItem->ForeColor = foreColor;
+	SettingsToolStripMenuItem->ForeColor = foreColor;
 
-	bNextPicture->ForeColor = ForeColorButtons;
-	bPreviousPicture->ForeColor = ForeColorButtons;
+	bNextPicture->ForeColor = foreColorButtons;
+	bPreviousPicture->ForeColor = foreColorButtons;
 
 	//empty dir
-	empty_dir->ForeColor = ForeColor;
+	Empty_dir->ForeColor = foreColor;
 
 	//Open Menu
-	openToolStripMenuItem->BackColor = BackColor;
-	openToolStripMenuItem->ForeColor = ForeColor;
+	OpenToolStripMenuItem->BackColor = backColor;
+	OpenToolStripMenuItem->ForeColor = foreColor;
 }
 
-void PhotoViewer::MainForm::SetUserFont(System::Drawing::Font^ UserFont)
+void PhotoViewer::MainForm::SetUserFont(System::Drawing::Font^ userFont)
 {
 	//File ToolStrip Menu
-	FileToolStripMenuItem->Font = UserFont;
-	CopyCurrentPictureToolStripMenuItem->Font = UserFont;
-	copyNameOfCurrentPictureToolStripMenuItem->Font = UserFont;
-	fullViewToolStripMenuItem->Font = UserFont;
-	exitToolStripMenuItem->Font = UserFont;
+	FileToolStripMenuItem->Font = userFont;
+	CopyCurrentPictureToolStripMenuItem->Font = userFont;
+	FullViewToolStripMenuItem->Font = userFont;
+	FullViewToolStripMenuItem->Font = userFont;
+	ExitToolStripMenuItem->Font = userFont;
 
 	//FavoritePictures ToolStripMenuItem
-	favoritePicturesToolStripMenuItem->Font = UserFont;
-	savePictureLikeFavoriteToolStripMenuItem->Font = UserFont;
-	switchToFavoritePicturesToolStripMenuItem->Font = UserFont;
-	removePictureFromFavoriteToolStripMenuItem->Font = UserFont;
-	exitFromFavoriteModeToolStripMenuItem->Font = UserFont;
+	FavoritePicturesToolStripMenuItem->Font = userFont;
+	SavePictureLikeFavoriteToolStripMenuItem->Font = userFont;
+	SwitchToFavoritePicturesToolStripMenuItem->Font = userFont;
+	RemovePictureFromFavoriteToolStripMenuItem->Font = userFont;
+	ExitFromFavoriteModeToolStripMenuItem->Font = userFont;
 
 	//settings ToolStripMenuItem
-	settingsToolStripMenuItem->Font = UserFont;
-	themeToolStripMenuItem->Font = UserFont;
-	lightToolStripMenuItem->Font = UserFont;
-	darkToolStripMenuItem->Font = UserFont;
-	changeFontToolStripMenuItem->Font = UserFont;
+	SettingsToolStripMenuItem->Font = userFont;
+	ThemeToolStripMenuItem->Font = userFont;
+	LightToolStripMenuItem->Font = userFont;
+	DarkToolStripMenuItem->Font = userFont;
+	ChangeFontToolStripMenuItem->Font = userFont;
+
+	//Open ToolStripMenu
+	OpenToolStripMenuItem->Font = userFont;
 }
 
 void PhotoViewer::MainForm::SavePictureLikeFavoriteToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
@@ -602,11 +604,11 @@ void PhotoViewer::MainForm::SavePictureLikeFavoriteToolStripMenuItem_Click(Syste
 	}
 }
 
-bool PhotoViewer::MainForm::IsThisPictureFavorite(String^ CurrentPicture)
+bool PhotoViewer::MainForm::IsThisPictureFavorite(String^ currentPicture)
 {
 	for (int i = 0; i < FavoritePictures.Count; i++)
 	{
-		if (FavoritePictures[i]->Equals(CurrentPicture))
+		if (FavoritePictures[i]->Equals(currentPicture))
 		{
 			return true;
 		}
@@ -626,10 +628,10 @@ String^ PhotoViewer::MainForm::GetPathToPictureAtPictureBox()
 	}
 }
 
-void PhotoViewer::MainForm::ShowToolMenuForFavoriteMode(bool Value)
+void PhotoViewer::MainForm::ShowToolMenuForFavoriteMode(bool visible)
 {
-	removePictureFromFavoriteToolStripMenuItem->Visible = Value;
-	exitFromFavoriteModeToolStripMenuItem->Visible = Value;
+	RemovePictureFromFavoriteToolStripMenuItem->Visible = visible;
+	ExitFromFavoriteModeToolStripMenuItem->Visible = visible;
 }
 
 void PhotoViewer::MainForm::SwitchToFavoritePicturesToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
@@ -638,7 +640,7 @@ void PhotoViewer::MainForm::SwitchToFavoritePicturesToolStripMenuItem_Click(Syst
 	{
 		if (ViewMode == PictureViewMode::NoPictureFromDir)
 		{
-			empty_dir->Visible = false;
+			Empty_dir->Visible = false;
 		}
 
 		ViewMode = PictureViewMode::FromFavoritePictures;
@@ -683,7 +685,7 @@ System::Void PhotoViewer::MainForm::ExitFromFavoriteModeToolStripMenuItem_Click(
 {
 	if (NoPictureMainDir)
 	{
-		empty_dir->Visible = true;
+		Empty_dir->Visible = true;
 		PictureBox->Image = nullptr;
 		ViewMode = PictureViewMode::NoPictureFromDir;
 		ShowToolMenuForFavoriteMode(false);
@@ -702,16 +704,16 @@ System::Void PhotoViewer::MainForm::ExitFromFavoriteModeToolStripMenuItem_Click(
 
 void PhotoViewer::MainForm::DarkToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 {
-	lightToolStripMenuItem->Checked = false;
-	darkToolStripMenuItem->Checked = true;
+	LightToolStripMenuItem->Checked = false;
+	DarkToolStripMenuItem->Checked = true;
 
-	SetColorForm(Color::DimGray, Color::White, Color::DimGray, Color::Indigo);
+	SetColorForm(Color::DimGray, Color::White, Color::DimGray, Color::AntiqueWhite);
 }
 
-void PhotoViewer::MainForm::lightToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
+void PhotoViewer::MainForm::LightToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 {
-	lightToolStripMenuItem->Checked = true;
-	darkToolStripMenuItem->Checked = false;
+	LightToolStripMenuItem->Checked = true;
+	DarkToolStripMenuItem->Checked = false;
 
 	Color DefaultBackColorForm = Color::FromArgb(255, 240, 240, 240);
 	Color DefaultForeColorForm = Color::FromArgb(255, 0, 0, 0);
@@ -752,21 +754,21 @@ void PhotoViewer::MainForm::ExitToolStripMenuItem_Click(System::Object^ sender, 
 
 void PhotoViewer::MainForm::ChangeFontToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 {
-	FontDialog FontDialog;
-	FontDialog.Font = FileToolStripMenuItem->Font;
-	FontDialog.AllowScriptChange = false;
-	FontDialog.FontMustExist = true;
-	FontDialog.MaxSize = 14;
-	FontDialog.ShowColor = false;
-	FontDialog.ShowEffects = false;
-	FontDialog.ShowHelp = false;
+	FontDialog fontDialog;
+	fontDialog.Font = FileToolStripMenuItem->Font;
+	fontDialog.AllowScriptChange = false;
+	fontDialog.FontMustExist = true;
+	fontDialog.MaxSize = 14;
+	fontDialog.ShowColor = false;
+	fontDialog.ShowEffects = false;
+	fontDialog.ShowHelp = false;
 
 
-	Windows::Forms::DialogResult DialogResult = FontDialog.ShowDialog();
+	Windows::Forms::DialogResult dialogResult = fontDialog.ShowDialog();
 
-	if (DialogResult == Windows::Forms::DialogResult::OK)
+	if (dialogResult == Windows::Forms::DialogResult::OK)
 	{
-		SetUserFont(FontDialog.Font);
+		SetUserFont(fontDialog.Font);
 	}
 }
 

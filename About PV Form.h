@@ -17,7 +17,7 @@ namespace PhotoViewer {
 		void SetColorForm(Color FormColor, Color FontColor);
 		void AboutPVForm_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e);
 
-		String^ GitHubLink = "-------";
+		String^ GitHubLink = "https://github.com/damian-u-dev";
 
 
 	private: System::Windows::Forms::Label^ l_NameOfProgramm;
