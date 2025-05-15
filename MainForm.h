@@ -18,6 +18,11 @@ namespace PhotoViewer
 			FromFavoritePictures,
 			NoPictureFromDir
 		};
+		enum class Action
+		{
+			NO_ACTION,
+			SlideShow
+		};
 	public:
 #ifdef _DEBUG
 		String^ DIRECTORY_SETTINGS = R"(D:\Settings)";
@@ -42,7 +47,6 @@ namespace PhotoViewer
 		String^ PATH_WINDOW_COLOR = R"(C:\ProgramData\Photo-Viewer\WindowColor.txt)";
 #endif // !_DEBUG
 
-
 		ArrayList Pictures;
 		ArrayList FavoritePictures;
 
@@ -56,8 +60,22 @@ namespace PhotoViewer
 		bool IsFullView = false;
 		bool NoPictureMainDir = false;
 		FormWindowState WindowStateBeforeFullView;
-		PictureViewMode ViewMode = PictureViewMode::FromDirectory;
 
+		PictureViewMode ViewMode = PictureViewMode::FromDirectory;
+		Action Action = Action::NO_ACTION;
+
+	private: System::Windows::Forms::Timer^ timerSlideShow;
+	private: System::Windows::Forms::ToolStripMenuItem^ slideShowToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ slideShowToolStripMenuItem1;
+	private: System::Windows::Forms::ToolStripMenuItem^ One_secondToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ Two_secondsToolStripMenuItem1;
+	private: System::Windows::Forms::ToolStripMenuItem^ Three_secondsToolStripMenuItem1;
+	private: System::Windows::Forms::ToolStripMenuItem^ Four_secondsToolStripMenuItem1;
+	private: System::Windows::Forms::ToolStripMenuItem^ Five_secondsToolStripMenuItem2;
+	private: System::Windows::Forms::ToolStripMenuItem^ Six_secondsToolStripMenuItem3;
+	private: System::Windows::Forms::ToolStripMenuItem^ Seven_secondsToolStripMenuItem4;
+	private: System::Windows::Forms::ToolStripMenuItem^ Ten_secondsToolStripMenuItem5;
+	private: System::Windows::Forms::ToolStripMenuItem^ Twenty_secondsToolStripMenuItem6;
 	public:
 		MainForm(String^ directoryToFirstPhoto);
 		void SetUpPhotoViewer(String^ pathToPicture);
@@ -120,6 +138,25 @@ namespace PhotoViewer
 		void TimerExplorer_Tick(System::Object^ sender, System::EventArgs^ e);
 		void ToolMenu_OpenPictureFromExplorerInAnyTime(System::Object^ sender, System::EventArgs^ e);
 
+		///Slide-Show methods
+		void Delegate_SlideShowTimer();
+		void ReloadTimeSlideShow();
+		void ResetAction();
+		bool IsAction();
+		void MessageAlreadyAction(String^ reason);
+		void ResetCheckboxesSlideShow();
+	private: System::Void slideShowToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void timerSlideShow_Tick(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void OnesecondToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void TwosecondsToolStripMenuItem1_Click(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void ThreesecondsToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void FoursecondsToolStripMenuItem1_Click(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void FivesecondsToolStripMenuItem2_Click(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void SixsecondsToolStripMenuItem3_Click(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void SevensecondsToolStripMenuItem4_Click(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void TensecondsToolStripMenuItem5_Click(System::Object^ sender, System::EventArgs^ e);
+	private: System::Void TwentysecondsToolStripMenuItem6_Click(System::Object^ sender, System::EventArgs^ e);
+
 
 	private: System::Windows::Forms::PictureBox^ PictureBox;
 	private: System::Windows::Forms::SplitContainer^ SplitContainer;
@@ -164,6 +201,7 @@ namespace PhotoViewer
 			   this->CopyNameOfCurrentPictureToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->FullViewToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->ExitToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			   this->slideShowToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->FavoritePicturesToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->SavePictureLikeFavoriteToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->SwitchToFavoritePicturesToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
@@ -176,11 +214,22 @@ namespace PhotoViewer
 			   this->ChangeFontToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->ResetFontToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->AboutPhotoViewerToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			   this->slideShowToolStripMenuItem1 = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			   this->One_secondToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			   this->Two_secondsToolStripMenuItem1 = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			   this->Three_secondsToolStripMenuItem1 = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			   this->Four_secondsToolStripMenuItem1 = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			   this->Five_secondsToolStripMenuItem2 = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			   this->Six_secondsToolStripMenuItem3 = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			   this->Seven_secondsToolStripMenuItem4 = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			   this->Ten_secondsToolStripMenuItem5 = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			   this->Twenty_secondsToolStripMenuItem6 = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->OpenToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			   this->SplitContainer2 = (gcnew System::Windows::Forms::SplitContainer());
 			   this->bNextPicture = (gcnew System::Windows::Forms::Button());
 			   this->bPreviousPicture = (gcnew System::Windows::Forms::Button());
 			   this->TimerOpeningExplorer = (gcnew System::Windows::Forms::Timer(this->components));
+			   this->timerSlideShow = (gcnew System::Windows::Forms::Timer(this->components));
 			   (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->SplitContainer))->BeginInit();
 			   this->SplitContainer->Panel1->SuspendLayout();
 			   this->SplitContainer->Panel2->SuspendLayout();
@@ -250,10 +299,10 @@ namespace PhotoViewer
 			   // 
 			   // FileToolStripMenuItem
 			   // 
-			   this->FileToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(5) {
+			   this->FileToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(6) {
 				   this->CopyCurrentPictureToolStripMenuItem,
 					   this->OpenDirectoryCurrentPictureToolStripMenuItem, this->CopyNameOfCurrentPictureToolStripMenuItem, this->FullViewToolStripMenuItem,
-					   this->ExitToolStripMenuItem
+					   this->ExitToolStripMenuItem, this->slideShowToolStripMenuItem
 			   });
 			   this->FileToolStripMenuItem->Name = L"FileToolStripMenuItem";
 			   this->FileToolStripMenuItem->Size = System::Drawing::Size(41, 21);
@@ -302,6 +351,13 @@ namespace PhotoViewer
 			   this->ExitToolStripMenuItem->Text = L"Exit";
 			   this->ExitToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::ExitToolStripMenuItem_Click);
 			   // 
+			   // slideShowToolStripMenuItem
+			   // 
+			   this->slideShowToolStripMenuItem->Name = L"slideShowToolStripMenuItem";
+			   this->slideShowToolStripMenuItem->Size = System::Drawing::Size(342, 22);
+			   this->slideShowToolStripMenuItem->Text = L"SlideShow";
+			   this->slideShowToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::slideShowToolStripMenuItem_Click);
+			   // 
 			   // FavoritePicturesToolStripMenuItem
 			   // 
 			   this->FavoritePicturesToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(4) {
@@ -347,9 +403,9 @@ namespace PhotoViewer
 			   // 
 			   // SettingsToolStripMenuItem
 			   // 
-			   this->SettingsToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(4) {
+			   this->SettingsToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(5) {
 				   this->ThemeToolStripMenuItem,
-					   this->ChangeFontToolStripMenuItem, this->ResetFontToolStripMenuItem, this->AboutPhotoViewerToolStripMenuItem
+					   this->ChangeFontToolStripMenuItem, this->ResetFontToolStripMenuItem, this->AboutPhotoViewerToolStripMenuItem, this->slideShowToolStripMenuItem1
 			   });
 			   this->SettingsToolStripMenuItem->Name = L"SettingsToolStripMenuItem";
 			   this->SettingsToolStripMenuItem->Size = System::Drawing::Size(68, 21);
@@ -370,14 +426,14 @@ namespace PhotoViewer
 			   this->LightToolStripMenuItem->Checked = true;
 			   this->LightToolStripMenuItem->CheckState = System::Windows::Forms::CheckState::Checked;
 			   this->LightToolStripMenuItem->Name = L"LightToolStripMenuItem";
-			   this->LightToolStripMenuItem->Size = System::Drawing::Size(180, 22);
+			   this->LightToolStripMenuItem->Size = System::Drawing::Size(105, 22);
 			   this->LightToolStripMenuItem->Text = L"Light";
 			   this->LightToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::LightToolStripMenuItem_Click);
 			   // 
 			   // DarkToolStripMenuItem
 			   // 
 			   this->DarkToolStripMenuItem->Name = L"DarkToolStripMenuItem";
-			   this->DarkToolStripMenuItem->Size = System::Drawing::Size(180, 22);
+			   this->DarkToolStripMenuItem->Size = System::Drawing::Size(105, 22);
 			   this->DarkToolStripMenuItem->Text = L"Dark";
 			   this->DarkToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::DarkToolStripMenuItem_Click);
 			   // 
@@ -401,6 +457,82 @@ namespace PhotoViewer
 			   this->AboutPhotoViewerToolStripMenuItem->Size = System::Drawing::Size(185, 22);
 			   this->AboutPhotoViewerToolStripMenuItem->Text = L"About Photo-Viewer";
 			   this->AboutPhotoViewerToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::AboutPhotoViewerToolStripMenuItem_Click);
+			   // 
+			   // slideShowToolStripMenuItem1
+			   // 
+			   this->slideShowToolStripMenuItem1->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(9) {
+				   this->One_secondToolStripMenuItem,
+					   this->Two_secondsToolStripMenuItem1, this->Three_secondsToolStripMenuItem1, this->Four_secondsToolStripMenuItem1, this->Five_secondsToolStripMenuItem2,
+					   this->Six_secondsToolStripMenuItem3, this->Seven_secondsToolStripMenuItem4, this->Ten_secondsToolStripMenuItem5, this->Twenty_secondsToolStripMenuItem6
+			   });
+			   this->slideShowToolStripMenuItem1->Name = L"slideShowToolStripMenuItem1";
+			   this->slideShowToolStripMenuItem1->Size = System::Drawing::Size(185, 22);
+			   this->slideShowToolStripMenuItem1->Text = L"Slide Show";
+			   // 
+			   // One_secondToolStripMenuItem
+			   // 
+			   this->One_secondToolStripMenuItem->Checked = true;
+			   this->One_secondToolStripMenuItem->CheckState = System::Windows::Forms::CheckState::Checked;
+			   this->One_secondToolStripMenuItem->Name = L"One_secondToolStripMenuItem";
+			   this->One_secondToolStripMenuItem->Size = System::Drawing::Size(180, 22);
+			   this->One_secondToolStripMenuItem->Text = L"1 Second";
+			   this->One_secondToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::OnesecondToolStripMenuItem_Click);
+			   // 
+			   // Two_secondsToolStripMenuItem1
+			   // 
+			   this->Two_secondsToolStripMenuItem1->Name = L"Two_secondsToolStripMenuItem1";
+			   this->Two_secondsToolStripMenuItem1->Size = System::Drawing::Size(180, 22);
+			   this->Two_secondsToolStripMenuItem1->Text = L"2 Seconds";
+			   this->Two_secondsToolStripMenuItem1->Click += gcnew System::EventHandler(this, &MainForm::TwosecondsToolStripMenuItem1_Click);
+			   // 
+			   // Three_secondsToolStripMenuItem1
+			   // 
+			   this->Three_secondsToolStripMenuItem1->Name = L"Three_secondsToolStripMenuItem1";
+			   this->Three_secondsToolStripMenuItem1->Size = System::Drawing::Size(180, 22);
+			   this->Three_secondsToolStripMenuItem1->Text = L"3 Seconds";
+			   this->Three_secondsToolStripMenuItem1->Click += gcnew System::EventHandler(this, &MainForm::ThreesecondsToolStripMenuItem_Click);
+			   // 
+			   // Four_secondsToolStripMenuItem1
+			   // 
+			   this->Four_secondsToolStripMenuItem1->Name = L"Four_secondsToolStripMenuItem1";
+			   this->Four_secondsToolStripMenuItem1->Size = System::Drawing::Size(180, 22);
+			   this->Four_secondsToolStripMenuItem1->Text = L"4 Seconds";
+			   this->Four_secondsToolStripMenuItem1->Click += gcnew System::EventHandler(this, &MainForm::FoursecondsToolStripMenuItem1_Click);
+			   // 
+			   // Five_secondsToolStripMenuItem2
+			   // 
+			   this->Five_secondsToolStripMenuItem2->Name = L"Five_secondsToolStripMenuItem2";
+			   this->Five_secondsToolStripMenuItem2->Size = System::Drawing::Size(180, 22);
+			   this->Five_secondsToolStripMenuItem2->Text = L"5 Seconds";
+			   this->Five_secondsToolStripMenuItem2->Click += gcnew System::EventHandler(this, &MainForm::FivesecondsToolStripMenuItem2_Click);
+			   // 
+			   // Six_secondsToolStripMenuItem3
+			   // 
+			   this->Six_secondsToolStripMenuItem3->Name = L"Six_secondsToolStripMenuItem3";
+			   this->Six_secondsToolStripMenuItem3->Size = System::Drawing::Size(180, 22);
+			   this->Six_secondsToolStripMenuItem3->Text = L"6 Seconds";
+			   this->Six_secondsToolStripMenuItem3->Click += gcnew System::EventHandler(this, &MainForm::SixsecondsToolStripMenuItem3_Click);
+			   // 
+			   // Seven_secondsToolStripMenuItem4
+			   // 
+			   this->Seven_secondsToolStripMenuItem4->Name = L"Seven_secondsToolStripMenuItem4";
+			   this->Seven_secondsToolStripMenuItem4->Size = System::Drawing::Size(180, 22);
+			   this->Seven_secondsToolStripMenuItem4->Text = L"7 Seconds";
+			   this->Seven_secondsToolStripMenuItem4->Click += gcnew System::EventHandler(this, &MainForm::SevensecondsToolStripMenuItem4_Click);
+			   // 
+			   // Ten_secondsToolStripMenuItem5
+			   // 
+			   this->Ten_secondsToolStripMenuItem5->Name = L"Ten_secondsToolStripMenuItem5";
+			   this->Ten_secondsToolStripMenuItem5->Size = System::Drawing::Size(180, 22);
+			   this->Ten_secondsToolStripMenuItem5->Text = L"10 Seconds";
+			   this->Ten_secondsToolStripMenuItem5->Click += gcnew System::EventHandler(this, &MainForm::TensecondsToolStripMenuItem5_Click);
+			   // 
+			   // Twenty_secondsToolStripMenuItem6
+			   // 
+			   this->Twenty_secondsToolStripMenuItem6->Name = L"Twenty_secondsToolStripMenuItem6";
+			   this->Twenty_secondsToolStripMenuItem6->Size = System::Drawing::Size(180, 22);
+			   this->Twenty_secondsToolStripMenuItem6->Text = L"20 Seconds";
+			   this->Twenty_secondsToolStripMenuItem6->Click += gcnew System::EventHandler(this, &MainForm::TwentysecondsToolStripMenuItem6_Click);
 			   // 
 			   // OpenToolStripMenuItem
 			   // 
@@ -456,6 +588,11 @@ namespace PhotoViewer
 			   this->TimerOpeningExplorer->Interval = 500;
 			   this->TimerOpeningExplorer->Tick += gcnew System::EventHandler(this, &MainForm::TimerExplorer_Tick);
 			   // 
+			   // timerSlideShow
+			   // 
+			   this->timerSlideShow->Interval = 1000;
+			   this->timerSlideShow->Tick += gcnew System::EventHandler(this, &MainForm::timerSlideShow_Tick);
+			   // 
 			   // MainForm
 			   // 
 			   this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -485,5 +622,6 @@ namespace PhotoViewer
 
 		   }
 #pragma endregion
+
 	};
 }

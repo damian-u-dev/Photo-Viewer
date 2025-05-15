@@ -60,17 +60,6 @@ namespace PhotoViewer {
 			this->l_Copyrights->TabIndex = 2;
 			this->l_Copyrights->Text = L"All Rights Reserved";
 			// 
-			// l_Developer
-			// 
-			this->l_Developer->AutoSize = true;
-			this->l_Developer->Font = (gcnew System::Drawing::Font(L"Arial", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->l_Developer->Location = System::Drawing::Point(121, 144);
-			this->l_Developer->Name = L"l_Developer";
-			this->l_Developer->Size = System::Drawing::Size(140, 14);
-			this->l_Developer->TabIndex = 3;
-			this->l_Developer->Text = L"Developed by ";
-			// 
 			// link_GitHub
 			// 
 			this->link_GitHub->AutoSize = true;

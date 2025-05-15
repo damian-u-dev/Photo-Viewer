@@ -62,12 +62,12 @@ void PhotoViewer::MainForm::InitializeDialog(OpenFileDialog^ refFileDialog)
 void PhotoViewer::MainForm::OpenPictureFromExplorerTimer()
 {
 	TimerOpeningExplorer->Enabled = false;
-	
+
 	OpenFileDialog fileDialog;
-	InitializeDialog(%fileDialog);
+	InitializeDialog(% fileDialog);
 
 	auto dialogResult = fileDialog.ShowDialog();
-	
+
 	if (dialogResult == Windows::Forms::DialogResult::OK)
 	{
 		ViewMode = PictureViewMode::FromDirectory;
@@ -115,6 +115,130 @@ void PhotoViewer::MainForm::ToolMenu_OpenPictureFromExplorerInAnyTime(System::Ob
 		SettingUpPictureBox();
 		SetUpButtons();
 	}
+}
+
+void PhotoViewer::MainForm::Delegate_SlideShowTimer()
+{
+	bNextPicture_Click(nullptr, nullptr);
+}
+
+void PhotoViewer::MainForm::ReloadTimeSlideShow()
+{
+	timerSlideShow->Stop();
+	timerSlideShow->Start();
+}
+
+void PhotoViewer::MainForm::ResetAction()
+{
+	Action = Action::NO_ACTION;
+}
+
+bool PhotoViewer::MainForm::IsAction()
+{
+	return Action != Action::NO_ACTION;
+}
+
+void PhotoViewer::MainForm::MessageAlreadyAction(String^ reason)
+{
+	String^ Message = "You can't do this, you turned on: ";
+	Message += reason;
+	MessageBox::Show(Message, "Reason");
+}
+
+void PhotoViewer::MainForm::ResetCheckboxesSlideShow()
+{
+	One_secondToolStripMenuItem->Checked = false;
+	Two_secondsToolStripMenuItem1->Checked = false;
+	Three_secondsToolStripMenuItem1->Checked = false;
+	Four_secondsToolStripMenuItem1->Checked = false;
+	Five_secondsToolStripMenuItem2->Checked = false;
+	Six_secondsToolStripMenuItem3->Checked = false;
+	Seven_secondsToolStripMenuItem4->Checked = false;
+	Ten_secondsToolStripMenuItem5->Checked = false;
+	Twenty_secondsToolStripMenuItem6->Checked = false;
+}
+
+System::Void PhotoViewer::MainForm::slideShowToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	this->slideShowToolStripMenuItem->Checked = !this->slideShowToolStripMenuItem->Checked;
+
+	if (this->slideShowToolStripMenuItem->Checked)
+	{
+		timerSlideShow->Start();
+		Action = Action::SlideShow;
+	}
+	else
+	{
+		timerSlideShow->Stop();
+		ResetAction();
+	}
+}
+
+System::Void PhotoViewer::MainForm::timerSlideShow_Tick(System::Object^ sender, System::EventArgs^ e)
+{
+	Delegate_SlideShowTimer();
+}
+
+System::Void PhotoViewer::MainForm::OnesecondToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	return System::Void();
+}
+
+System::Void PhotoViewer::MainForm::TwosecondsToolStripMenuItem1_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	ResetCheckboxesSlideShow();
+	Two_secondsToolStripMenuItem1->Checked = true;
+	timerSlideShow->Interval = 2000;
+}
+
+System::Void PhotoViewer::MainForm::ThreesecondsToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	ResetCheckboxesSlideShow();
+	Three_secondsToolStripMenuItem1->Checked = true;
+	timerSlideShow->Interval = 3000;
+}
+
+System::Void PhotoViewer::MainForm::FoursecondsToolStripMenuItem1_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	ResetCheckboxesSlideShow();
+	Four_secondsToolStripMenuItem1->Checked = true;
+	timerSlideShow->Interval = 4000;
+}
+
+System::Void PhotoViewer::MainForm::FivesecondsToolStripMenuItem2_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	ResetCheckboxesSlideShow();
+	Five_secondsToolStripMenuItem2->Checked = true;
+	timerSlideShow->Interval = 5000;
+}
+
+System::Void PhotoViewer::MainForm::SixsecondsToolStripMenuItem3_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	ResetCheckboxesSlideShow();
+	Six_secondsToolStripMenuItem3->Checked = true;
+	timerSlideShow->Interval = 6000;
+}
+
+System::Void PhotoViewer::MainForm::SevensecondsToolStripMenuItem4_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	ResetCheckboxesSlideShow();
+	Seven_secondsToolStripMenuItem4->Checked = true;
+	timerSlideShow->Interval = 7000;
+}
+
+System::Void PhotoViewer::MainForm::TensecondsToolStripMenuItem5_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	ResetCheckboxesSlideShow();
+	Ten_secondsToolStripMenuItem5->Checked = true;
+	timerSlideShow->Interval = 10000;
+}
+
+System::Void PhotoViewer::MainForm::TwentysecondsToolStripMenuItem6_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	ResetCheckboxesSlideShow();
+	Twenty_secondsToolStripMenuItem6->Checked = true;
+	timerSlideShow->Interval = 20000;
+
 }
 
 void PhotoViewer::MainForm::SortFiles(array<String^>^ allFiles)
@@ -261,8 +385,8 @@ array<String^>^ PhotoViewer::MainForm::GetFilesCurrentDirectory(String^ pathToPi
 
 bool PhotoViewer::MainForm::IsCorrectExtension(String^ extension)
 {
-	return (extension->EndsWith(".jpeg") || extension->EndsWith(".png") 
-		|| extension->EndsWith(".jpg")   || extension->EndsWith(".gif"))
+	return (extension->EndsWith(".jpeg") || extension->EndsWith(".png")
+		|| extension->EndsWith(".jpg") || extension->EndsWith(".gif"))
 		|| extension->EndsWith(".ico");
 
 }
@@ -370,10 +494,18 @@ void PhotoViewer::MainForm::MainForm_KeyDown(System::Object^ sender, System::Win
 
 	if (e->KeyCode == Keys::A && !OnePictureInCurrentArray)
 	{
+		if (Action == Action::SlideShow)
+		{
+			ReloadTimeSlideShow();
+		}
 		bPreviousPicture_Click(nullptr, nullptr);
 	}
 	if (e->KeyCode == Keys::D && !OnePictureInCurrentArray)
 	{
+		if (Action == Action::SlideShow)
+		{
+			ReloadTimeSlideShow();
+		}
 		bNextPicture_Click(nullptr, nullptr);
 	}
 	if (e->KeyCode == Keys::Escape && IsFullView)
@@ -407,7 +539,7 @@ void PhotoViewer::MainForm::SwitchPicture(int rangeOfArray, int defaultValue, in
 		}
 
 	}
-	
+
 	SetPicture(GetPathToPictureAtPictureBox());
 }
 
@@ -517,6 +649,9 @@ void PhotoViewer::MainForm::SetColorForm(Color backColor, Color foreColor, Color
 	ExitToolStripMenuItem->BackColor = backColor;
 	ExitToolStripMenuItem->ForeColor = foreColor;
 
+	slideShowToolStripMenuItem->BackColor = backColor;
+	slideShowToolStripMenuItem->ForeColor = foreColor;
+
 	//FavoritePicture toolstrip
 	SavePictureLikeFavoriteToolStripMenuItem->BackColor = backColor;
 	SavePictureLikeFavoriteToolStripMenuItem->ForeColor = foreColor;
@@ -563,6 +698,38 @@ void PhotoViewer::MainForm::SetColorForm(Color backColor, Color foreColor, Color
 	//Open Menu
 	OpenToolStripMenuItem->BackColor = backColor;
 	OpenToolStripMenuItem->ForeColor = foreColor;
+
+	slideShowToolStripMenuItem1->BackColor = backColor;
+	slideShowToolStripMenuItem1->ForeColor = foreColor;
+
+	One_secondToolStripMenuItem->BackColor = backColor;
+	One_secondToolStripMenuItem->ForeColor = foreColor;
+
+	Two_secondsToolStripMenuItem1->BackColor = backColor;
+	Two_secondsToolStripMenuItem1->ForeColor = foreColor;
+
+	Three_secondsToolStripMenuItem1->BackColor = backColor;
+	Three_secondsToolStripMenuItem1->ForeColor = foreColor;
+
+	Four_secondsToolStripMenuItem1->BackColor = backColor;
+	Four_secondsToolStripMenuItem1->ForeColor = foreColor;
+
+	Five_secondsToolStripMenuItem2->BackColor = backColor;
+	Five_secondsToolStripMenuItem2->ForeColor = foreColor;
+
+	Six_secondsToolStripMenuItem3->BackColor = backColor;
+	Six_secondsToolStripMenuItem3->ForeColor = foreColor;
+
+	Seven_secondsToolStripMenuItem4->BackColor = backColor;
+	Seven_secondsToolStripMenuItem4->ForeColor = foreColor;
+
+	Ten_secondsToolStripMenuItem5->BackColor = backColor;
+	Ten_secondsToolStripMenuItem5->ForeColor = foreColor;
+
+	Twenty_secondsToolStripMenuItem6->BackColor = backColor;
+	Twenty_secondsToolStripMenuItem6->ForeColor = foreColor;
+
+
 }
 
 void PhotoViewer::MainForm::SetUserFont(System::Drawing::Font^ userFont)
@@ -573,6 +740,7 @@ void PhotoViewer::MainForm::SetUserFont(System::Drawing::Font^ userFont)
 	FullViewToolStripMenuItem->Font = userFont;
 	FullViewToolStripMenuItem->Font = userFont;
 	ExitToolStripMenuItem->Font = userFont;
+	slideShowToolStripMenuItem->Font = userFont;
 
 	//FavoritePictures ToolStripMenuItem
 	FavoritePicturesToolStripMenuItem->Font = userFont;
@@ -588,8 +756,21 @@ void PhotoViewer::MainForm::SetUserFont(System::Drawing::Font^ userFont)
 	DarkToolStripMenuItem->Font = userFont;
 	ChangeFontToolStripMenuItem->Font = userFont;
 
+	slideShowToolStripMenuItem1->Font = userFont;
+	One_secondToolStripMenuItem->Font = userFont;
+	Two_secondsToolStripMenuItem1->Font = userFont;
+	Three_secondsToolStripMenuItem1->Font = userFont;
+	Four_secondsToolStripMenuItem1->Font = userFont;
+	Five_secondsToolStripMenuItem2->Font = userFont;
+	Six_secondsToolStripMenuItem3->Font = userFont;
+	Seven_secondsToolStripMenuItem4->Font = userFont;
+	Ten_secondsToolStripMenuItem5->Font = userFont;
+	Twenty_secondsToolStripMenuItem6->Font = userFont;
+
 	//Open ToolStripMenu
 	OpenToolStripMenuItem->Font = userFont;
+
+
 }
 
 void PhotoViewer::MainForm::SavePictureLikeFavoriteToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
@@ -636,6 +817,11 @@ void PhotoViewer::MainForm::ShowToolMenuForFavoriteMode(bool visible)
 
 void PhotoViewer::MainForm::SwitchToFavoritePicturesToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 {
+	if (IsAction())
+	{
+		MessageAlreadyAction(Action == Action::SlideShow ? "Slide-Show" : "-");
+		return;
+	}
 	if (FavoritePictures.Count > 0)
 	{
 		if (ViewMode == PictureViewMode::NoPictureFromDir)
@@ -683,6 +869,11 @@ System::Void PhotoViewer::MainForm::RemovePictureFromFavoriteToolStripMenuItem_C
 
 System::Void PhotoViewer::MainForm::ExitFromFavoriteModeToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 {
+	if (IsAction())
+	{
+		MessageAlreadyAction(Action == Action::SlideShow ? "Slide-Show" : "-");
+		return;
+	}
 	if (NoPictureMainDir)
 	{
 		Empty_dir->Visible = true;
