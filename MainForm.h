@@ -33,6 +33,7 @@ namespace PhotoViewer
 		String^ PATH_FONT = R"(D:\Settings\Font.txt)";
 		String^ PATH_SIZE_FONT = R"(D:\Settings\SizeFont.txt)";
 		String^ PATH_WINDOW_COLOR = R"(D:\Settings\WindowColor.txt)";
+		String^ PATH_SLIDE_SHOW_TIME = R"(D:\Settings\SlideShowTime.txt)";
 
 #endif // _DEBUG
 
@@ -45,6 +46,8 @@ namespace PhotoViewer
 		String^ PATH_FONT = R"(C:\ProgramData\Photo-Viewer\Font.txt)";
 		String^ PATH_SIZE_FONT = R"(C:\ProgramData\Photo-Viewer\SizeFont.txt)";
 		String^ PATH_WINDOW_COLOR = R"(C:\ProgramData\Photo-Viewer\WindowColor.txt)";
+		String^ PATH_SLIDE_SHOW_TIME = R"(C:\ProgramData\Photo-Viewer\SlideShowTime.txt)";
+
 #endif // !_DEBUG
 
 		ArrayList Pictures;
@@ -90,6 +93,7 @@ namespace PhotoViewer
 		void SetUpLastWindowState();
 		void SetUpWindowColor();
 		void SetUpUserFont();
+		void SetUpSlideShowTime();
 		void SetUserFont(System::Drawing::Font^ userFont);
 		void InitializeFavoritePictures();
 
@@ -108,6 +112,7 @@ namespace PhotoViewer
 		void SaveLastWindowState();
 		void SaveWindowColor();
 		void SaveUserFont();
+		void SaveSlideShowTime();
 
 		void MainForm_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e);
 		void SwitchPicture(int rangeOfArray, int defaultValue, int changedIndex);

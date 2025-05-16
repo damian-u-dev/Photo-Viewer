@@ -33,6 +33,7 @@ void PhotoViewer::MainForm::SetUpWindowForm()
 		SetUpLastWindowState();
 		SetUpWindowColor();
 		SetUpUserFont();
+		SetUpSlideShowTime();
 	}
 	SetUpButtons();
 }
@@ -181,7 +182,9 @@ System::Void PhotoViewer::MainForm::timerSlideShow_Tick(System::Object^ sender, 
 
 System::Void PhotoViewer::MainForm::OnesecondToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 {
-	return System::Void();
+	ResetCheckboxesSlideShow();
+	One_secondToolStripMenuItem->Checked = true;
+	timerSlideShow->Interval = 1000;
 }
 
 System::Void PhotoViewer::MainForm::TwosecondsToolStripMenuItem1_Click(System::Object^ sender, System::EventArgs^ e)
@@ -377,6 +380,50 @@ void PhotoViewer::MainForm::SetUpUserFont()
 	SetUserFont(% System::Drawing::Font(userFont, sizeFont));
 }
 
+void PhotoViewer::MainForm::SetUpSlideShowTime()
+{
+	if (!File::Exists(PATH_SLIDE_SHOW_TIME))
+		return;
+
+	String^ time = File::ReadAllText(PATH_SLIDE_SHOW_TIME);
+	if (time == "1000")
+	{
+		OnesecondToolStripMenuItem_Click(nullptr, nullptr);
+	}
+	else if (time == "2000")
+	{
+		TwosecondsToolStripMenuItem1_Click(nullptr, nullptr);
+	}
+	else if (time == "3000")
+	{
+		ThreesecondsToolStripMenuItem_Click(nullptr, nullptr);
+	}
+	else if (time == "4000")
+	{
+		FoursecondsToolStripMenuItem1_Click(nullptr, nullptr);
+	}
+	else if (time == "5000")
+	{
+		FivesecondsToolStripMenuItem2_Click(nullptr, nullptr);
+	}
+	else if (time == "6000")
+	{
+		SixsecondsToolStripMenuItem3_Click(nullptr, nullptr);
+	}
+	else if (time == "7000")
+	{
+		SevensecondsToolStripMenuItem4_Click(nullptr, nullptr);
+	}
+	else if (time == "10000")
+	{
+		TensecondsToolStripMenuItem5_Click(nullptr, nullptr);
+	}
+	else if (time == "20000")
+	{
+		TwentysecondsToolStripMenuItem6_Click(nullptr, nullptr);
+	}
+}
+
 array<String^>^ PhotoViewer::MainForm::GetFilesCurrentDirectory(String^ pathToPicture)
 {
 	String^ directory = Path::GetDirectoryName(pathToPicture);
@@ -418,6 +465,7 @@ void PhotoViewer::MainForm::SaveSettingsForm()
 
 	SaveLastWindowState();
 	SaveWindowColor();
+	SaveSlideShowTime();
 }
 
 void PhotoViewer::MainForm::SaveLastWindowSize()
@@ -454,6 +502,11 @@ void PhotoViewer::MainForm::SaveUserFont()
 {
 	File::WriteAllText(PATH_FONT, FileToolStripMenuItem->Font->Name);
 	File::WriteAllText(PATH_SIZE_FONT, FileToolStripMenuItem->Font->Size.ToString());
+}
+
+void PhotoViewer::MainForm::SaveSlideShowTime()
+{
+	File::WriteAllText(PATH_SLIDE_SHOW_TIME, timerSlideShow->Interval.ToString());
 }
 
 PhotoViewer::MainForm::~MainForm()
