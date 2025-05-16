@@ -89,6 +89,12 @@ void PhotoViewer::MainForm::OpenPictureFromExplorerTimer()
 
 void PhotoViewer::MainForm::ToolMenu_OpenPictureFromExplorerInAnyTime(System::Object^ sender, System::EventArgs^ e)
 {
+	if (IsAction())
+	{
+		MessageAlreadyAction(Action == Action::SlideShow ? "Slide-Show" : "-");
+		return;
+	}
+
 	OpenFileDialog fileDialog;
 	InitializeDialog(% fileDialog);
 
