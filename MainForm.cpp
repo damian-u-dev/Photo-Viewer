@@ -49,7 +49,7 @@ void PhotoViewer::MainForm::SetUpPhotoViewer(String^ pathToPicture)
 	SortFiles(GetFilesCurrentDirectory(pathToPicture));
 	FindOutIndexOpenedPicture(pathToPicture);
 	SettingUpPictureBox();
-	SetUpWindowForm();
+	SetUpButtons();
 	InitializeFavoritePictures();
 }
 
