@@ -1,4 +1,4 @@
-﻿# 📙 Photo-Viewer
+﻿# 🖼️ Photo-Viewer
 ![Program Window](img/PhotoViewer.png)
 
 **Photo-Viewer** is a customizable image viewer that supports all major formats, including JPG, GIF, PNG, BMP, and more.
