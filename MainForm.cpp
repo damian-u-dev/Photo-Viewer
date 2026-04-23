@@ -8,6 +8,7 @@ using namespace System::Collections::Generic;
 using namespace System;
 using namespace Windows::Forms;
 using namespace System::Windows::Forms;
+using namespace System::Diagnostics;
 
 PhotoViewer::MainForm::MainForm(String^ pathToOpenedPicture)
 {
@@ -122,6 +123,14 @@ void PhotoViewer::MainForm::ToolMenu_OpenPictureFromExplorerInAnyTime(System::Ob
 		SettingUpPictureBox();
 		SetUpButtons();
 	}
+}
+
+System::Void PhotoViewer::MainForm::FileLocation(System::Object^ sender, System::EventArgs^ e)
+{
+	String^ pathPicture = GetPathToPictureAtPictureBox();
+	String^ command = "/select,\"" + pathPicture + "\"";
+
+	Process::Start("explorer.exe", command);
 }
 
 void PhotoViewer::MainForm::Delegate_SlideShowTimer()
@@ -698,6 +707,9 @@ void PhotoViewer::MainForm::SetColorForm(Color backColor, Color foreColor, Color
 
 	OpenDirectoryCurrentPictureToolStripMenuItem->BackColor = backColor;
 	OpenDirectoryCurrentPictureToolStripMenuItem->ForeColor = foreColor;
+
+	fileLocationToolStripMenuItem->BackColor = backColor;
+	fileLocationToolStripMenuItem->ForeColor = foreColor;
 
 	FullViewToolStripMenuItem->BackColor = backColor;
 	FullViewToolStripMenuItem->ForeColor = foreColor;
