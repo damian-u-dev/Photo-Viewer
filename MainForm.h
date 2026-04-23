@@ -314,9 +314,9 @@ namespace PhotoViewer
 			   // FileToolStripMenuItem
 			   // 
 			   this->FileToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(7) {
-				   this->CopyCurrentPictureToolStripMenuItem,
-					   this->OpenDirectoryCurrentPictureToolStripMenuItem, this->fileLocationToolStripMenuItem, this->CopyNameOfCurrentPictureToolStripMenuItem,
-					   this->FullViewToolStripMenuItem, this->ExitToolStripMenuItem, this->slideShowToolStripMenuItem
+				   this->CopyNameOfCurrentPictureToolStripMenuItem,
+					   this->CopyCurrentPictureToolStripMenuItem, this->OpenDirectoryCurrentPictureToolStripMenuItem, this->fileLocationToolStripMenuItem,
+					   this->slideShowToolStripMenuItem, this->FullViewToolStripMenuItem, this->ExitToolStripMenuItem
 			   });
 			   this->FileToolStripMenuItem->Name = L"FileToolStripMenuItem";
 			   this->FileToolStripMenuItem->Size = System::Drawing::Size(46, 24);
@@ -383,7 +383,7 @@ namespace PhotoViewer
 			   // 
 			   this->FavoritePicturesToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(4) {
 				   this->SavePictureLikeFavoriteToolStripMenuItem,
-					   this->SwitchToFavoritePicturesToolStripMenuItem, this->RemovePictureFromFavoriteToolStripMenuItem, this->ExitFromFavoriteModeToolStripMenuItem
+					   this->RemovePictureFromFavoriteToolStripMenuItem, this->SwitchToFavoritePicturesToolStripMenuItem, this->ExitFromFavoriteModeToolStripMenuItem
 			   });
 			   this->FavoritePicturesToolStripMenuItem->Name = L"FavoritePicturesToolStripMenuItem";
 			   this->FavoritePicturesToolStripMenuItem->Size = System::Drawing::Size(130, 24);
@@ -426,7 +426,7 @@ namespace PhotoViewer
 			   // 
 			   this->SettingsToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(5) {
 				   this->ThemeToolStripMenuItem,
-					   this->ChangeFontToolStripMenuItem, this->ResetFontToolStripMenuItem, this->AboutPhotoViewerToolStripMenuItem, this->slideShowToolStripMenuItem1
+					   this->ChangeFontToolStripMenuItem, this->ResetFontToolStripMenuItem, this->slideShowToolStripMenuItem1, this->AboutPhotoViewerToolStripMenuItem
 			   });
 			   this->SettingsToolStripMenuItem->Name = L"SettingsToolStripMenuItem";
 			   this->SettingsToolStripMenuItem->Size = System::Drawing::Size(76, 24);
@@ -495,63 +495,63 @@ namespace PhotoViewer
 			   this->One_secondToolStripMenuItem->Checked = true;
 			   this->One_secondToolStripMenuItem->CheckState = System::Windows::Forms::CheckState::Checked;
 			   this->One_secondToolStripMenuItem->Name = L"One_secondToolStripMenuItem";
-			   this->One_secondToolStripMenuItem->Size = System::Drawing::Size(167, 26);
+			   this->One_secondToolStripMenuItem->Size = System::Drawing::Size(224, 26);
 			   this->One_secondToolStripMenuItem->Text = L"1 Second";
 			   this->One_secondToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainForm::OnesecondToolStripMenuItem_Click);
 			   // 
 			   // Two_secondsToolStripMenuItem1
 			   // 
 			   this->Two_secondsToolStripMenuItem1->Name = L"Two_secondsToolStripMenuItem1";
-			   this->Two_secondsToolStripMenuItem1->Size = System::Drawing::Size(167, 26);
+			   this->Two_secondsToolStripMenuItem1->Size = System::Drawing::Size(224, 26);
 			   this->Two_secondsToolStripMenuItem1->Text = L"2 Seconds";
 			   this->Two_secondsToolStripMenuItem1->Click += gcnew System::EventHandler(this, &MainForm::TwosecondsToolStripMenuItem1_Click);
 			   // 
 			   // Three_secondsToolStripMenuItem1
 			   // 
 			   this->Three_secondsToolStripMenuItem1->Name = L"Three_secondsToolStripMenuItem1";
-			   this->Three_secondsToolStripMenuItem1->Size = System::Drawing::Size(167, 26);
+			   this->Three_secondsToolStripMenuItem1->Size = System::Drawing::Size(224, 26);
 			   this->Three_secondsToolStripMenuItem1->Text = L"3 Seconds";
 			   this->Three_secondsToolStripMenuItem1->Click += gcnew System::EventHandler(this, &MainForm::ThreesecondsToolStripMenuItem_Click);
 			   // 
 			   // Four_secondsToolStripMenuItem1
 			   // 
 			   this->Four_secondsToolStripMenuItem1->Name = L"Four_secondsToolStripMenuItem1";
-			   this->Four_secondsToolStripMenuItem1->Size = System::Drawing::Size(167, 26);
+			   this->Four_secondsToolStripMenuItem1->Size = System::Drawing::Size(224, 26);
 			   this->Four_secondsToolStripMenuItem1->Text = L"4 Seconds";
 			   this->Four_secondsToolStripMenuItem1->Click += gcnew System::EventHandler(this, &MainForm::FoursecondsToolStripMenuItem1_Click);
 			   // 
 			   // Five_secondsToolStripMenuItem2
 			   // 
 			   this->Five_secondsToolStripMenuItem2->Name = L"Five_secondsToolStripMenuItem2";
-			   this->Five_secondsToolStripMenuItem2->Size = System::Drawing::Size(167, 26);
+			   this->Five_secondsToolStripMenuItem2->Size = System::Drawing::Size(224, 26);
 			   this->Five_secondsToolStripMenuItem2->Text = L"5 Seconds";
 			   this->Five_secondsToolStripMenuItem2->Click += gcnew System::EventHandler(this, &MainForm::FivesecondsToolStripMenuItem2_Click);
 			   // 
 			   // Six_secondsToolStripMenuItem3
 			   // 
 			   this->Six_secondsToolStripMenuItem3->Name = L"Six_secondsToolStripMenuItem3";
-			   this->Six_secondsToolStripMenuItem3->Size = System::Drawing::Size(167, 26);
+			   this->Six_secondsToolStripMenuItem3->Size = System::Drawing::Size(224, 26);
 			   this->Six_secondsToolStripMenuItem3->Text = L"6 Seconds";
 			   this->Six_secondsToolStripMenuItem3->Click += gcnew System::EventHandler(this, &MainForm::SixsecondsToolStripMenuItem3_Click);
 			   // 
 			   // Seven_secondsToolStripMenuItem4
 			   // 
 			   this->Seven_secondsToolStripMenuItem4->Name = L"Seven_secondsToolStripMenuItem4";
-			   this->Seven_secondsToolStripMenuItem4->Size = System::Drawing::Size(167, 26);
+			   this->Seven_secondsToolStripMenuItem4->Size = System::Drawing::Size(224, 26);
 			   this->Seven_secondsToolStripMenuItem4->Text = L"7 Seconds";
 			   this->Seven_secondsToolStripMenuItem4->Click += gcnew System::EventHandler(this, &MainForm::SevensecondsToolStripMenuItem4_Click);
 			   // 
 			   // Ten_secondsToolStripMenuItem5
 			   // 
 			   this->Ten_secondsToolStripMenuItem5->Name = L"Ten_secondsToolStripMenuItem5";
-			   this->Ten_secondsToolStripMenuItem5->Size = System::Drawing::Size(167, 26);
+			   this->Ten_secondsToolStripMenuItem5->Size = System::Drawing::Size(224, 26);
 			   this->Ten_secondsToolStripMenuItem5->Text = L"10 Seconds";
 			   this->Ten_secondsToolStripMenuItem5->Click += gcnew System::EventHandler(this, &MainForm::TensecondsToolStripMenuItem5_Click);
 			   // 
 			   // Twenty_secondsToolStripMenuItem6
 			   // 
 			   this->Twenty_secondsToolStripMenuItem6->Name = L"Twenty_secondsToolStripMenuItem6";
-			   this->Twenty_secondsToolStripMenuItem6->Size = System::Drawing::Size(167, 26);
+			   this->Twenty_secondsToolStripMenuItem6->Size = System::Drawing::Size(224, 26);
 			   this->Twenty_secondsToolStripMenuItem6->Text = L"20 Seconds";
 			   this->Twenty_secondsToolStripMenuItem6->Click += gcnew System::EventHandler(this, &MainForm::TwentysecondsToolStripMenuItem6_Click);
 			   // 
