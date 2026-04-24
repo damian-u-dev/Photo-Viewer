@@ -1,6 +1,10 @@
 #include "MainForm.h"
 #include "About PV Form.h"
 #include <memory>
+#include <string>
+#include <Windows.h>
+
+#pragma comment(lib, "user32.lib")
 
 
 using namespace System::IO;
@@ -131,6 +135,26 @@ System::Void PhotoViewer::MainForm::FileLocation(System::Object^ sender, System:
 	String^ command = "/select,\"" + pathPicture + "\"";
 
 	Process::Start("explorer.exe", command);
+}
+
+System::Void PhotoViewer::MainForm::SetWallpaper(System::Object^ sender, System::EventArgs^ e)
+{
+	String^ path = GetPathToPictureAtPictureBox();
+	if(String::IsNullOrEmpty(path))
+		return;
+
+	std::wstring convertedPath;
+
+	for (int i = 0; i < path->Length; i++)
+	{
+		convertedPath.push_back(path[i]);
+	}
+
+	SystemParametersInfoW(
+		SPI_SETDESKWALLPAPER,
+		0,
+		(void*)convertedPath.c_str(),
+		SPIF_UPDATEINIFILE | SPIF_SENDCHANGE);
 }
 
 void PhotoViewer::MainForm::Delegate_SlideShowTimer()
@@ -722,6 +746,9 @@ void PhotoViewer::MainForm::SetColorForm(Color backColor, Color foreColor, Color
 
 	slideShowToolStripMenuItem->BackColor = backColor;
 	slideShowToolStripMenuItem->ForeColor = foreColor;
+
+	setPictureAsAWallpaperToolStripMenuItem->BackColor = backColor;
+	setPictureAsAWallpaperToolStripMenuItem->ForeColor = foreColor;
 
 	//FavoritePicture toolstrip
 	SavePictureLikeFavoriteToolStripMenuItem->BackColor = backColor;
