@@ -663,21 +663,9 @@ void PhotoViewer::MainForm::OpenDirectoryCurrentPictureToolStripMenuItem_Click(S
 {
 	if (ViewMode == PictureViewMode::NoPictureFromDir)
 		return;
-
-	String^ pathToExplorer = "\"C:\\Windows\\explorer.exe ";
+	
 	String^ currentDirectory = Path::GetDirectoryName(GetPathToPictureAtPictureBox());
-
-	array<wchar_t>^ fullPathWChar = (pathToExplorer + currentDirectory)->ToCharArray();
-
-	std::unique_ptr<char[]> fullPathChar(new char[fullPathWChar->Length + 1] {});
-
-	for (int i = 0; i < fullPathWChar->Length; i++)
-	{
-		fullPathChar[i] = static_cast<char>(fullPathWChar[i]);
-	}
-	fullPathChar[fullPathWChar->Length] = '\0';
-
-	system(fullPathChar.get());
+	Process::Start(currentDirectory);
 }
 
 void PhotoViewer::MainForm::CopyNameOfCurrentPictureToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
